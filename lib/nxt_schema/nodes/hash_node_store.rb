@@ -1,7 +1,7 @@
 module NxtSchema
   module Nodes
     class HashNodeStore < Hash
-      def add(node)
+      def push(node)
         self[node.name] = node
       end
     end

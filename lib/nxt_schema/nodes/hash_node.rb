@@ -7,6 +7,8 @@ module NxtSchema
 
         super
       end
+
+      delegate_missing_to :store
     end
   end
 end

@@ -5,9 +5,10 @@ module NxtSchema
         @name = name
         @parent_node = parent_node
         @options = options
+        @type = options.fetch(:type)
       end
 
-      attr_accessor :name, :parent_node, :options
+      attr_accessor :name, :parent_node, :options, :type
     end
   end
 end

@@ -1,5 +1,6 @@
 require "nxt_schema/version"
 require "pry"
+require "active_support/all"
 require "nxt_schema/nodes"
 require "nxt_schema/node"
 require "nxt_schema/nodes/has_subnodes"

@@ -17,7 +17,7 @@ module NxtSchema
           NxtSchema::Nodes::SimpleNode.new(name, self, **options)
         end
 
-        store.add(child_node)
+        store.push(child_node)
       end
 
       def nodes(name, options, &block)
