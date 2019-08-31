@@ -1,6 +1,6 @@
-require_relative 'hash_node'
-require_relative 'array_node'
-require_relative 'simple_node'
+require_relative 'hash'
+require_relative 'array'
+require_relative 'leaf'
 
 module NxtSchema
   module Node
@@ -10,11 +10,11 @@ module NxtSchema
       def node(name, type, **options, &block)
         child_node = case type.to_s
         when 'Hash'
-          NxtSchema::Node::HashNode.new(name, self, **options, &block)
+          NxtSchema::Node::Hash.new(name, self, **options, &block)
         when 'Array'
-          NxtSchema::Node::ArrayNode.new(name, self, **options, &block)
+          NxtSchema::Node::Array.new(name, self, **options, &block)
         else
-          NxtSchema::Node::SimpleNode.new(name, type,self, **options)
+          NxtSchema::Node::Leaf.new(name, type, self, **options)
         end
 
         store.push(child_node)
@@ -31,15 +31,15 @@ module NxtSchema
       end
 
       def nodes(name, **options, &block)
-        node(name, Array, options, &block)
+        node(name, ::Array, options, &block)
       end
 
       def schema(name, **options, &block)
-        node(name, Hash, options, &block)
+        node(name, ::Hash, options, &block)
       end
     end
   end
 end
 
-NxtSchema::Node::HashNode.include(::NxtSchema::Node::HasSubNodes)
-NxtSchema::Node::ArrayNode.include(::NxtSchema::Node::HasSubNodes)
+NxtSchema::Node::Hash.include(::NxtSchema::Node::HasSubNodes)
+NxtSchema::Node::Array.include(::NxtSchema::Node::HasSubNodes)

@@ -1,18 +1,17 @@
 module NxtSchema
   module Node
-    class ArrayNode < Node::Base
+    class Array < Node::Base
       def initialize(name, parent_node, options, &block)
         @store = []
         @value_store = []
 
-        super(name, Array, parent_node, options, &block)
+        super(name, ::Array, parent_node, options, &block)
       end
 
       delegate_missing_to :value_store
 
       def validate(target)
         target.each do |item|
-          binding.pry
           if store.any? { |node| node.validate(item) }
             value_store << item
 

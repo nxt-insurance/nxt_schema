@@ -1,11 +1,11 @@
 module NxtSchema
   module Node
-    class HashNode < Node::Base
+    class Hash < Node::Base
       def initialize(name, parent_node, options, &block)
         @store = HashNodeStore.new
         @value_store = {}
 
-        super(name, Hash, parent_node, options, &block)
+        super(name, ::Hash, parent_node, options, &block)
       end
 
       delegate_missing_to :value_store
