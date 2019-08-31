@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a679482-5e69-4b0b-b051-3648123bf58e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/nxt_schema/node/base.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/node.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/node.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/nodes.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/nodes/array_node.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/node/array_node.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/nodes/error.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/node/error.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/nodes/has_subnodes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/node/has_subnodes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/node/hash_node.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node_store.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/node/hash_node_store.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/nodes/simple_node.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/node/simple_node.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/schema.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/nxt_schema/node/array_node.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nxt_schema/node/array_node.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spec/nxt_schema_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/nxt_schema_spec.rb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,26 +34,26 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spec/nxt_schema_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+            <state relative-caret-position="395">
+              <caret line="32" column="28" lean-forward="true" selection-start-line="32" selection-start-column="28" selection-end-line="32" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/simple_node.rb">
+        <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/array_node.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="336">
+              <caret line="16" column="28" lean-forward="true" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/hash_node_store.rb">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+            <state relative-caret-position="273">
+              <caret line="13" selection-start-line="13" selection-end-line="13" />
             </state>
           </provider>
         </entry>
@@ -158,6 +147,8 @@
         <option value="$PROJECT_DIR$/lib/nxt_schema/node.rb" />
         <option value="$PROJECT_DIR$/lib/nxt_schema/nodes.rb" />
         <option value="$PROJECT_DIR$/lib/nxt_schema.rb" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/lib/nxt_schema/node/array_node.rb" />
         <option value="$PROJECT_DIR$/spec/nxt_schema_spec.rb" />
       </list>
     </option>
@@ -254,7 +245,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22378000" />
+    <option name="totallyTimeSpent" value="22943000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
@@ -310,13 +301,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/array_node.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="1" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/simple_node.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -359,16 +343,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/base.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-          <folding>
-            <element signature="e#34#614#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/has_subnodes.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="457">
@@ -383,10 +357,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/array_node.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="16" column="28" lean-forward="true" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node/base.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+          <folding>
+            <element signature="e#34#614#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/spec/nxt_schema_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+        <state relative-caret-position="395">
+          <caret line="32" column="28" lean-forward="true" selection-start-line="32" selection-start-column="28" selection-end-line="32" selection-end-column="32" />
         </state>
       </provider>
     </entry>

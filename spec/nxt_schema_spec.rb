@@ -33,6 +33,12 @@ RSpec.describe NxtSchema do
               employee_name.node(:first_name, String)
               employee_name.node(:last_name, String)
             end
+
+            # TODO: Validating arrays does not seem to work yet.
+            nodes.schema(:employee_name) do |employee_name|
+              employee_name.node(:firstname, String)
+              employee_name.node(:lastname, String)
+            end
           end
         end
       end
@@ -120,7 +126,7 @@ RSpec.describe NxtSchema do
                 street_number: 0
               },
               employee_names: [
-                { first_name: 'Raphael', last_name: 'Kallensee' },
+                { firstname: 'Raphael', lastname: 'Kallensee' },
                 { first_name: 'Nils' },
                 { }
               ]
