@@ -4,9 +4,16 @@ RSpec.describe NxtSchema do
   end
 
   context 'when the schema is nested' do
+    # NxtSchema.register_type(:int)
+    # NxtSchema.register_validator(:gte) do |value, node|
+    #   if value < expected
+    #     node.add_error(value, 'Must be greater #{expected}')
+    #   end
+    # end
+
     subject do
-      NxtSchema.new do |schema|
-        schema.node(:company, Hash) do |company|
+      NxtSchema.new do |root|
+        root.schema(:company) do |company|
           company.requires(:name, String)
           company.requires(:industry, String)
 
@@ -18,11 +25,11 @@ RSpec.describe NxtSchema do
             end
 
             headquarter.node(:street, String)
-            headquarter.node(:street_number, Integer, validate: street_number_validator)
+            headquarter.node(:street_number, Integer, validate: street_number_validator) # validator(:gte, -> { DateTime.current })
           end
 
-          company.requires(:employee_names, Array) do |collection|
-            collection.node(:employee_name, Hash) do |employee_name|
+          company.nodes(:employee_names) do |nodes|
+            nodes.node(:employee_name, Hash) do |employee_name|
               employee_name.node(:first_name, String)
               employee_name.node(:last_name, String)
             end
@@ -32,21 +39,21 @@ RSpec.describe NxtSchema do
     end
 
     it 'builds the schema' do
-      # expect(subject[:company]).to be_a(NxtSchema::Nodes::HashNode)
+      # expect(subject[:company]).to be_a(NxtSchema::Node::HashNode)
       #
-      # expect(subject[:company][:name]).to be_a(NxtSchema::Nodes::SimpleNode)
-      # expect(subject[:company][:industry]).to be_a(NxtSchema::Nodes::SimpleNode)
+      # expect(subject[:company][:name]).to be_a(NxtSchema::Node::SimpleNode)
+      # expect(subject[:company][:industry]).to be_a(NxtSchema::Node::SimpleNode)
       #
-      # expect(subject[:company][:headquarter]).to be_a(NxtSchema::Nodes::HashNode)
-      # expect(subject[:company][:headquarter][:street]).to be_a(NxtSchema::Nodes::SimpleNode)
+      # expect(subject[:company][:headquarter]).to be_a(NxtSchema::Node::HashNode)
+      # expect(subject[:company][:headquarter][:street]).to be_a(NxtSchema::Node::SimpleNode)
       # expect(subject[:company][:headquarter][:street].type).to eq(String)
-      # expect(subject[:company][:headquarter][:street_number]).to be_a(NxtSchema::Nodes::SimpleNode)
+      # expect(subject[:company][:headquarter][:street_number]).to be_a(NxtSchema::Node::SimpleNode)
       # expect(subject[:company][:headquarter][:street_number].type).to eq(Integer)
       #
-      # expect(subject[:company][:employee_names]).to be_a(NxtSchema::Nodes::ArrayNode)
-      # expect(subject[:company][:employee_names].first).to be_a(NxtSchema::Nodes::HashNode)
-      # expect(subject[:company][:employee_names].first[:first_name]).to be_a(NxtSchema::Nodes::SimpleNode)
-      # expect(subject[:company][:employee_names].last[:last_name]).to be_a(NxtSchema::Nodes::SimpleNode)
+      # expect(subject[:company][:employee_names]).to be_a(NxtSchema::Node::ArrayNode)
+      # expect(subject[:company][:employee_names].first).to be_a(NxtSchema::Node::HashNode)
+      # expect(subject[:company][:employee_names].first[:first_name]).to be_a(NxtSchema::Node::SimpleNode)
+      # expect(subject[:company][:employee_names].last[:last_name]).to be_a(NxtSchema::Node::SimpleNode)
     end
 
     describe '#validate' do
@@ -96,9 +103,9 @@ RSpec.describe NxtSchema do
 
         it do
           subject.validate(schema)
-          expect(subject.errors['company.headquarter.street_number'].first.values.first).to be_a(NxtSchema::Nodes::Error)
-          expect(subject.errors['company.employee_names.employee_name.last_name'].first.values).to all(be_a(NxtSchema::Nodes::Error))
-          expect(subject.errors['company.employee_names.employee_name.first_name'].first.values).to all(be_a(NxtSchema::Nodes::Error))
+          expect(subject.errors['company.headquarter.street_number'].first.values.first).to be_a(NxtSchema::Node::Error)
+          expect(subject.errors['company.employee_names.employee_name.last_name'].first.values).to all(be_a(NxtSchema::Node::Error))
+          expect(subject.errors['company.employee_names.employee_name.first_name'].first.values).to all(be_a(NxtSchema::Node::Error))
         end
       end
 

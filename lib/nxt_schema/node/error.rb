@@ -1,5 +1,5 @@
 module NxtSchema
-  module Nodes
+  module Node
     class Error
       def initialize(path, value, error_message)
         @path = path

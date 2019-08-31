@@ -1,6 +1,6 @@
 module NxtSchema
-  module Nodes
-    class HashNode < Node
+  module Node
+    class HashNode < Node::Base
       def initialize(name, parent_node, options, &block)
         @store = HashNodeStore.new
         @value_store = {}

@@ -1,6 +1,6 @@
 module NxtSchema
-  module Nodes
-    class ArrayNode < Node
+  module Node
+    class ArrayNode < Node::Base
       def initialize(name, parent_node, options, &block)
         @store = []
         @value_store = []

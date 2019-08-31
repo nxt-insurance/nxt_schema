@@ -1,6 +1,6 @@
 module NxtSchema
-  module Nodes
-    class SimpleNode < Node
+  module Node
+    class SimpleNode < Node::Base
       def validate(target)
         if target.is_a?(type)
           validations.each do |validation|

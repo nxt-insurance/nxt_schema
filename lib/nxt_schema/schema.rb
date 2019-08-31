@@ -1,4 +1,4 @@
 module NxtSchema
-  class Schema < ::NxtSchema::Nodes::HashNode
+  class Schema < ::NxtSchema::Node::HashNode
   end
 end
