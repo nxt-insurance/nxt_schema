@@ -29,17 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/has_subnodes.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/nxt_schema.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="5" column="31" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+            <state relative-caret-position="128">
+              <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -53,11 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/simple_node.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="84">
+              <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -65,8 +56,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="21" column="63" lean-forward="true" selection-start-line="21" selection-start-column="63" selection-end-line="21" selection-end-column="63" />
+            <state relative-caret-position="42">
+              <caret line="2" column="31" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node_store.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="63">
+              <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -74,8 +74,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/spec/nxt_schema_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="15" column="77" lean-forward="true" selection-start-line="15" selection-start-column="77" selection-end-line="15" selection-end-column="77" />
+            <state relative-caret-position="483">
+              <caret line="23" column="44" lean-forward="true" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -89,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/array_node.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="105">
+              <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -101,8 +101,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="16" column="23" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="23" />
+            <state relative-caret-position="105">
+              <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -113,6 +113,7 @@
     <findStrings>
       <find>errors</find>
       <find>flat_errors</find>
+      <find>ema/nodes/has_subnodes.rb:10</find>
     </findStrings>
     <replaceStrings>
       <replace>node_errors</replace>
@@ -135,12 +136,12 @@
         <option value="$PROJECT_DIR$/lib/nxt_schema/dsl.rb" />
         <option value="$PROJECT_DIR$/lib/nxt_schema/schema.rb" />
         <option value="$PROJECT_DIR$/lib/nxt_schema/nodes/error.rb" />
-        <option value="$PROJECT_DIR$/lib/nxt_schema/node.rb" />
-        <option value="$PROJECT_DIR$/lib/nxt_schema/nodes/has_subnodes.rb" />
         <option value="$PROJECT_DIR$/spec/nxt_schema_spec.rb" />
-        <option value="$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node.rb" />
-        <option value="$PROJECT_DIR$/lib/nxt_schema/nodes/simple_node.rb" />
+        <option value="$PROJECT_DIR$/lib/nxt_schema/node.rb" />
         <option value="$PROJECT_DIR$/lib/nxt_schema/nodes/array_node.rb" />
+        <option value="$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node.rb" />
+        <option value="$PROJECT_DIR$/lib/nxt_schema/nodes/has_subnodes.rb" />
+        <option value="$PROJECT_DIR$/lib/nxt_schema/nodes/simple_node.rb" />
       </list>
     </option>
   </component>
@@ -231,7 +232,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19094000" />
+    <option name="totallyTimeSpent" value="19870000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
@@ -280,13 +281,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/array_node_template.rb" />
     <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/array_node_store.rb" />
-    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node_store.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/nxt_schema.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -315,45 +309,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node.rb">
+    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node_store.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="21" column="63" lean-forward="true" selection-start-line="21" selection-start-column="63" selection-end-line="21" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/has_subnodes.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+        <state relative-caret-position="63">
+          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/spec/nxt_schema_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="15" column="77" lean-forward="true" selection-start-line="15" selection-start-column="77" selection-end-line="15" selection-end-column="77" />
+        <state relative-caret-position="483">
+          <caret line="23" column="44" lean-forward="true" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="50" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/simple_node.rb">
+    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/node.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="16" column="23" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="23" />
+        <state relative-caret-position="42">
+          <caret line="2" column="31" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/array_node.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="105">
+          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/hash_node.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/has_subnodes.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/nxt_schema/nodes/simple_node.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
         </state>
       </provider>
     </entry>

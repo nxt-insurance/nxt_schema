@@ -4,9 +4,8 @@ module NxtSchema
       def initialize(name, parent_node, options, &block)
         @store = []
         @value_store = []
-        options.merge!(type: Array)
 
-        super
+        super(name, Array, parent_node, options, &block)
       end
 
       delegate_missing_to :value_store

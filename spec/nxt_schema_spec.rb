@@ -6,25 +6,25 @@ RSpec.describe NxtSchema do
   context 'when the schema is nested' do
     subject do
       NxtSchema.new do |schema|
-        schema.node(:company, type: Hash) do |company|
-          company.node(:name, type: String)
-          company.node(:industry, type: String)
+        schema.node(:company, Hash) do |company|
+          company.requires(:name, String)
+          company.requires(:industry, String)
 
-          company.node(:headquarter, type: Hash, optional: true, default: {}, allow: :empty?) do |headquarter|
+          company.optional(:headquarter, Hash, default: {}, allow: :empty?) do |headquarter|
             street_number_validator = lambda do |street_number, node|
               if headquarter[:street] == 'Langer Anger' && street_number <= 0
                 node.add_error(street_number, 'Street number must be greater 0')
               end
             end
 
-            headquarter.node(:street, type: String)
-            headquarter.node(:street_number, type: Integer, validate: street_number_validator)
+            headquarter.node(:street, String)
+            headquarter.node(:street_number, Integer, validate: street_number_validator)
           end
 
-          company.node(:employee_names, type: Array) do |collection|
-            collection.node(:employee_name, type: Hash) do |employee_name|
-              employee_name.node(:first_name, type: String)
-              employee_name.node(:last_name, type: String)
+          company.requires(:employee_names, Array) do |collection|
+            collection.node(:employee_name, Hash) do |employee_name|
+              employee_name.node(:first_name, String)
+              employee_name.node(:last_name, String)
             end
           end
         end

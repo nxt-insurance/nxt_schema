@@ -1,10 +1,10 @@
 module NxtSchema
   class Node
-    def initialize(name, parent_node, options, &block)
+    def initialize(name, type, parent_node, **options, &block)
       @name = name
       @parent_node = parent_node
       @options = options
-      @type = options.fetch(:type)
+      @type = type
       @validations = Array(options.fetch(:validate, []))
       # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
       @node_errors = parent_node.nil? ? {} : (parent_node.node_errors[name] ||= {})

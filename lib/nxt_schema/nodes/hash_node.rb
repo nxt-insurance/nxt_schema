@@ -4,9 +4,8 @@ module NxtSchema
       def initialize(name, parent_node, options, &block)
         @store = HashNodeStore.new
         @value_store = {}
-        options.merge!(type: Hash)
 
-        super
+        super(name, Hash, parent_node, options, &block)
       end
 
       delegate_missing_to :value_store

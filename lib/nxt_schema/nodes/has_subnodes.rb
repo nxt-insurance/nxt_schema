@@ -7,29 +7,31 @@ module NxtSchema
     module HasSubNodes
       attr_accessor :store, :value_store
 
-      def node(name, options, &block)
-        child_node = case options.fetch(:type).to_s
+      def node(name, type, **options, &block)
+        child_node = case type.to_s
         when 'Hash'
           NxtSchema::Nodes::HashNode.new(name, self, **options, &block)
         when 'Array'
           NxtSchema::Nodes::ArrayNode.new(name, self, **options, &block)
         else
-          NxtSchema::Nodes::SimpleNode.new(name, self, **options)
+          NxtSchema::Nodes::SimpleNode.new(name, type,self, **options)
         end
 
         store.push(child_node)
       end
 
-      def required(name, options, &block)
-        node(name, options.merge(optional: false), &block)
+      def required(name, type, **options, &block)
+        node(name, type, options.merge(optional: false), &block)
       end
 
-      def optional(name, options, &block)
-        node(name, options.merge(optional: true), &block)
+      alias_method :requires, :required
+
+      def optional(name, type, **options, &block)
+        node(name, type, options.merge(optional: true), &block)
       end
 
-      def nodes(name, options, &block)
-        node(name, options.merge(type: Array), &block)
+      def nodes(name, **options, &block)
+        node(name, Array, options, &block)
       end
     end
   end
