@@ -2,9 +2,14 @@ module NxtSchema
   module Nodes
     class SimpleNode < Node
       def validate(target)
-        return self if target.is_a?(type)
-
-        add_error(target, "Does not match type: #{type}")
+        if target.is_a?(type)
+          validations.each do |validation|
+            validation_args = [target, self]
+            validation.call(*validation_args.take(validation.arity))
+          end
+        else
+          add_error(target, "Does not match type: #{type}")
+        end
 
         self
       end

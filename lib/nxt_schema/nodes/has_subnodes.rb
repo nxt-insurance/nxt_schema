@@ -5,7 +5,7 @@ require_relative 'simple_node'
 module NxtSchema
   module Nodes
     module HasSubNodes
-      attr_accessor :store
+      attr_accessor :store, :value_store
 
       def node(name, options, &block)
         child_node = case options.fetch(:type).to_s
