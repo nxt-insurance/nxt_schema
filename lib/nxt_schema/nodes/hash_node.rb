@@ -9,6 +9,14 @@ module NxtSchema
       end
 
       delegate_missing_to :store
+
+      def validate(target)
+        store.each do |key, node|
+          node.validate(target[key])
+        end
+
+        self
+      end
     end
   end
 end

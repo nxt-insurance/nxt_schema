@@ -1,14 +1,16 @@
 module NxtSchema
   module Nodes
-    class SimpleNode
-      def initialize(name, parent_node, options)
-        @name = name
-        @parent_node = parent_node
-        @options = options
-        @type = options.fetch(:type)
-      end
+    class SimpleNode < Node
+      def validate(target)
+        return self if target.is_a?(type)
 
-      attr_accessor :name, :parent_node, :options, :type
+        error_message = "Does not match type: #{type}"
+
+        errors[target] = error_message
+        add_flat_error(target, error_message)
+
+        self
+      end
     end
   end
 end

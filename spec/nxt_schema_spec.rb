@@ -42,5 +42,30 @@ RSpec.describe NxtSchema do
       expect(subject[:company][:employee_names].first[:first_name]).to be_a(NxtSchema::Nodes::SimpleNode)
       expect(subject[:company][:employee_names].last[:last_name]).to be_a(NxtSchema::Nodes::SimpleNode)
     end
+
+    describe '#validate' do
+      let(:schema) do
+        {
+          company: {
+            name: 'getsafe',
+            industry: 'insurance',
+            headquarter: {
+              street: 'Langer Anger',
+              street_number: '777'
+            },
+            employee_names: [
+              { first_name: 'Raphael', last_name: 'Kallensee' },
+              { first_name: 'Nils', last_name: 'Sommer' },
+              { first_name: 'Lütfi', last_name: 'Demirci' }
+            ]
+          }
+        }
+      end
+
+      it do
+        result = subject.validate(schema)
+        binding.pry
+      end
+    end
   end
 end

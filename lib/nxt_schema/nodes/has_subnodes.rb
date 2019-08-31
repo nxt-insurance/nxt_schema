@@ -20,6 +20,14 @@ module NxtSchema
         store.push(child_node)
       end
 
+      def required(name, options, &block)
+        node(name, options.merge(optional: false), &block)
+      end
+
+      def optional(name, options, &block)
+        node(name, options.merge(optional: true), &block)
+      end
+
       def nodes(name, options, &block)
         node(name, options.merge(type: Array), &block)
       end
