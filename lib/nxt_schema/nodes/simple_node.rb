@@ -4,10 +4,7 @@ module NxtSchema
       def validate(target)
         return self if target.is_a?(type)
 
-        error_message = "Does not match type: #{type}"
-
-        errors[target] = error_message
-        add_flat_error(target, error_message)
+        add_error(target, "Does not match type: #{type}")
 
         self
       end

@@ -44,27 +44,56 @@ RSpec.describe NxtSchema do
     end
 
     describe '#validate' do
-      let(:schema) do
-        {
-          company: {
-            name: 'getsafe',
-            industry: 'insurance',
-            headquarter: {
-              street: 'Langer Anger',
-              street_number: '777'
-            },
-            employee_names: [
-              { first_name: 'Raphael', last_name: 'Kallensee' },
-              { first_name: 'Nils', last_name: 'Sommer' },
-              { first_name: 'Lütfi', last_name: 'Demirci' }
-            ]
+      context 'when there are no errors' do
+        let(:schema) do
+          {
+            company: {
+              name: 'getsafe',
+              industry: 'insurance',
+              headquarter: {
+                street: 'Langer Anger',
+                street_number: 6
+              },
+              employee_names: [
+                { first_name: 'Raphael', last_name: 'Kallensee' },
+                { first_name: 'Nils', last_name: 'Sommer' },
+                { first_name: 'Lütfi', last_name: 'Demirci' }
+              ]
+            }
           }
-        }
+        end
+
+        it do
+          subject.validate(schema)
+          expect(subject.errors).to be_empty
+        end
       end
 
-      it do
-        result = subject.validate(schema)
-        binding.pry
+      context 'when there are errors' do
+        let(:schema) do
+          {
+            company: {
+              name: 'getsafe',
+              industry: 'insurance',
+              headquarter: {
+                street: 'Langer Anger',
+                street_number: '6'
+              },
+              employee_names: [
+                { first_name: 'Raphael', last_name: 'Kallensee' },
+                { first_name: 'Nils' },
+                { }
+              ]
+            }
+          }
+        end
+
+        it do
+          subject.validate(schema)
+          expect(subject.errors['company.headquarter.street_number'].first.values.first).to be_a(NxtSchema::Nodes::Error)
+          expect(subject.errors['company.employee_names.employee_name.last_name'].first.values).to all(be_a(NxtSchema::Nodes::Error))
+          expect(subject.errors['company.employee_names.employee_name.first_name'].first.values).to all(be_a(NxtSchema::Nodes::Error))
+        end
       end
     end
   end

@@ -7,9 +7,7 @@ module NxtSchema
         @error_message = error_message
       end
 
-      def to_s
-
-      end
+      attr_reader :path, :value, :error_message
     end
   end
 end

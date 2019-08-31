@@ -13,11 +13,7 @@ module NxtSchema
       def validate(target)
         target.each do |item|
           next if store.any? { |node| node.validate(item) }
-
-          error_message = "Did not match any node in #{store}"
-
-          errors[item] = error_message
-          add_flat_error(item, error_message)
+          add_error(item, "Did not match any node in #{store}")
         end
 
         self
