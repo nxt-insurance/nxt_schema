@@ -9,9 +9,9 @@ module NxtSchema
         @store = ActiveSupport::HashWithIndifferentAccess.new
       end
 
-      def register_type(name, &block)
+      def register(name, type)
         raise ArgumentError, "Type #{name} already registered" if store.key?(name)
-        store[name] = Type::Base.new(name, block)
+        store[name] = type
       end
 
       def resolve(name)

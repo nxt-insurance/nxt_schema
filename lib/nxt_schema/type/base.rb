@@ -1,13 +1,17 @@
 module NxtSchema
   module Type
     class Base
-      def initialize(name, coercer)
-        @name = name
-        @coercer = coercer
+      class << self
+        def [](value)
+          new.coerce(value)
+        end
       end
 
-      def coerce(value)
-        coercer.call(value)
+      def coerce_with_kernel_method(method, value)
+        # return CoercionError
+        value&.tap { |v| Kernel.send(method, v) }
+      rescue ArgumentError
+        raise CoercionError
       end
     end
   end

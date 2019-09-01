@@ -19,7 +19,7 @@ module NxtSchema
 
       def add_error(value, error)
         node_errors[value] ||= []
-        node_errors[value] ||= error
+        node_errors[value] << { value => error }
 
         errors[namespace] ||= []
         errors[namespace] << { value => NxtSchema::Node::Error.new(namespace, value, error) }
@@ -30,6 +30,10 @@ module NxtSchema
       def resolve_namespace
         return unless [parent_node&.namespace, name].compact.any?
         [parent_node&.namespace, name].compact.join('.')
+      end
+
+      def resolve_type(name)
+        Type::Registry.instance.resolve(name)
       end
     end
   end

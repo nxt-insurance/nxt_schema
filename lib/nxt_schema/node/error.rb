@@ -1,13 +1,13 @@
 module NxtSchema
   module Node
     class Error
-      def initialize(path, value, error_message)
+      def initialize(path, value, message)
         @path = path
         @value = value
-        @error_message = error_message
+        @message = message
       end
 
-      attr_reader :path, :value, :error_message
+      attr_reader :path, :value, :message
     end
   end
 end

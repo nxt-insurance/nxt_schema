@@ -14,30 +14,29 @@ RSpec.describe NxtSchema do
     subject do
       NxtSchema.new do |root|
         root.schema(:company) do |company|
-          company.requires(:name, String)
-          company.requires(:industry, String)
+          company.requires(:name, :String)
+          company.requires(:industry, :String)
 
-          company.optional(:headquarter, Hash, default: {}, allow: :empty?) do |headquarter|
+          company.optional(:headquarter, :Hash, default: {}, maybe: nil) do |headquarter|
             street_number_validator = lambda do |street_number, node|
               if headquarter[:street] == 'Langer Anger' && street_number <= 0
                 node.add_error(street_number, 'Street number must be greater 0')
               end
             end
 
-            headquarter.node(:street, String)
-            headquarter.node(:street_number, Integer, validate: street_number_validator) # validator(:gte, -> { DateTime.current })
+            headquarter.node(:street, :String)
+            headquarter.node(:street_number, :Integer, validate: street_number_validator) # validator(:gte, -> { DateTime.current })
           end
 
           company.nodes(:employee_names) do |nodes|
-            nodes.node(:employee_name, Hash) do |employee_name|
-              employee_name.node(:first_name, String)
-              employee_name.node(:last_name, String)
+            nodes.node(:employee_name, :Hash) do |employee_name|
+              employee_name.node(:first_name, :String)
+              employee_name.node(:last_name, :String)
             end
 
-            # TODO: Validating arrays does not seem to work yet.
             nodes.schema(:employee_name) do |employee_name|
-              employee_name.node(:firstname, String)
-              employee_name.node(:lastname, String)
+              employee_name.node(:firstname, :String)
+              employee_name.node(:lastname, :String)
             end
           end
         end
@@ -110,6 +109,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.validate(schema)
+
           expect(subject).to_not be_valid
           expect(subject.errors['company.headquarter.street_number'].first.values.first).to be_a(NxtSchema::Node::Error)
           expect(subject.errors['company.employee_names.employee_name.last_name'].first.values).to all(be_a(NxtSchema::Node::Error))

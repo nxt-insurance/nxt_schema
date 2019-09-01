@@ -8,10 +8,10 @@ module NxtSchema
       attr_accessor :store, :value_store
 
       def node(name, type, **options, &block)
-        child_node = case type.to_s
-        when 'Hash'
+        child_node = case type.to_s.to_sym
+        when :Hash
           NxtSchema::Node::Hash.new(name, self, **options, &block)
-        when 'Array'
+        when :Array
           NxtSchema::Node::Array.new(name, self, **options, &block)
         else
           NxtSchema::Node::Leaf.new(name, type, self, **options)

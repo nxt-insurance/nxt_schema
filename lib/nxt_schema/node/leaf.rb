@@ -3,20 +3,20 @@ module NxtSchema
     class Leaf < Node::Base
       def initialize(name, type, parent_node, **options, &block)
         super
-        @type = Types::Registry.fetch(type)
+        @type = resolve_type(type)
       end
 
-      def validate(target)
-        type.coerce(target)
+      def validate(value)
+        value = type[value]
 
         validations.each do |validation|
-          validation_args = [target, self]
+          validation_args = [value, self]
           validation.call(*validation_args.take(validation.arity))
         end
 
         self
       rescue ArgumentError
-        add_error(target, "Does not match type: #{type}")
+        add_error(value, "Does not match type: #{type}")
       end
     end
   end

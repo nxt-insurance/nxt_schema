@@ -12,6 +12,7 @@ module NxtSchema
 
       def validate(target)
         store.each do |key, node|
+          binding.pry
           if node.validate(target[key])
             value_store[key] = target[key]
           end
