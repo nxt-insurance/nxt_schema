@@ -19,7 +19,7 @@ module NxtSchema
 
       def add_error(value, error)
         node_errors[value] ||= []
-        node_errors[value] << { value => error }
+        node_errors[value] << error
 
         errors[namespace] ||= []
         errors[namespace] << { value => NxtSchema::Node::Error.new(namespace, value, error) }
@@ -34,6 +34,10 @@ module NxtSchema
 
       def resolve_type(name)
         Type::Registry.instance.resolve(name)
+      end
+
+      def raise_coercion_error(value, type)
+        raise NxtSchema::Errors::CoercionError.new(value, type)
       end
     end
   end

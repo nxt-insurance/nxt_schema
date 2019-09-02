@@ -8,10 +8,16 @@ module NxtSchema
       end
 
       def coerce_with_kernel_method(method, value)
-        # return CoercionError
+        raise_coercion_error(value) if value.nil?
         value&.tap { |v| Kernel.send(method, v) }
       rescue ArgumentError
-        raise CoercionError
+        raise_coercion_error(value)
+      end
+
+      private
+
+      def raise_coercion_error(value)
+        raise NxtSchema::Errors::CoercionError.new(value, self)
       end
     end
   end

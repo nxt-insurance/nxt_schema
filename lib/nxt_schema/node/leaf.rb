@@ -15,8 +15,8 @@ module NxtSchema
         end
 
         self
-      rescue ArgumentError
-        add_error(value, "Does not match type: #{type}")
+      rescue NxtSchema::Errors::CoercionError => error
+        add_error(error.value, error.message)
       end
     end
   end
