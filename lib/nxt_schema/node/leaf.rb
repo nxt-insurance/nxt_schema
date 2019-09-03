@@ -6,7 +6,7 @@ module NxtSchema
         @type = resolve_type(type)
       end
 
-      def validate(value)
+      def apply(value)
         value = type[value]
 
         validations.each do |validation|
@@ -16,7 +16,7 @@ module NxtSchema
 
         self
       rescue NxtSchema::Errors::CoercionError => error
-        add_error(error.value, error.message)
+        add_error(error)
       end
     end
   end

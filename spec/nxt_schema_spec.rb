@@ -82,7 +82,7 @@ RSpec.describe NxtSchema do
         end
 
         it do
-          subject.validate(schema)
+          subject.apply(schema)
           expect(subject).to be_valid
           expect(subject.errors).to be_empty
         end
@@ -108,7 +108,7 @@ RSpec.describe NxtSchema do
         end
 
         it do
-          subject.validate(schema)
+          subject.apply(schema)
 
           expect(subject).to_not be_valid
           expect(subject.errors['company.headquarter.street_number'].first.values.first).to be_a(NxtSchema::Node::Error)
@@ -137,7 +137,7 @@ RSpec.describe NxtSchema do
         end
 
         it do
-          subject.validate(schema)
+          subject.apply(schema)
           binding.pry
         end
       end

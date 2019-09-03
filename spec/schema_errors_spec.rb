@@ -16,14 +16,12 @@ RSpec.describe NxtSchema do
         end
 
         it do
-          subject.validate(schema)
+          subject.apply(schema)
           expect(subject).to_not be_valid
           expect(subject.node_errors).to eq(
             {
               company: {
-                industry: {
-                  nil=>["Could not coerce 'nil' into type: NxtSchema::Type::String"]
-                }
+                industry: ['']
               }
             }
           )

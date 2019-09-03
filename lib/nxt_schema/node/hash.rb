@@ -10,13 +10,13 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
-      def validate(hash)
+      def apply(hash)
         raise_coercion_error(hash, type) unless hash.is_a?(type)
 
         store.each do |key, node|
-          check_key_requirements(hash, key)
+          ensure_required_key_not_missing(node, hash, key)
 
-          if node.validate(hash[key])
+          if node.apply(hash[key])
             value_store[key] = hash[key]
           end
         end
@@ -29,13 +29,12 @@ module NxtSchema
 
       private
 
-      def check_key_requirements(hash, key)
-        return unless parent_node
+      def ensure_required_key_not_missing(node, hash, key)
         return if hash.key?(key)
         return if options[:optional]
         # maybe
 
-        raise NxtSchema::Errors::RequiredKeyMissingError.new(hash, key)
+        raise NxtSchema::Errors::RequiredKeyMissingError.new(node, key, value)
       end
     end
   end
