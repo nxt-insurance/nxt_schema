@@ -1,16 +1,16 @@
 module NxtSchema
   module Errors
     class RequiredKeyMissingError < Error
-      def initialize(node, key, value)
+      def initialize(node, hash, key)
         @node = node
         @key = key
-        @value = value
+        @hash = hash
       end
 
-      attr_reader :key, :node, :value
+      attr_reader :key, :node, :hash
 
       def message
-        "Required key :#{key} is missing in node: #{value}"
+        "Required key :#{key} is missing in node: #{hash}"
       end
     end
   end

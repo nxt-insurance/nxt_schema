@@ -6,7 +6,10 @@ module NxtSchema
       end
 
       def valid?
-        validated? && errors.empty?
+        if validated?
+          errors.reject! { |_,v| v.blank? }
+          errors.empty?
+        end
       end
 
       def apply(schema)

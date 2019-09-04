@@ -138,7 +138,6 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          binding.pry
         end
       end
     end

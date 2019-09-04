@@ -6,6 +6,10 @@ module NxtSchema
         @type = resolve_type(type)
       end
 
+      def leaf?
+        true
+      end
+
       def apply(value)
         value = type[value]
 
@@ -14,9 +18,22 @@ module NxtSchema
           validation.call(*validation_args.take(validation.arity))
         end
 
-        self
       rescue NxtSchema::Errors::CoercionError => error
-        add_error(error)
+        add_error(error.message)
+      ensure
+        self
+      end
+
+      def add_error(error)
+        errors << error
+      end
+
+      private
+
+      def initialize_error_stores
+        # @node_errors = parent_node.node_errors[name] ||= []
+        @namespace = resolve_namespace
+        @errors = parent_node.errors[namespace] ||= []
       end
     end
   end

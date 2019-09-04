@@ -7,7 +7,7 @@ module NxtSchema
       end
 
       def message
-        "Could not coerce '#{humanized_value}' into type: #{type.class}"
+        "Could not coerce '#{humanized_value}' into type: #{humanized_type}"
       end
 
       attr_reader :value, :type
@@ -16,6 +16,10 @@ module NxtSchema
 
       def humanized_value
         value.nil? ? 'nil' : value
+      end
+
+      def humanized_type
+        type.is_a?(Class) ? type : type.class
       end
     end
   end
