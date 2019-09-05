@@ -27,7 +27,7 @@ module NxtSchema
       private
 
       def initialize_error_stores
-        # @node_errors = parent_node.node_errors[name] ||= []
+        @node_errors = parent_node.node_errors[name] ||= []
         @namespace = resolve_namespace
         @errors = parent_node.errors
       end
