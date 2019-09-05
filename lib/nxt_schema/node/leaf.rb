@@ -21,11 +21,7 @@ module NxtSchema
       rescue NxtSchema::Errors::CoercionError => error
         add_error(error.message)
       ensure
-        self
-      end
-
-      def add_error(error)
-        errors << error
+        return self
       end
 
       private
@@ -33,7 +29,7 @@ module NxtSchema
       def initialize_error_stores
         # @node_errors = parent_node.node_errors[name] ||= []
         @namespace = resolve_namespace
-        @errors = parent_node.errors[namespace] ||= []
+        @errors = parent_node.errors
       end
     end
   end

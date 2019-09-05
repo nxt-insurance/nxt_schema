@@ -18,6 +18,8 @@ module NxtSchema
         end
 
         store.push(child_node)
+
+        child_node
       end
 
       def required(name, type, **options, &block)
@@ -31,11 +33,11 @@ module NxtSchema
       end
 
       def nodes(name, **options, &block)
-        node(name, ::Array, options, &block)
+        node(name, :Array, options, &block)
       end
 
       def schema(name, **options, &block)
-        node(name, ::Hash, options, &block)
+        node(name, :Hash, options, &block)
       end
     end
   end

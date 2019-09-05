@@ -19,15 +19,13 @@ module NxtSchema
           add_error("Array is not allowed to be empty")
         else
           array.each_with_index do |item, index|
-            if store.any? { |node| node.apply(item) }
+            if store.any? { |node| node.apply(item).valid? }
               value_store << item
 
               validations.each do |validation|
                 validation_args = [array, self]
                 validation.call(*validation_args.take(validation.arity))
               end
-            else
-              add_error("Did not match any node in #{store}")
             end
           end
         end
@@ -36,7 +34,7 @@ module NxtSchema
       rescue NxtSchema::Errors::CoercionError => error
         add_error(error.message)
       ensure
-        self
+        return self
       end
 
       private

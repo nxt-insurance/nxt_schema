@@ -64,8 +64,28 @@ RSpec.describe NxtSchema do
 
         context 'when the value is an array' do
           context 'and the array contains items' do
-            let(:schema) do
-              { company: { employees: [] } }
+            context 'and the items match the schema' do
+              let(:schema) do
+                { company: { employees: [{ first_name: 'Andy', last_name: 'Robecke' }, { first_name: 'Rapha', last_name: 'Kallensee'} ] } }
+              end
+
+              it 'is valid' do
+                subject.apply(schema)
+                expect(subject).to be_valid
+                expect(subject.errors).to be_empty
+              end
+            end
+
+            context 'and items do not match the schema' do
+              let(:schema) do
+                { company: { employees: [{ first_name: 'Andy' }, { first_name: 'Rapha', last_name: 'Kallensee'} ] } }
+              end
+
+              it 'is not valid' do
+                subject.apply(schema)
+                binding.pry
+                expect(subject).to_not be_valid
+              end
             end
           end
 
@@ -74,7 +94,8 @@ RSpec.describe NxtSchema do
               { company: { employees: [] } }
             end
 
-            it do
+            # TODO: This would also work with validations instead?
+            it 'adds an error' do
               subject.apply(schema)
               expect(subject).to_not be_valid
               expect(subject.errors).to eq('company.employees' => ["Array is not allowed to be empty"])

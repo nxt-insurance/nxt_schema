@@ -12,12 +12,12 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
-      def apply(hash)
+      def apply(hash, index = nil)
         hash = type[hash]
 
         store.each do |key, node|
           if required_key_missing?(hash, key)
-            add_error("Required key :#{key} is missing")
+            add_error("Required key :#{key} is missing in #{hash}", index)
           else
             if node.apply(hash[key])
               value_store[key] = hash[key]
@@ -25,7 +25,7 @@ module NxtSchema
           end
         end
       ensure
-        self
+        return self
       end
 
       private

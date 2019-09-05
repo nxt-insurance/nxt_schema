@@ -14,9 +14,15 @@ module NxtSchema
 
       attr_accessor :name, :parent_node, :options, :type, :node_errors, :namespace, :errors, :validations
 
-      def add_error(error)
-        errors[namespace] ||= []
-        errors[namespace] << error
+      def add_error(error, index_key = nil)
+        error_namespace = [namespace, index_key].compact.join('.')
+        errors[error_namespace] ||= []
+        errors[error_namespace] << error
+      end
+
+      def valid?
+        errors.reject! { |_, v| v.empty? }
+        errors.empty?
       end
 
       private
