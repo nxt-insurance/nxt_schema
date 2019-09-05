@@ -19,6 +19,8 @@ module NxtSchema
           add_error("Array is not allowed to be empty")
         else
           array.each_with_index do |item, index|
+            # TODO: node.apply(item).valid? does not work with errors and should be applied to node_errors
+            # node_errors should be a hash on each node (as it used to be)
             if store.any? { |node| node.apply(item).valid? }
               value_store << item
 
