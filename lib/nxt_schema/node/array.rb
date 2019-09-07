@@ -12,30 +12,35 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
-      def apply(value)
+        def apply(value, parent_errors = {})
+          self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
         array = type[value]
 
         if array_violates_emptiness?(array)
-          add_error("Array is not allowed to be empty")
+          node_errors[node_errors_key] << "Array is not allowed to be empty"
         else
           array.each_with_index do |item, index|
-            # TODO: node.apply(item).valid? does not work with errors and should be applied to node_errors
+            item_errors = node_errors[index] ||= { node_errors_key => [] }
             # node_errors should be a hash on each node (as it used to be)
-            if store.any? { |node| node.apply(item).valid? }
+            if store.any? { |node| node.apply(item, item_errors).valid? }
               value_store << item
-
-              validations.each do |validation|
-                validation_args = [array, self]
-                validation.call(*validation_args.take(validation.arity))
-              end
             end
+
+            item_errors.reject! { |_,v| v.empty? }
+          end
+
+          validations.each do |validation|
+            validation_args = [array, self]
+            validation.call(*validation_args.take(validation.arity))
           end
         end
 
-
       rescue NxtSchema::Errors::CoercionError => error
-        add_error(error.message)
+        node_errors[node_errors_key] << error.message
+      rescue StandardError => e
+          raise e
       ensure
+        node_errors.reject! { |_,v| v.empty? }
         return self
       end
 
@@ -45,6 +50,13 @@ module NxtSchema
         return unless array.empty?
         # maybe
         true
+      end
+
+      def accumulate_node_errors
+        store.each_with_object(node_errors) do |node, acc|
+          acc[node.name] ||= {}
+          acc[node.name] = acc[node.name].merge(node.node_errors)
+        end
       end
     end
   end

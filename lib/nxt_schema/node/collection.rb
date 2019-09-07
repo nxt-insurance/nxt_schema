@@ -4,7 +4,6 @@ module NxtSchema
       private
 
       def initialize_error_stores
-        @namespace = resolve_namespace
         @errors = parent_node.nil? ? {} : parent_node.errors
       end
     end

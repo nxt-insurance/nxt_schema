@@ -12,19 +12,24 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
-      def apply(hash, index = nil)
+      def apply(hash, parent_errors = {})
+        self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
         hash = type[hash]
 
         store.each do |key, node|
           if required_key_missing?(hash, key)
-            add_error("Required key :#{key} is missing in #{hash}", index)
+            # node.add_error("Required key :#{key} is missing in #{hash}")
+            node_errors[node_errors_key] << "Required key :#{key} is missing in #{hash}"
           else
-            if node.apply(hash[key])
+            if node.apply(hash[key], node_errors).valid?
               value_store[key] = hash[key]
             end
           end
         end
+      rescue NxtSchema::Errors::CoercionError => error
+        node_errors[node_errors_key] << error.message
       ensure
+        node_errors.reject! { |_, v| v.empty? }
         return self
       end
 

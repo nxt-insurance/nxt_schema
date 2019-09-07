@@ -6,14 +6,12 @@ module NxtSchema
       end
 
       def valid?
-        if validated?
-          errors.reject! { |_,v| v.blank? }
-          errors.empty?
-        end
+        node_errors.empty?
       end
 
       def apply(schema)
-        super.tap do |result|
+        self.node_errors = { node_errors_key => [] }
+        super(schema, node_errors).tap do |result|
           @validated = true
           result
         end

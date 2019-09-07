@@ -6,35 +6,34 @@ module NxtSchema
         @parent_node = parent_node
         @options = options
         @type = type
+        @node_errors_key = options.fetch(:node_errors_key, :itself)
         @validations = Array(options.fetch(:validate, []))
-        initialize_error_stores
+
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
         block.call(self) if block_given?
       end
 
-      attr_accessor :name, :parent_node, :options, :type, :node_errors, :namespace, :errors, :validations
+      attr_accessor :name, :parent_node, :options, :type, :node_errors, :namespace, :errors, :validations, :node_errors_key
 
-      def add_error(error, index_key = nil)
-        # node_errors[value] ||= []
-        # node_errors[value] ||= error
-        # node_errors[value] << { value => error }
+      def add_error(error, index = node_errors_key)
+        node_errors[index] ||= []
+        node_errors[index] << error
 
-        error_namespace = [namespace, index_key].compact.join('.')
-        errors[error_namespace] ||= []
-        errors[error_namespace] << error
+        # error_namespace = [namespace, index_key].compact.join('.')
+        # errors[error_namespace] ||= []
+        # errors[error_namespace] << error
+      end
+
+      def errors_on_self
+        node_errors.errors_on_self
       end
 
       def valid?
-        errors.reject! { |_, v| v.empty? }
-        errors.empty?
+        node_errors.reject! { |_, v| v.empty? }
+        node_errors.empty?
       end
 
       private
-
-      def resolve_namespace
-        return unless [parent_node&.namespace, name].compact.any?
-        [parent_node&.namespace, name].compact.join('.')
-      end
 
       def resolve_type(name)
         Type::Registry.instance.resolve(name)
