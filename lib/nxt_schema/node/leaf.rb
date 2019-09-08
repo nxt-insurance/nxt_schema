@@ -10,7 +10,7 @@ module NxtSchema
         true
       end
 
-      def apply(value, parent_errors = {})
+      def apply(value, parent_errors = {}, parent_value_store = {}, index_or_name = name)
         self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
         value = type[value]
 
@@ -18,6 +18,8 @@ module NxtSchema
           validation_args = [value, self]
           validation.call(*validation_args.take(validation.arity))
         end
+
+        parent_value_store[index_or_name] = value
 
       rescue NxtSchema::Errors::CoercionError => error
         add_error(error.message)
