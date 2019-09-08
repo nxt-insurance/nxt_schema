@@ -6,23 +6,6 @@ RSpec.describe NxtSchema::Node::Array do
       end
     end
 
-    let(:schema) do
-      %w[Andy Rapha Nils Lütfi]
-    end
-
-    it do
-      expect(subject.apply(schema)).to eq(subject)
-      expect(subject.value_store).to eq(schema)
-    end
-  end
-
-  describe '#node_errors' do
-    subject do
-      described_class.new(:test, nil, {}) do |node|
-        node.requires(:item, :String)
-      end
-    end
-
     context 'when the nodes are all valid' do
       let(:schema) do
         %w[Andy Rapha Nils Lütfi]

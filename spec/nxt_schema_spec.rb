@@ -20,7 +20,7 @@ RSpec.describe NxtSchema do
           company.optional(:headquarter, :Hash, default: {}, maybe: nil) do |headquarter|
             street_number_validator = lambda do |street_number, node|
               if headquarter[:street] == 'Langer Anger' && street_number <= 0
-                node.add_error(street_number, 'Street number must be greater 0')
+                node.add_error('Street number must be greater 0')
               end
             end
 
@@ -146,6 +146,25 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
+          expect(subject.node_errors).to eq(
+            :company => {
+              :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
+              :employee_names=> {
+                1=> {
+                  :employee_name=> {:itself=>[
+                    "Required key :firstname is missing in {:first_name=>\"Nils\"}",
+                    "Required key :lastname is missing in {:first_name=>\"Nils\"}"
+                  ]}
+                },
+                2=> {
+                  :employee_name=>{:itself=>[
+                    "Required key :firstname is missing in {}",
+                    "Required key :lastname is missing in {}"
+                  ]}
+                }
+              }
+            }
+          )
         end
       end
     end

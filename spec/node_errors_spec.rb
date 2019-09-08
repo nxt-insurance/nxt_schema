@@ -1,5 +1,5 @@
 RSpec.describe NxtSchema do
-  describe '#validate' do
+  describe '#apply' do
     context 'array with leaf nodes' do
       subject do
         NxtSchema.new do |root|
