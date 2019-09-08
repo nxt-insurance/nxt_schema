@@ -17,16 +17,25 @@ module NxtSchema
         array = type[value]
 
         if array_violates_emptiness?(array)
-          node_errors[node_errors_key] << "Array is not allowed to be empty"
+          add_error("Array is not allowed to be empty")
         else
           array.each_with_index do |item, index|
             item_errors = node_errors[index] ||= { node_errors_key => [] }
 
-            if store.any? { |node| node.apply(item, item_errors, value_store, index).valid? }
-              # value_store[index] = item
+            # When an array provides multiple schemas, and none is valid we only return the errors for
+            # a single schema => Would probably be better to merge them somehow!!!
+            store.each do |node|
+              node.apply(item, { node_errors_key => [] }, value_store, index)
+              if node.valid?
+                node_errors[index][node.name] = node.node_errors
+                break
+              else
+                # merge errors here instead of assigning
+                node_errors[index][node.name] = node.node_errors
+              end
             end
 
-            item_errors.reject! { |_,v| v.empty? }
+            item_errors.reject! { |_, v| v.empty? }
           end
 
           validations.each do |validation|
@@ -36,11 +45,11 @@ module NxtSchema
         end
 
       rescue NxtSchema::Errors::CoercionError => error
-        node_errors[node_errors_key] << error.message
+        add_error(error.message)
       rescue StandardError => e
         raise e
       ensure
-        node_errors.reject! { |_,v| v.empty? }
+        node_errors.reject! { |_, v| v.empty? }
         return self
       end
 

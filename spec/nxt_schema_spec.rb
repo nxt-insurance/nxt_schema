@@ -73,6 +73,7 @@ RSpec.describe NxtSchema do
                 street_number: 6
               },
               employee_names: [
+                { firstname: 'Raphael', lastname: 'Kallensee' },
                 { first_name: 'Raphael', last_name: 'Kallensee' },
                 { first_name: 'Nils', last_name: 'Sommer' },
                 { first_name: 'Lütfi', last_name: 'Demirci' }
@@ -110,11 +111,17 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-
           expect(subject).to_not be_valid
-          # expect(subject.errors['company.headquarter.street_number'].first.values.first).to be_a(NxtSchema::Node::Error)
-          # expect(subject.errors['company.employee_names.employee_name.last_name'].first.values).to all(be_a(NxtSchema::Node::Error))
-          # expect(subject.errors['company.employee_names.employee_name.first_name'].first.values).to all(be_a(NxtSchema::Node::Error))
+          # TODO: We should merge the node_errors for multiple schemas in an array
+          expect(subject.node_errors).to eq(
+            :company=>
+              {:headquarter=>{:street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]}},
+                :employee_names=>
+                  {1=>
+                    {:employee_name=>
+                      {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
+                  2=>{:employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}}
+          )
         end
       end
 
