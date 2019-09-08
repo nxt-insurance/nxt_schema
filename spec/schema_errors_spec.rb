@@ -83,7 +83,6 @@ RSpec.describe NxtSchema do
 
               it 'is not valid' do
                 subject.apply(schema)
-                binding.pry
                 expect(subject).to_not be_valid
               end
             end

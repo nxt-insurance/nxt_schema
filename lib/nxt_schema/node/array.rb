@@ -51,13 +51,6 @@ module NxtSchema
         # maybe
         true
       end
-
-      def accumulate_node_errors
-        store.each_with_object(node_errors) do |node, acc|
-          acc[node.name] ||= {}
-          acc[node.name] = acc[node.name].merge(node.node_errors)
-        end
-      end
     end
   end
 end
