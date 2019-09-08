@@ -30,7 +30,7 @@ module NxtSchema
                 node_errors[index][node.name] = node.node_errors
                 break
               else
-                # merge errors here instead of assigning
+                # TODO: merge errors here instead of assigning
                 node_errors[index][node.name] = node.node_errors
               end
             end
@@ -59,6 +59,10 @@ module NxtSchema
         return unless array.empty?
         # maybe
         true
+      end
+
+      def merge_errors(first, second)
+
       end
     end
   end
