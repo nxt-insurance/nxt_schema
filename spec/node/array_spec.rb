@@ -31,6 +31,7 @@ RSpec.describe NxtSchema::Node::Array do
       it do
         subject.apply(schema)
         expect(subject.node_errors).to be_empty
+        expect(subject.value_store).to eq(schema)
       end
     end
 
@@ -49,6 +50,7 @@ RSpec.describe NxtSchema::Node::Array do
           6=>{:item=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]}},
           7=>{:item=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]}}
         )
+        expect(subject.value_store).to eq(['Rapha', 'Nils'])
       end
     end
 
@@ -73,6 +75,7 @@ RSpec.describe NxtSchema::Node::Array do
           3=>{:children=>{:itself=>["Array is not allowed to be empty"]}},
           4=>{:children=>{0=>{:child=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]}}}}
         )
+        expect(subject.value_store).to eq([["Andy"], ["Rapha", "Nils"], ["Lütfi"], [], []])
       end
     end
 
@@ -132,6 +135,28 @@ RSpec.describe NxtSchema::Node::Array do
                5=>{:parent=>{:last_name=>{:itself=>["Could not coerce '3000' into type: NxtSchema::Type::Strict::String"]}}},
                6=>{:parent=>{:itself=>["Required key :first_name is missing in {:last_name=>\"Sommer\"}"]}}}}
           )
+
+        expect(subject.value_store).to eq(
+          [
+            [
+              {:first_name=>"Lütfi", :last_name=>"Demirci"},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {:first_name=>"Nils"}
+            ],
+            [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {:first_name=>"Rapha"}, {:last_name=>"Sommer"}
+            ]
+          ]
+        )
       end
     end
   end
