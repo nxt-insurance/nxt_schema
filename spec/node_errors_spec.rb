@@ -27,8 +27,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          binding.pry
-          expect(subject.node_errors).to eq(:company=>{:name=>[], :industry=>["Required key :industry is missing in {:name=>\"getsafe\"}"]})
+          expect(subject.node_errors).to eq(:company=>{:itself=>["Required key :industry is missing in {:name=>\"getsafe\"}"]})
         end
       end
 
@@ -39,7 +38,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject.node_errors).to eq(:company=>{:name=>[], :industry=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]})
+          expect(subject.node_errors).to eq(:company=>{:industry=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]}})
         end
       end
     end
@@ -81,7 +80,8 @@ RSpec.describe NxtSchema do
 
               it do
                 subject.apply(schema)
-                expect(subject.node_errors).to eq(:company=>{:employees=>{:employee=>{:first_name=>[], :last_name=>[]}}})
+                expect(subject.node_errors).to be_empty
+                expect(subject.value_store).to eq(schema)
               end
             end
 
@@ -92,7 +92,9 @@ RSpec.describe NxtSchema do
 
               it do
                 subject.apply(schema)
-                binding.pry
+                expect(subject.node_errors).to eq(
+                  :company=>{:employees=>{0=>{:employee=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Andy\"}"]}}}}
+                )
               end
             end
           end
@@ -106,7 +108,7 @@ RSpec.describe NxtSchema do
             it 'adds an error' do
               subject.apply(schema)
               expect(subject).to_not be_valid
-              expect(subject.errors).to eq('company.employees' => ["Array is not allowed to be empty"])
+              expect(subject.node_errors).to eq(:company=>{:employees=>{:itself=>["Array is not allowed to be empty"]}})
             end
           end
         end
