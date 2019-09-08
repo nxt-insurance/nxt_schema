@@ -14,7 +14,9 @@ TODO:
 - Type Registry
 - Structure Errors
 - Instance exec if block does not accept argument
-- Enforce uniqueness of names of multiple schemas in array nodes?! 
+- Enforce uniqueness of names of multiple schemas in array nodes?!
+- Implement default values - Should also be checked against the schema
+ 
 
 ## Installation
 
