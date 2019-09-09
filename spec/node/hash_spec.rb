@@ -79,18 +79,41 @@ RSpec.describe NxtSchema::Node::Hash do
   end
 
   describe '#maybe' do
-    subject do
-      described_class.new(:company, nil, maybe: :empty?) do |company|
-        company.requires(:street, :String)
-        company.requires(:street_number, :Integer)
-        company.requires(:value, :Integer)
-        company.requires(:stocks_available, :Boolean)
+    context 'when the value maybe empty' do
+      subject do
+        described_class.new(:company, nil, maybe: :empty?) do |company|
+          company.requires(:street, :String)
+          company.requires(:street_number, :Integer)
+          company.requires(:value, :Integer)
+          company.requires(:stocks_available, :Boolean)
+        end
+      end
+
+      it do
+        subject.apply({})
+        expect(subject.value_store).to eq({})
       end
     end
 
-    it do
-      subject.apply({})
-      expect(subject.value_store).to eq({})
+    context 'when the value maybe nil' do
+      subject do
+        described_class.new(:company, nil, maybe: nil) do |company|
+          company.requires(:street, :String)
+          company.requires(:street_number, :Integer)
+          company.requires(:value, :Integer)
+          company.requires(:stocks_available, :Boolean)
+        end
+      end
+
+      let(:parent_value_store) do
+        {}
+      end
+
+      it do
+        subject.apply(nil, parent_value_store: parent_value_store)
+        expect(subject.value_store).to eq(nil)
+        expect(parent_value_store).to eq(company: nil)
+      end
     end
   end
 end

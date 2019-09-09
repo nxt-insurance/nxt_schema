@@ -16,7 +16,7 @@ module NxtSchema
         self.value_store = parent_value_store[index_or_name] ||= {}
 
         if value_meets_maybe_criteria?(hash)
-          # do nothing here?
+          self.value_store = parent_value_store[index_or_name] = hash
         else
           hash = type[hash]
 

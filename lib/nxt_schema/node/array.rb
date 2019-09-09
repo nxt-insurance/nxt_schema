@@ -16,7 +16,7 @@ module NxtSchema
         self.value_store = parent_value_store[index_or_name] ||= []
         array = type[value]
 
-        if array_violates_emptiness?(array)
+        if value_violates_emptiness?(array)
           add_error("Array is not allowed to be empty")
         else
           array.each_with_index do |item, index|
