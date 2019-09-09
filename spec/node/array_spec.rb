@@ -142,6 +142,27 @@ RSpec.describe NxtSchema::Node::Array do
         )
       end
     end
+
+    context 'when there is an error' do
+      subject do
+        described_class.new(:test, nil, {}) do |node|
+          node.requires(:item, :String)
+        end
+      end
+
+      let(:schema) do
+        %w[Andy Rapha Nils Lütfi]
+      end
+
+      before do
+        expect(NxtSchema::Type::Strict::Array).to receive(:[]).and_raise(StandardError, 'oh oh ')
+      end
+
+      it do
+        subject.apply(schema)
+        binding.pry
+      end
+    end
   end
 
   describe '#validations' do
@@ -164,7 +185,7 @@ RSpec.describe NxtSchema::Node::Array do
         %w[Andy Rapha Nils Lütfi]
       end
 
-      it do
+      it 'contains only the custom error' do
         subject.apply(schema)
         expect(subject.node_errors).to eq(:itself=>["Can only contain two items"])
       end
@@ -175,7 +196,7 @@ RSpec.describe NxtSchema::Node::Array do
         ['Rapha', 'Nils', nil, 1, [], {}, false, true]
       end
 
-      it do
+      it 'contains the custom errors and node errors' do
         subject.apply(schema)
         expect(subject.node_errors).to eq(
           :itself=>["Can only contain two items"],

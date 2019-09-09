@@ -48,6 +48,7 @@ module NxtSchema
         add_error(error.message)
       rescue StandardError => e
         raise e
+        binding.pry
       ensure
         node_errors.reject! { |_, v| v.empty? }
         return self
