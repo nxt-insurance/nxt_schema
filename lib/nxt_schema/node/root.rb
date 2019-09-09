@@ -11,7 +11,7 @@ module NxtSchema
 
       def apply(schema)
         self.node_errors = { node_errors_key => [] }
-        super(schema, node_errors, {}).tap do |result|
+        super(schema, parent_errors: node_errors).tap do |result|
           @validated = true
           result
         end

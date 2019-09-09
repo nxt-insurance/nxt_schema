@@ -19,6 +19,7 @@ require "nxt_schema/type/strict/big_decimal"
 require "nxt_schema/type/strict/boolean"
 
 require "nxt_schema/node"
+require "nxt_schema/node/maybe_evaluator"
 require "nxt_schema/node/base"
 require "nxt_schema/node/collection"
 require "nxt_schema/node/error"

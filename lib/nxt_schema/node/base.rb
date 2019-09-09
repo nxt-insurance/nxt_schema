@@ -35,6 +35,11 @@ module NxtSchema
 
       private
 
+      def value_meets_maybe_criteria?(value)
+        return unless options.key?(:maybe)
+        MaybeEvaluator.new(options[:maybe], value).call
+      end
+
       def self_without_empty_node_errors
         node_errors.reject! { |_, v| v.empty? }
         self

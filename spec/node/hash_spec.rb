@@ -77,4 +77,20 @@ RSpec.describe NxtSchema::Node::Hash do
       end
     end
   end
+
+  describe '#maybe' do
+    subject do
+      described_class.new(:company, nil, maybe: :empty?) do |company|
+        company.requires(:street, :String)
+        company.requires(:street_number, :Integer)
+        company.requires(:value, :Integer)
+        company.requires(:stocks_available, :Boolean)
+      end
+    end
+
+    it do
+      subject.apply({})
+      expect(subject.value_store).to eq({})
+    end
+  end
 end

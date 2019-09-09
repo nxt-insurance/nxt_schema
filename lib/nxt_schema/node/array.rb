@@ -11,7 +11,7 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
-      def apply(value, parent_errors = {}, parent_value_store = {}, index_or_name = name)
+      def apply(value, parent_errors: {}, parent_value_store: {}, index_or_name: name)
         self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= []
         array = type[value]
@@ -25,7 +25,7 @@ module NxtSchema
             # When an array provides multiple schemas, and none is valid we only return the errors for
             # a single schema => Would probably be better to merge them somehow!!!
             store.each do |node|
-              node.apply(item, { node_errors_key => [] }, value_store, index)
+              node.apply(item, parent_errors: { node_errors_key => [] }, parent_value_store: value_store, index_or_name: index)
               if node.valid?
                 node_errors[index][node.name] = node.node_errors
                 break

@@ -11,18 +11,23 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
-      def apply(hash, parent_errors = {}, parent_value_store = {}, index_or_name = name)
+      def apply(hash, parent_errors: {}, parent_value_store: {}, index_or_name: name)
         self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= {}
 
-        hash = type[hash]
-        store.each do |key, node|
-          if required_key_missing?(hash, key)
-            # node.add_error("Required key :#{key} is missing in #{hash}")
-            # node_errors[node_errors_key] << "Required key :#{key} is missing in #{hash}"
-            add_error("Required key :#{key} is missing in #{hash}")
-          else
-            node.apply(hash[key], node_errors, value_store).valid?
+        if value_meets_maybe_criteria?(hash)
+          # do nothing here?
+        else
+          hash = type[hash]
+
+          store.each do |key, node|
+            if required_key_missing?(hash, key)
+              # node.add_error("Required key :#{key} is missing in #{hash}")
+              # node_errors[node_errors_key] << "Required key :#{key} is missing in #{hash}"
+              add_error("Required key :#{key} is missing in #{hash}")
+            else
+              node.apply(hash[key], parent_errors: node_errors, parent_value_store: value_store).valid?
+            end
           end
         end
 
