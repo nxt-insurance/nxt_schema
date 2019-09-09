@@ -15,7 +15,7 @@ module NxtSchema
         value = type[value]
 
         validations.each do |validation|
-          validation_args = [value, self]
+          validation_args = [self, value]
           validation.call(*validation_args.take(validation.arity))
         end
 
