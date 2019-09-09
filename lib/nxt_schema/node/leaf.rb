@@ -12,23 +12,21 @@ module NxtSchema
 
       def apply(value, parent_errors: {}, parent_value_store: {}, index_or_name: name)
         self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
-        value = type[value]
 
-        validations.each do |validation|
-          validation_args = [self, value]
-          validation.call(*validation_args.take(validation.arity))
+        unless value_meets_maybe_criteria?(value)
+          value = type[value]
+
+          validations.each do |validation|
+            validation_args = [self, value]
+            validation.call(*validation_args.take(validation.arity))
+          end
         end
 
         parent_value_store[index_or_name] = value
 
         self_without_empty_node_errors
       rescue NxtSchema::Errors::CoercionError => error
-        if value_meets_maybe_criteria?(value)
-          parent_value_store[index_or_name] = value
-        else
-          add_error(error.message)
-        end
-
+        add_error(error.message)
         self_without_empty_node_errors
       end
 
