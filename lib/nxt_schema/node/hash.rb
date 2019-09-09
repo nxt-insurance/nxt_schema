@@ -25,13 +25,11 @@ module NxtSchema
             node.apply(hash[key], node_errors, value_store).valid?
           end
         end
+
+        self_without_empty_node_errors
       rescue NxtSchema::Errors::CoercionError => error
-        node_errors[node_errors_key] << error.message
-      rescue StandardError => error
-        raise error
-      ensure
-        node_errors.reject! { |_, v| v.empty? }
-        return self
+        add_error(error.message)
+        self_without_empty_node_errors
       end
 
       private

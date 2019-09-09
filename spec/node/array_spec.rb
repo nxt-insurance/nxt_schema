@@ -142,27 +142,6 @@ RSpec.describe NxtSchema::Node::Array do
         )
       end
     end
-
-    context 'when there is an error' do
-      subject do
-        described_class.new(:test, nil, {}) do |node|
-          node.requires(:item, :String)
-        end
-      end
-
-      let(:schema) do
-        %w[Andy Rapha Nils Lütfi]
-      end
-
-      before do
-        expect(NxtSchema::Type::Strict::Array).to receive(:[]).and_raise(StandardError, 'oh oh ')
-      end
-
-      it do
-        subject.apply(schema)
-        binding.pry
-      end
-    end
   end
 
   describe '#validations' do

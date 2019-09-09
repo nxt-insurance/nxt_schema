@@ -44,14 +44,10 @@ module NxtSchema
           end
         end
 
+        self_without_empty_node_errors
       rescue NxtSchema::Errors::CoercionError => error
         add_error(error.message)
-      rescue StandardError => e
-        raise e
-        binding.pry
-      ensure
-        node_errors.reject! { |_, v| v.empty? }
-        return self
+        self_without_empty_node_errors
       end
 
       private

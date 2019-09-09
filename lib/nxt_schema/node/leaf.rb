@@ -21,13 +21,10 @@ module NxtSchema
 
         parent_value_store[index_or_name] = value
 
+        self_without_empty_node_errors
       rescue NxtSchema::Errors::CoercionError => error
         add_error(error.message)
-      rescue StandardError => e
-        raise e
-      ensure
-        node_errors.reject! { |_,v| v.empty? }
-        return self
+        self_without_empty_node_errors
       end
 
       def add_error(error)

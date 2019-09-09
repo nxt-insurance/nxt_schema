@@ -35,6 +35,11 @@ module NxtSchema
 
       private
 
+      def self_without_empty_node_errors
+        node_errors.reject! { |_, v| v.empty? }
+        self
+      end
+
       def resolve_type(name)
         Type::Registry.instance.resolve(name)
       end
