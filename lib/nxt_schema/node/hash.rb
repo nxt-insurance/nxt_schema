@@ -24,7 +24,7 @@ module NxtSchema
             if hash.key?(key)
               node.apply(hash[key], parent_errors: node_errors, parent_value_store: value_store).valid?
             else
-              unless node.options[:optional]
+              unless node.optional?
                 add_error("Required key :#{key} is missing in #{hash}")
               end
             end

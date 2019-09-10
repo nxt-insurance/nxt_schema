@@ -33,6 +33,17 @@ module NxtSchema
         node_errors.empty?
       end
 
+      def optional?
+        optional_evaluator = options[:optional]
+
+        if optional_evaluator.respond_to?(:call)
+          optional_evaluator_args = [self]
+          optional_evaluator.call(*optional_evaluator_args.take(optional_evaluator.arity))
+        else
+          optional_evaluator
+        end
+      end
+
       private
 
       def maybe_criteria_applies?(value)
