@@ -1,5 +1,6 @@
 require "nxt_schema/version"
 require "pry"
+require "dry-container"
 require "active_support/all"
 
 require "nxt_schema/errors"
@@ -7,7 +8,6 @@ require "nxt_schema/errors/error"
 require "nxt_schema/errors/required_key_missing_error"
 require "nxt_schema/errors/coercion_error"
 
-require "nxt_schema/type/registry"
 require "nxt_schema/type"
 require "nxt_schema/type/strict/base"
 require "nxt_schema/type/strict/array"

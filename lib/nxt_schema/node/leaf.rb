@@ -45,7 +45,7 @@ module NxtSchema
       private
 
       def resolve_type(name)
-        Type::Registry.instance.resolve(name)
+        Type.resolve(name)
       end
     end
   end
