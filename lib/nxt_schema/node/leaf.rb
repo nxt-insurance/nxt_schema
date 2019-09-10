@@ -43,6 +43,10 @@ module NxtSchema
       end
 
       private
+
+      def resolve_type(name)
+        Type::Registry.instance.resolve(name)
+      end
     end
   end
 end

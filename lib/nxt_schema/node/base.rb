@@ -37,16 +37,12 @@ module NxtSchema
 
       def maybe_criteria_applies?(value)
         return unless options.key?(:maybe)
-        MaybeEvaluator.new(options[:maybe], value).call
+        MaybeEvaluator.new(options.fetch(:maybe), value).call
       end
 
       def self_without_empty_node_errors
         node_errors.reject! { |_, v| v.empty? }
         self
-      end
-
-      def resolve_type(name)
-        Type::Registry.instance.resolve(name)
       end
 
       def raise_coercion_error(value, type)
