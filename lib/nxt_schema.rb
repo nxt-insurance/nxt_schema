@@ -9,6 +9,7 @@ require "nxt_schema/errors/required_key_missing_error"
 require "nxt_schema/errors/coercion_error"
 
 require "nxt_schema/type"
+require "nxt_schema/type/strict"
 require "nxt_schema/type/strict/base"
 require "nxt_schema/type/strict/array"
 require "nxt_schema/type/strict/hash"
