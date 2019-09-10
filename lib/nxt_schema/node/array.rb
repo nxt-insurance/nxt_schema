@@ -28,6 +28,7 @@ module NxtSchema
 
               # When an array provides multiple schemas, and none is valid we only return the errors for
               # a single schema => Would probably be better to merge them somehow!!!
+              # Might make sense to not allow the same names for multiple schemas in an array
               store.each do |node|
                 node.apply(item, parent_errors: { node_errors_key => [] }, parent_value_store: value_store, index_or_name: index)
                 if node.valid?
