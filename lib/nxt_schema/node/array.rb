@@ -16,7 +16,7 @@ module NxtSchema
         self.value_store = parent_value_store[index_or_name] ||= []
 
         if maybe_criteria_applies?(value)
-          self.value_store = parent_value_store[index_or_name] ||= value
+          self.value_store = parent_value_store[index_or_name] = value
         else
           array = type[value]
 

@@ -189,4 +189,42 @@ RSpec.describe NxtSchema::Node::Array do
       end
     end
   end
+
+  describe '#maybe' do
+    context 'when the value maybe empty' do
+      subject do
+        described_class.new(:test, nil, maybe: []) do |node|
+          node.requires(:item, :String)
+        end
+      end
+
+      let(:parent_value_store) do
+        {}
+      end
+
+      it do
+        subject.apply([], parent_value_store: parent_value_store)
+        expect(subject).to be_valid
+        expect(parent_value_store).to eq(test: [])
+      end
+    end
+
+    context 'when the value maybe nil' do
+      subject do
+        described_class.new(:test, nil, maybe: nil) do |node|
+          node.requires(:item, :String)
+        end
+      end
+
+      let(:parent_value_store) do
+        {}
+      end
+
+      it do
+        subject.apply(nil, parent_value_store: parent_value_store)
+        expect(subject).to be_valid
+        expect(parent_value_store).to eq(test: nil)
+      end
+    end
+  end
 end
