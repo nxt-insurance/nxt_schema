@@ -15,7 +15,7 @@ module NxtSchema
         self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= {}
 
-        if value_meets_maybe_criteria?(hash)
+        if maybe_criteria_applies?(hash)
           self.value_store = parent_value_store[index_or_name] = hash
         else
           hash = type[hash]

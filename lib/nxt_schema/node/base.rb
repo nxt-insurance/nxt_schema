@@ -35,7 +35,7 @@ module NxtSchema
 
       private
 
-      def value_meets_maybe_criteria?(value)
+      def maybe_criteria_applies?(value)
         return unless options.key?(:maybe)
         MaybeEvaluator.new(options[:maybe], value).call
       end

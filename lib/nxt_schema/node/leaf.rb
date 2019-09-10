@@ -13,7 +13,7 @@ module NxtSchema
       def apply(value, parent_errors: {}, parent_value_store: {}, index_or_name: name)
         self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
 
-        unless value_meets_maybe_criteria?(value)
+        unless maybe_criteria_applies?(value)
           value = type[value]
 
           validations.each do |validation|
