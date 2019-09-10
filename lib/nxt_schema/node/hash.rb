@@ -21,12 +21,12 @@ module NxtSchema
           hash = type[hash]
 
           store.each do |key, node|
-            if required_key_missing?(hash, key)
-              # node.add_error("Required key :#{key} is missing in #{hash}")
-              # node_errors[node_errors_key] << "Required key :#{key} is missing in #{hash}"
-              add_error("Required key :#{key} is missing in #{hash}")
-            else
+            if hash.key?(key)
               node.apply(hash[key], parent_errors: node_errors, parent_value_store: value_store).valid?
+            else
+              unless node.options[:optional]
+                add_error("Required key :#{key} is missing in #{hash}")
+              end
             end
           end
         end
@@ -35,15 +35,6 @@ module NxtSchema
       rescue NxtSchema::Errors::CoercionError => error
         add_error(error.message)
         self_without_empty_node_errors
-      end
-
-      private
-
-      def required_key_missing?(hash, key)
-        return if hash.key?(key)
-        return if options[:optional]
-        # maybe
-        true
       end
     end
   end
