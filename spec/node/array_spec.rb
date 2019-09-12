@@ -204,7 +204,7 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply([], parent_value_store: parent_value_store)
-        expect(subject).to be_valid
+        expect(subject.schema_errors?).to be_falsey
         expect(parent_value_store).to eq(test: [])
       end
     end
@@ -222,7 +222,7 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply(nil, parent_value_store: parent_value_store)
-        expect(subject).to be_valid
+        expect(subject.schema_errors?).to be_falsey
         expect(parent_value_store).to eq(test: nil)
       end
     end

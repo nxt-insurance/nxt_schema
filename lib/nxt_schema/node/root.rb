@@ -5,8 +5,8 @@ module NxtSchema
         @validated ||= false
       end
 
-      def valid?
-        schema_errors.empty?
+      def schema_errors?
+        schema_errors.any?
       end
 
       def apply(schema)

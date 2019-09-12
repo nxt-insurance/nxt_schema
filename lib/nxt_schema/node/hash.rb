@@ -22,7 +22,7 @@ module NxtSchema
 
           store.each do |key, node|
             if hash.key?(key)
-              node.apply(hash[key], parent_schema_errors: schema_errors, parent_value_store: value_store).valid?
+              node.apply(hash[key], parent_schema_errors: schema_errors, parent_value_store: value_store).schema_errors?
             else
               unless node.optional?
                 add_error("Required key :#{key} is missing in #{hash}")

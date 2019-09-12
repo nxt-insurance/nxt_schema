@@ -84,7 +84,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject).to be_valid
+          expect(subject.schema_errors?).to be_falsey
           expect(subject.schema_errors).to be_empty
           expect(subject.value_store).to eq(schema)
         end
@@ -111,7 +111,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject).to_not be_valid
+          expect(subject.schema_errors?).to be_truthy
           # TODO: We should merge the schema_errors for multiple schemas in an array
           expect(subject.schema_errors).to eq(
             :company=>

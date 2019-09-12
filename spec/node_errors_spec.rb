@@ -107,7 +107,7 @@ RSpec.describe NxtSchema do
             # TODO: This would also work with validations instead?
             it 'adds an error' do
               subject.apply(schema)
-              expect(subject).to_not be_valid
+              expect(subject.schema_errors).to be_truthy
               expect(subject.schema_errors).to eq(:company=>{:employees=>{:itself=>["Array is not allowed to be empty"]}})
             end
           end

@@ -38,8 +38,8 @@ module NxtSchema
         # errors[error_namespace] << error
       end
 
-      def valid?
-        schema_errors.empty?
+      def schema_errors?
+        schema_errors.any?
       end
 
       private

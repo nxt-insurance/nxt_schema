@@ -38,9 +38,9 @@ module NxtSchema
         schema_errors.errors_on_self
       end
 
-      def valid?
+      def schema_errors?
         schema_errors.reject! { |_, v| v.empty? }
-        schema_errors.empty?
+        schema_errors.any?
       end
 
       def optional?

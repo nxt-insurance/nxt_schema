@@ -31,7 +31,7 @@ module NxtSchema
               # Might make sense to not allow the same names for multiple schemas in an array
               store.each do |node|
                 node.apply(item, parent_schema_errors: { schema_errors_key => [] }, parent_value_store: value_store, index_or_name: index)
-                if node.valid?
+                unless node.schema_errors?
                   schema_errors[index][node.name] = node.schema_errors
                   break
                 else
