@@ -4,8 +4,8 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 
 TODO:
 - Master Plan
-    => apply should take keyword args
-    => Add level to each node
+    => apply should take keyword args [X]
+    => Add level to each node [X]
     => Add a second errors_store next to node_errors 
         => node_errors should probably be renamed to schema_errors
         => add validation_errors next to schema_errors
