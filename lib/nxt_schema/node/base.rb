@@ -8,12 +8,22 @@ module NxtSchema
         @type = type
         @node_errors_key = options.fetch(:node_errors_key, :itself)
         @validations = Array(options.fetch(:validate, []))
+        @level = parent_node ? parent_node.level + 1 : 0
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
         block.call(self) if block_given?
       end
 
-      attr_accessor :name, :parent_node, :options, :type, :node_errors, :namespace, :errors, :validations, :node_errors_key
+      attr_accessor :name,
+                    :parent_node,
+                    :options,
+                    :type,
+                    :node_errors,
+                    :namespace,
+                    :errors,
+                    :validations,
+                    :node_errors_key,
+                    :level
 
       def add_error(error, index = node_errors_key)
         node_errors[index] ||= []
