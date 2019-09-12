@@ -3,10 +3,10 @@ module NxtSchema
     class Array < Node::Base
       include NxtSchema::Node::Collection
 
-      def initialize(name, parent_node, options, &block)
+      def initialize(name:, parent_node:, **options, &block)
         @store = []
 
-        super(name, NxtSchema::Type::Strict::Array, parent_node, options, &block)
+        super(name: name, type: NxtSchema::Type::Strict::Array, parent_node: parent_node, **options, &block)
       end
 
       delegate_missing_to :value_store

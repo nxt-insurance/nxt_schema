@@ -1,7 +1,7 @@
 RSpec.describe NxtSchema::Node::Leaf do
   describe '#apply' do
     subject do
-      described_class.new(:test, :String, nil, {})
+      described_class.new(name: :test, type: :String, parent_node: nil)
     end
 
     let(:value) { 'Andy' }
@@ -15,7 +15,7 @@ RSpec.describe NxtSchema::Node::Leaf do
 
   describe '#maybe' do
     subject do
-      described_class.new(:test, :String, nil, maybe: nil)
+      described_class.new(name: :test, type: :String, parent_node: nil, maybe: nil)
     end
 
     let(:value) { nil }

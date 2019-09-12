@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Leaf < Node::Base
-      def initialize(name, type, parent_node, **options, &block)
+      def initialize(name:, type: type, parent_node: parent_node, **options, &block)
         super
         @type = resolve_type(type)
       end

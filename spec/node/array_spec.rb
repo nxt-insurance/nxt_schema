@@ -1,7 +1,7 @@
 RSpec.describe NxtSchema::Node::Array do
   describe '#apply' do
     subject do
-      described_class.new(:test, nil, {}) do |node|
+      described_class.new(name: :test, parent_node: nil) do |node|
         node.requires(:item, :String)
       end
     end
@@ -39,7 +39,7 @@ RSpec.describe NxtSchema::Node::Array do
 
     context 'an array of arrays' do
       subject do
-        described_class.new(:parent, nil, {}) do |node|
+        described_class.new(name: :parent, parent_node: nil) do |node|
           node.nodes(:children) do |children|
             children.requires(:child, :String)
           end
@@ -64,7 +64,7 @@ RSpec.describe NxtSchema::Node::Array do
 
     context 'an array of arrays of hashes' do
       subject do
-        described_class.new(:grand_parents, nil, {}) do |node|
+        described_class.new(name: :grand_parents, parent_node: nil) do |node|
           node.nodes(:parents) do |parents|
             parents.schema(:parent) do |parent|
               parent.requires(:first_name, :String)
@@ -154,7 +154,7 @@ RSpec.describe NxtSchema::Node::Array do
     end
 
     subject do
-      described_class.new(:test, nil, validate: validate_max_2_items) do |node|
+      described_class.new(name: :test, parent_node: nil, validate: validate_max_2_items) do |node|
         node.requires(:item, :String)
       end
     end
@@ -193,7 +193,7 @@ RSpec.describe NxtSchema::Node::Array do
   describe '#maybe' do
     context 'when the value maybe empty' do
       subject do
-        described_class.new(:test, nil, maybe: []) do |node|
+        described_class.new(name: :test, parent_node: nil, maybe: []) do |node|
           node.requires(:item, :String)
         end
       end
@@ -211,7 +211,7 @@ RSpec.describe NxtSchema::Node::Array do
 
     context 'when the value maybe nil' do
       subject do
-        described_class.new(:test, nil, maybe: nil) do |node|
+        described_class.new(name: :test, parent_node: nil, maybe: nil) do |node|
           node.requires(:item, :String)
         end
       end

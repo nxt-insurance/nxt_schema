@@ -1,7 +1,7 @@
 RSpec.describe NxtSchema::Node::Hash do
   describe '#apply' do
     subject do
-      described_class.new(:company, nil, {}) do |company|
+      described_class.new(name: :company, parent_node: nil) do |company|
         company.requires(:street, :String)
         company.requires(:street_number, :Integer)
         company.requires(:value, :Integer)
@@ -81,7 +81,7 @@ RSpec.describe NxtSchema::Node::Hash do
   describe '#maybe' do
     context 'when the value maybe empty' do
       subject do
-        described_class.new(:company, nil, maybe: :empty?) do |company|
+        described_class.new(name: :company, parent_node: nil, maybe: :empty?) do |company|
           company.requires(:street, :String)
           company.requires(:street_number, :Integer)
           company.requires(:value, :Integer)
@@ -97,7 +97,7 @@ RSpec.describe NxtSchema::Node::Hash do
 
     context 'when the value maybe nil' do
       subject do
-        described_class.new(:company, nil, maybe: nil) do |company|
+        described_class.new(name: :company, parent_node: nil, maybe: nil) do |company|
           company.requires(:street, :String)
           company.requires(:street_number, :Integer)
           company.requires(:value, :Integer)

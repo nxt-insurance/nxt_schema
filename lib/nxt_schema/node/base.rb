@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Base
-      def initialize(name, type, parent_node, **options, &block)
+      def initialize(name:, type:, parent_node:, **options, &block)
         @name = name
         @parent_node = parent_node
         @options = options

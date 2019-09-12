@@ -10,11 +10,11 @@ module NxtSchema
       def node(name, type, **options, &block)
         child_node = case type.to_s.to_sym
         when :Hash
-          NxtSchema::Node::Hash.new(name, self, **options, &block)
+          NxtSchema::Node::Hash.new(name: name, parent_node: self, **options, &block)
         when :Array
-          NxtSchema::Node::Array.new(name, self, **options, &block)
+          NxtSchema::Node::Array.new(name: name, parent_node: self, **options, &block)
         else
-          NxtSchema::Node::Leaf.new(name, type, self, **options)
+          NxtSchema::Node::Leaf.new(name: name, type: type, parent_node: self, **options)
         end
 
         store.push(child_node)
