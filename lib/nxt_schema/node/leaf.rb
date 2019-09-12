@@ -10,8 +10,8 @@ module NxtSchema
         true
       end
 
-      def apply(value, parent_errors: {}, parent_value_store: {}, index_or_name: name)
-        self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
+      def apply(value, parent_schema_errors: {}, parent_value_store: {}, index_or_name: name)
+        self.schema_errors = parent_schema_errors[name] ||= { schema_errors_key => [] }
 
         unless maybe_criteria_applies?(value)
           value = type[value]
@@ -24,14 +24,14 @@ module NxtSchema
 
         parent_value_store[index_or_name] = value
 
-        self_without_empty_node_errors
+        self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error
         add_error(error.message)
-        self_without_empty_node_errors
+        self_without_empty_schema_errors
       end
 
       def add_error(error)
-        node_errors[node_errors_key] << error
+        schema_errors[schema_errors_key] << error
 
         # error_namespace = [namespace, index_key].compact.join('.')
         # errors[error_namespace] ||= []
@@ -39,7 +39,7 @@ module NxtSchema
       end
 
       def valid?
-        node_errors.empty?
+        schema_errors.empty?
       end
 
       private

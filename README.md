@@ -6,15 +6,15 @@ TODO:
 - Master Plan
     => apply should take keyword args [X]
     => Add level to each node [X]
-    => Add a second errors_store next to node_errors 
-        => node_errors should probably be renamed to schema_errors
+    => Add a second errors_store next to schema_errors 
+        => schema_errors should probably be renamed to schema_errors
         => add validation_errors next to schema_errors
             => validation_errors should be initialized with schema_errors
         => collect all nodes with validations in a single all_nodes store
     
 - Test all methods of all nodes
 - Merge errors of array nodes with multiple schemas
-- Collect namespaced errors from node_errors when walking the tree
+- Collect namespaced errors from schema_errors when walking the tree
 - Implement root and roots on root node
 - Implement maybe
 - Implement optional keys for all nodes

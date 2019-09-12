@@ -35,7 +35,7 @@ RSpec.describe NxtSchema::Node::Hash do
 
       it do
         subject.apply(schema)
-        expect(subject.node_errors).to be_empty
+        expect(subject.schema_errors).to be_empty
         expect(subject.value_store).to eq(schema)
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe NxtSchema::Node::Hash do
 
       it do
         subject.apply(schema)
-        expect(subject.node_errors).to eq(
+        expect(subject.schema_errors).to eq(
           :street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]},
           :stocks_available=>{:itself=>["Could not coerce 'nope' into type: NxtSchema::Type::Strict::Boolean"]},
           :employees=>

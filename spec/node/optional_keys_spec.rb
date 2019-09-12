@@ -52,7 +52,7 @@ RSpec.describe NxtSchema do
             subject.apply(schema)
             expect(subject).to_not be_valid
             expect(subject.value_store).to eq(schema)
-            expect(subject.node_errors).to eq(:email=>{:itself=>["Email is not valid"]})
+            expect(subject.schema_errors).to eq(:email=>{:itself=>["Email is not valid"]})
           end
         end
       end

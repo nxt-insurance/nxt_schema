@@ -27,7 +27,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject.node_errors).to eq(:company=>{:itself=>["Required key :industry is missing in {:name=>\"getsafe\"}"]})
+          expect(subject.schema_errors).to eq(:company=>{:itself=>["Required key :industry is missing in {:name=>\"getsafe\"}"]})
         end
       end
 
@@ -38,7 +38,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject.node_errors).to eq(:company=>{:industry=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]}})
+          expect(subject.schema_errors).to eq(:company=>{:industry=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]}})
         end
       end
     end
@@ -66,7 +66,7 @@ RSpec.describe NxtSchema do
           it do
             subject.apply(schema)
             expect(
-              subject.node_errors[:company][:employees][:itself]
+              subject.schema_errors[:company][:employees][:itself]
             ).to eq(["Could not coerce 'Andy & Rapha' into type: NxtSchema::Type::Strict::Array"])
           end
         end
@@ -80,7 +80,7 @@ RSpec.describe NxtSchema do
 
               it do
                 subject.apply(schema)
-                expect(subject.node_errors).to be_empty
+                expect(subject.schema_errors).to be_empty
                 expect(subject.value_store).to eq(schema)
               end
             end
@@ -92,7 +92,7 @@ RSpec.describe NxtSchema do
 
               it do
                 subject.apply(schema)
-                expect(subject.node_errors).to eq(
+                expect(subject.schema_errors).to eq(
                   :company=>{:employees=>{0=>{:employee=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Andy\"}"]}}}}
                 )
               end
@@ -108,7 +108,7 @@ RSpec.describe NxtSchema do
             it 'adds an error' do
               subject.apply(schema)
               expect(subject).to_not be_valid
-              expect(subject.node_errors).to eq(:company=>{:employees=>{:itself=>["Array is not allowed to be empty"]}})
+              expect(subject.schema_errors).to eq(:company=>{:employees=>{:itself=>["Array is not allowed to be empty"]}})
             end
           end
         end

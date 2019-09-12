@@ -6,7 +6,7 @@ module NxtSchema
         @parent_node = parent_node
         @options = options
         @type = type
-        @node_errors_key = options.fetch(:node_errors_key, :itself)
+        @schema_errors_key = options.fetch(:schema_errors_key, :itself)
         @validations = Array(options.fetch(:validate, []))
         @level = parent_node ? parent_node.level + 1 : 0
 
@@ -18,16 +18,16 @@ module NxtSchema
                     :parent_node,
                     :options,
                     :type,
-                    :node_errors,
+                    :schema_errors,
                     :namespace,
                     :errors,
                     :validations,
-                    :node_errors_key,
+                    :schema_errors_key,
                     :level
 
-      def add_error(error, index = node_errors_key)
-        node_errors[index] ||= []
-        node_errors[index] << error
+      def add_error(error, index = schema_errors_key)
+        schema_errors[index] ||= []
+        schema_errors[index] << error
 
         # error_namespace = [namespace, index_key].compact.join('.')
         # errors[error_namespace] ||= []
@@ -35,12 +35,12 @@ module NxtSchema
       end
 
       def errors_on_self
-        node_errors.errors_on_self
+        schema_errors.errors_on_self
       end
 
       def valid?
-        node_errors.reject! { |_, v| v.empty? }
-        node_errors.empty?
+        schema_errors.reject! { |_, v| v.empty? }
+        schema_errors.empty?
       end
 
       def optional?
@@ -61,8 +61,8 @@ module NxtSchema
         MaybeEvaluator.new(options.fetch(:maybe), value).call
       end
 
-      def self_without_empty_node_errors
-        node_errors.reject! { |_, v| v.empty? }
+      def self_without_empty_schema_errors
+        schema_errors.reject! { |_, v| v.empty? }
         self
       end
 

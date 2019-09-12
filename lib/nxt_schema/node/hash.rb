@@ -11,8 +11,8 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
-      def apply(hash, parent_errors: {}, parent_value_store: {}, index_or_name: name)
-        self.node_errors = parent_errors[name] ||= { node_errors_key => [] }
+      def apply(hash, parent_schema_errors: {}, parent_value_store: {}, index_or_name: name)
+        self.schema_errors = parent_schema_errors[name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= {}
 
         if maybe_criteria_applies?(hash)
@@ -22,7 +22,7 @@ module NxtSchema
 
           store.each do |key, node|
             if hash.key?(key)
-              node.apply(hash[key], parent_errors: node_errors, parent_value_store: value_store).valid?
+              node.apply(hash[key], parent_schema_errors: schema_errors, parent_value_store: value_store).valid?
             else
               unless node.optional?
                 add_error("Required key :#{key} is missing in #{hash}")
@@ -31,10 +31,10 @@ module NxtSchema
           end
         end
 
-        self_without_empty_node_errors
+        self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error
         add_error(error.message)
-        self_without_empty_node_errors
+        self_without_empty_schema_errors
       end
     end
   end
