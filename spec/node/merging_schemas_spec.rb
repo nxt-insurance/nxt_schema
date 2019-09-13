@@ -114,6 +114,49 @@ RSpec.describe NxtSchema do
   end
 
   context 'adding an array into an array' do
+    let(:categories_node) do
+      NxtSchema.nodes do
+        schema(:category) do
+          requires(:name, :String)
+          requires(:weight, :Integer)
+        end
+      end
+    end
 
+    subject do
+      categories = categories_node
+
+      NxtSchema.nodes do
+        node(:categories, categories)
+      end
+    end
+
+    let(:schema) do
+      [
+        [
+          { name: 'Science Fiction', weight: 1 },
+          { name: 'Love Stories', weight: 2 }
+        ],
+        [
+          { name: 'Cartoons', weight: 1 },
+          { name: 'Action', weight: 2 },
+          { name: 'Drama', weight: 2 }
+        ],
+        [],
+        ['invalid'],
+        ['invalid', 'and broken']
+      ]
+    end
+
+    it 'merges the schemas' do
+      subject.apply(schema)
+      expect(subject.errors).to eq(
+        "roots.2.categories"=>["Array is not allowed to be empty"],
+        "roots.3.categories.0.category"=>["Could not coerce 'invalid' into type: NxtSchema::Type::Strict::Hash"],
+        "roots.4.categories.0.category"=>["Could not coerce 'invalid' into type: NxtSchema::Type::Strict::Hash"],
+        "roots.4.categories.1.category"=>["Could not coerce 'and broken' into type: NxtSchema::Type::Strict::Hash"]
+      )
+      expect(subject.value).to eq(schema)
+    end
   end
 end
