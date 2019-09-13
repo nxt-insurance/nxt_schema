@@ -122,7 +122,7 @@ RSpec.describe NxtSchema do
           { first_name: 'Andy', last_name: 'Robecke' },
           { first_name: 'Nils', last_name: nil },
           { first_name: 'Lütfi', last_name: false },
-          { first_name: 'Rapha', last_name: 'Kallensee' },
+          { first_name: 'Rapha', last_name: 'Kallensee' }
         ],
         value: 10_000_000,
         street: 'Langer Anger',
