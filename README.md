@@ -5,7 +5,7 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 TODO:    
 - Test all methods of all nodes
 - Merge errors of array nodes with multiple schemas
-- Collect namespaced errors from schema_errors when walking the tree
+- It's not possible to collect namespace errors while walking the tree
 - Implement maybe
 - Implement optional keys for all nodes
 - Validator Registry

@@ -11,6 +11,7 @@ module NxtSchema
         @level = parent_node ? parent_node.level + 1 : 0
         @all_nodes = parent_node ? (parent_node.all_nodes || []) : []
         @root = parent_node.nil?
+        @errors = {}
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
         block.call(self) if block_given?
@@ -36,10 +37,6 @@ module NxtSchema
 
         validation_errors[index] ||= []
         validation_errors[index] << error
-
-        # error_namespace = [namespace, index_key].compact.join('.')
-        # errors[error_namespace] ||= []
-        # errors[error_namespace] << error
       end
 
       def add_error(error, index = schema_errors_key)
@@ -133,11 +130,25 @@ module NxtSchema
       def self_without_empty_schema_errors
         schema_errors.reject! { |_, v| v.empty? }
         validate_all_nodes if root?
+        self.errors = flat_validation_errors(validation_errors, name)
         self
       end
 
       def raise_coercion_error(value, type)
         raise NxtSchema::Errors::CoercionError.new(value, type)
+      end
+
+      def flat_validation_errors(hash, namespace, acc = {})
+        hash.each_with_object(acc) do |(key, val), acc|
+          current_namespace = [namespace, key].reject { |namespace| namespace == schema_errors_key }.compact.join('.')
+
+          if val.is_a?(::Hash)
+            flat_validation_errors(val, current_namespace, acc)
+          else
+            acc[current_namespace] ||= []
+            acc[current_namespace] += Array(val)
+          end
+        end
       end
     end
   end
