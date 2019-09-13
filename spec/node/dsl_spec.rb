@@ -14,7 +14,7 @@ RSpec.describe NxtSchema do
 
       it do
         subject.apply(schema)
-        expect(subject.schema_errors?).to be_falsey
+        expect(subject.validation_errors?).to be_falsey
       end
     end
 
@@ -25,8 +25,8 @@ RSpec.describe NxtSchema do
 
       it do
         subject.apply(schema)
-        expect(subject.schema_errors).to be_truthy
-        expect(subject.schema_errors).to eq(:last_name=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"]})
+        expect(subject.validation_errors).to be_truthy
+        expect(subject.validation_errors).to eq(:last_name=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"]})
       end
     end
   end
@@ -51,7 +51,8 @@ RSpec.describe NxtSchema do
 
       it do
         subject.apply(schema)
-        expect(subject.schema_errors?).to be_falsey
+        binding.pry
+        expect(subject.validation_errors?).to be_falsey
       end
     end
 
@@ -62,8 +63,8 @@ RSpec.describe NxtSchema do
 
       it do
         subject.apply(schema)
-        expect(subject.schema_errors).to be_truthy
-        expect(subject.schema_errors).to eq(
+        expect(subject.validation_errors).to be_truthy
+        expect(subject.validation_errors).to eq(
           :itself=>["Could not coerce '{:first_name=>\"Lütfi\", :last_name=>nil}' into type: NxtSchema::Type::Strict::Array"]
         )
       end

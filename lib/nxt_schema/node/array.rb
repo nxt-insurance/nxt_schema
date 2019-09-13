@@ -16,10 +16,10 @@ module NxtSchema
         self.validation_errors = parent_validation_errors[name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= []
         all_nodes << self
+        self.value = value
 
         if maybe_criteria_applies?(value)
           self.value_store = parent_value_store[index_or_name] = value
-          self.value = array
         else
           array = type[value]
           self.value = array

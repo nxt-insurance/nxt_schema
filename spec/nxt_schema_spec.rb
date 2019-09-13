@@ -80,8 +80,8 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject.schema_errors?).to be_falsey
-          expect(subject.schema_errors).to be_empty
+          expect(subject.validation_errors?).to be_falsey
+          expect(subject.validation_errors).to be_empty
           expect(subject.value_store).to eq(schema)
         end
       end
@@ -105,9 +105,9 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject.schema_errors?).to be_truthy
+          expect(subject.validation_errors?).to be_truthy
           # TODO: We should merge the schema_errors for multiple schemas in an array
-          expect(subject.schema_errors).to eq(
+          expect(subject.validation_errors).to eq(
              {:headquarter=>{:street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]}},
               :employee_names=>
                 {1=>
@@ -137,8 +137,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          binding.pry
-          expect(subject.schema_errors).to eq(
+          expect(subject.validation_errors).to eq(
                                              {
                                                :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
                                                :employee_names=> {

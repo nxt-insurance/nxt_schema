@@ -60,6 +60,11 @@ module NxtSchema
         # to avoid weird errors
 
         # First reject empty schema_errors
+        #
+
+        p "Validating: #{name} with value: #{value}"
+        p "level: #{level} with leaf?: #{leaf?}"
+
         schema_errors.reject! { |_, v| v.empty? }
         build_validations
 
@@ -69,11 +74,17 @@ module NxtSchema
           end
         end
 
-        if self.is_a?(NxtSchema::Node::Array)
+        if self.is_a?(NxtSchema::Node::Array) && value.respond_to?(:each)
           value.each_with_index do |item, index|
-            validation_errors[index].reject! { |_, v| v.empty? }
+            validation_errors[index]&.reject! { |_, v| v.empty? }
           end
         end
+
+        # if self.is_a?(NxtSchema::Node::Hash) && value.respond_to?(:each)
+        #   value.each do |item, index|
+        #     validation_errors[index]&.reject! { |_, v| v.empty? }
+        #   end
+        # end
 
         validation_errors.reject! { |_, v| v.empty? }
 
@@ -92,6 +103,11 @@ module NxtSchema
       def schema_errors?
         schema_errors.reject! { |_, v| v.empty? }
         schema_errors.any?
+      end
+
+      def validation_errors?
+        validation_errors.reject! { |_, v| v.empty? }
+        validation_errors.any?
       end
 
       def optional?
@@ -122,6 +138,7 @@ module NxtSchema
 
       def self_without_empty_schema_errors
         schema_errors.reject! { |_, v| v.empty? }
+        validate_all_nodes if root?
         self
       end
 

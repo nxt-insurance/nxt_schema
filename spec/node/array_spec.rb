@@ -13,7 +13,7 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply(schema)
-        expect(subject.schema_errors).to be_empty
+        expect(subject.validation_errors).to be_empty
         expect(subject.value_store).to eq(schema)
       end
     end
@@ -25,7 +25,7 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply(schema)
-        expect(subject.schema_errors).to eq(
+        expect(subject.validation_errors).to eq(
           2=>{:item=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"]}},
           3=>{:item=>{:itself=>["Could not coerce '1' into type: NxtSchema::Type::Strict::String"]}},
           4=>{:item=>{:itself=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::String"]}},
@@ -54,7 +54,7 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply(schema)
-        expect(subject.schema_errors).to eq(
+        expect(subject.validation_errors).to eq(
           3=>{:children=>{:itself=>["Array is not allowed to be empty"]}},
           4=>{:children=>{0=>{:child=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]}}}}
         )
@@ -99,7 +99,8 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply(schema)
-        expect(subject.schema_errors).to eq(
+        binding.pry
+        expect(subject.validation_errors).to eq(
           0=>
            {:parents=>
               {1=>{:parent=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"]}},
@@ -166,7 +167,7 @@ RSpec.describe NxtSchema::Node::Array do
 
       it 'contains only the custom error' do
         subject.apply(schema)
-        expect(subject.schema_errors).to eq(:itself=>["Can only contain two items"])
+        expect(subject.validation_errors).to eq(:itself=>["Can only contain two items"])
       end
     end
 
@@ -177,9 +178,8 @@ RSpec.describe NxtSchema::Node::Array do
 
       it 'contains the custom errors and node errors' do
         subject.apply(schema)
-        binding.pry
 
-        expect(subject.schema_errors).to eq(
+        expect(subject.validation_errors).to eq(
           :itself=>["Can only contain two items"],
           2=>{:item=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"]}},
           3=>{:item=>{:itself=>["Could not coerce '1' into type: NxtSchema::Type::Strict::String"]}},
@@ -206,7 +206,7 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply([], parent_value_store: parent_value_store)
-        expect(subject.schema_errors?).to be_falsey
+        expect(subject.validation_errors?).to be_falsey
         expect(parent_value_store).to eq(test: [])
       end
     end
@@ -224,7 +224,7 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply(nil, parent_value_store: parent_value_store)
-        expect(subject.schema_errors?).to be_falsey
+        expect(subject.validation_errors?).to be_falsey
         expect(parent_value_store).to eq(test: nil)
       end
     end
