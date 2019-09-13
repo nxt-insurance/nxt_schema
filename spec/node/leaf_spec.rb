@@ -26,4 +26,12 @@ RSpec.describe NxtSchema::Node::Leaf do
       expect(parent_value_store).to eq(test: nil)
     end
   end
+
+  describe '#default' do
+
+  end
+
+  describe '#validations' do
+
+  end
 end

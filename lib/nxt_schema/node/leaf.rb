@@ -23,6 +23,7 @@ module NxtSchema
         end
 
         parent_value_store[index_or_name] = value
+
         self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error
         add_schema_error(error.message)
@@ -32,18 +33,10 @@ module NxtSchema
       def add_schema_error(error)
         schema_errors[schema_errors_key] << error
         validation_errors[schema_errors_key] << error
-
-        # error_namespace = [namespace, index_key].compact.join('.')
-        # errors[error_namespace] ||= []
-        # errors[error_namespace] << error
       end
 
       def add_error(error)
         validation_errors[schema_errors_key] << error
-
-        # error_namespace = [namespace, index_key].compact.join('.')
-        # errors[error_namespace] ||= []
-        # errors[error_namespace] << error
       end
 
       def schema_errors?

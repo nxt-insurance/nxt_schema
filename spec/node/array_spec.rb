@@ -228,4 +228,8 @@ RSpec.describe NxtSchema::Node::Array do
       end
     end
   end
+
+  describe '#default' do
+
+  end
 end

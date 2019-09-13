@@ -43,9 +43,8 @@ module NxtSchema
         self
       end
 
-      def validate(validators, &block)
-        options[:validate] ||= []
-        options[:validate] += Array(validators)
+      def validate(*validators, &block)
+        add_validators(*validators)
         evaluate_block(block) if block_given?
         self
       end
@@ -121,8 +120,7 @@ module NxtSchema
         optional_evaluator = options[:optional]
 
         if optional_evaluator.respond_to?(:call)
-          optional_evaluator_args = [self]
-          optional_evaluator.call(*optional_evaluator_args.take(optional_evaluator.arity))
+          add_validators(OptionalNodeValidator.new(optional_evaluator))
         else
           optional_evaluator
         end
@@ -134,6 +132,11 @@ module NxtSchema
 
       def leaf?
         false
+      end
+
+      def add_validators(*validators)
+        options[:validate] ||= []
+        options[:validate] += validators
       end
 
       private

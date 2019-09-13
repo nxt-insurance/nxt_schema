@@ -116,4 +116,12 @@ RSpec.describe NxtSchema::Node::Hash do
       end
     end
   end
+
+  describe '#default' do
+
+  end
+
+  describe '#validations' do
+
+  end
 end
