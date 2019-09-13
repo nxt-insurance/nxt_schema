@@ -2,20 +2,10 @@
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nxt_schema`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-TODO:
-- Master Plan
-    => apply should take keyword args [X]
-    => Add level to each node [X]
-    => Add a second errors_store next to schema_errors 
-        => node_errors should probably be renamed to schema_errors [X]
-        => add validation_errors next to schema_errors [X]
-            => validation_errors should be initialized with schema_errors
-        => collect all nodes with validations in a single all_nodes store
-    
+TODO:    
 - Test all methods of all nodes
 - Merge errors of array nodes with multiple schemas
 - Collect namespaced errors from schema_errors when walking the tree
-- Implement root and roots on root node
 - Implement maybe
 - Implement optional keys for all nodes
 - Validator Registry
