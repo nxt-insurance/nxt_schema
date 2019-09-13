@@ -3,11 +3,13 @@ module NxtSchema
     Node::Hash.new(name: name, parent_node: nil, &block)
   end
 
-  alias_method :new, :root
-
   def roots(name = :roots, &block)
     Node::Array.new(name: name, parent_node: nil, &block)
   end
 
-  module_function :new, :root, :roots
+  alias_method :new, :root
+  alias_method :node, :root
+  alias_method :nodes, :roots
+
+  module_function :new, :root, :roots, :node, :nodes
 end

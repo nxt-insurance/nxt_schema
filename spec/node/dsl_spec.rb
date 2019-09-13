@@ -95,47 +95,4 @@ RSpec.describe NxtSchema do
       )
     end
   end
-
-  context 'merging schemas' do
-    let(:people_node) do
-      NxtSchema.roots do
-        schema(:person) do
-          requires(:first_name, :String)
-          requires(:last_name, :String)
-        end
-      end
-    end
-
-    subject do
-      people = people_node
-      NxtSchema.root(:company) do
-        requires(:people, people)
-        requires(:value, :Integer)
-        requires(:street, :String)
-        requires(:street_number, :Integer)
-      end
-    end
-
-    let(:schema) do
-      {
-        people: [
-          { first_name: 'Andy', last_name: 'Robecke' },
-          { first_name: 'Nils', last_name: nil },
-          { first_name: 'Lütfi', last_name: false },
-          { first_name: 'Rapha', last_name: 'Kallensee' }
-        ],
-        value: 10_000_000,
-        street: 'Langer Anger',
-        street_number: 6
-      }
-    end
-
-    it 'merges the schemas' do
-      subject.apply(schema)
-      expect(subject.errors).to eq(
-        "company.people.1.person.last_name"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"],
-        "company.people.2.person.last_name"=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]
-      )
-    end
-  end
 end
