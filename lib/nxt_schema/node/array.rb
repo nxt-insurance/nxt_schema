@@ -19,15 +19,17 @@ module NxtSchema
 
         if maybe_criteria_applies?(value)
           self.value_store = parent_value_store[index_or_name] = value
+          self.value = array
         else
           array = type[value]
+          self.value = array
 
           if value_violates_emptiness?(array)
             add_schema_error("Array is not allowed to be empty")
           else
             array.each_with_index do |item, index|
               item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
-              item_validation_errors = validation_errors[index] ||= { schema_errors_key => [] }
+              validation_errors[index] ||= { schema_errors_key => [] }
               # When an array provides multiple schemas, and none is valid we only return the errors for
               # a single schema => Would probably be better to merge them somehow!!!
               # Might make sense to not allow the same names for multiple schemas in an array
@@ -57,11 +59,11 @@ module NxtSchema
               item_schema_errors.reject! { |_, v| v.empty? }
             end
 
-            # TODO: Setup validations here
-            Array(options.fetch(:validate, [])).each do |validation|
-              validation_args = [self, array]
-              validation.call(*validation_args.take(validation.arity))
-            end
+            # # TODO: Setup validations here
+            # Array(options.fetch(:validate, [])).each do |validation|
+            #   validation_args = [self, array]
+            #   validation.call(*validation_args.take(validation.arity))
+            # end
           end
         end
 

@@ -19,8 +19,10 @@ module NxtSchema
 
         if maybe_criteria_applies?(hash)
           self.value_store = parent_value_store[index_or_name] = hash
+          self.value = hash
         else
           hash = type[hash]
+          self.value = hash
 
           store.each do |key, node|
             if hash.key?(key)

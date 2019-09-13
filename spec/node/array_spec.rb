@@ -177,6 +177,8 @@ RSpec.describe NxtSchema::Node::Array do
 
       it 'contains the custom errors and node errors' do
         subject.apply(schema)
+        binding.pry
+
         expect(subject.schema_errors).to eq(
           :itself=>["Can only contain two items"],
           2=>{:item=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"]}},
