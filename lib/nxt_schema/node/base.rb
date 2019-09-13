@@ -64,7 +64,6 @@ module NxtSchema
         # to avoid weird errors
 
         # First reject empty schema_errors
-        #
 
         schema_errors.reject! { |_, v| v.empty? }
         build_validations
@@ -80,12 +79,6 @@ module NxtSchema
             validation_errors[index]&.reject! { |_, v| v.empty? }
           end
         end
-
-        # if self.is_a?(NxtSchema::Node::Hash) && value.respond_to?(:each)
-        #   value.each do |item, index|
-        #     validation_errors[index]&.reject! { |_, v| v.empty? }
-        #   end
-        # end
 
         validation_errors.reject! { |_, v| v.empty? }
 
