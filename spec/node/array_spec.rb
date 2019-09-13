@@ -154,7 +154,7 @@ RSpec.describe NxtSchema::Node::Array do
     end
 
     subject do
-      described_class.new(name: :test, parent_node: nil, validate: validate_max_2_items) do |node|
+      described_class.new(name: :test, parent_node: nil).validate(validate_max_2_items) do |node|
         node.requires(:item, :String)
       end
     end
@@ -212,7 +212,7 @@ RSpec.describe NxtSchema::Node::Array do
 
     context 'when the value maybe nil' do
       subject do
-        described_class.new(name: :test, parent_node: nil, maybe: nil) do |node|
+        described_class.new(name: :test, parent_node: nil).maybe(nil) do |node|
           node.requires(:item, :String)
         end
       end

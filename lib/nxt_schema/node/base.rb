@@ -14,14 +14,7 @@ module NxtSchema
         @errors = {}
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
-
-        if block_given?
-          if block.arity == 0
-            instance_exec(&block)
-          else
-            block.call(self)
-          end
-        end
+        evaluate_block(block) if block_given?
       end
 
       attr_accessor :name,
@@ -37,6 +30,25 @@ module NxtSchema
                     :validation_errors,
                     :all_nodes,
                     :value
+
+      def default(default_value, &block)
+        options.merge!(default: default_value)
+        evaluate_block(block) if block_given?
+        self
+      end
+
+      def maybe(maybe_value, &block)
+        options.merge!(maybe: maybe_value)
+        evaluate_block(block) if block_given?
+        self
+      end
+
+      def validate(validators, &block)
+        options[:validate] ||= []
+        options[:validate] += Array(validators)
+        evaluate_block(block) if block_given?
+        self
+      end
 
       def add_schema_error(error, index = schema_errors_key)
         schema_errors[index] ||= []
@@ -164,6 +176,14 @@ module NxtSchema
           end
         else
           :root
+        end
+      end
+
+      def evaluate_block(block)
+        if block.arity.zero?
+          instance_exec(&block)
+        else
+          block.call(self)
         end
       end
     end

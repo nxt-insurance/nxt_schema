@@ -16,7 +16,7 @@ RSpec.describe NxtSchema do
         company.requires(:name, :String)
         company.requires(:industry, :String)
 
-        company.optional(:headquarter, :Hash, default: {}, maybe: nil) do |headquarter|
+        company.optional(:headquarter, :Hash).maybe(nil).default({}) do |headquarter|
           street_number_validator = lambda do |node, street_number|
             if headquarter[:street] == 'Langer Anger' && street_number <= 0
               node.add_error('Street number must be greater 0')

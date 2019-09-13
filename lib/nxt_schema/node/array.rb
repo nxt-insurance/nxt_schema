@@ -61,15 +61,8 @@ module NxtSchema
                 end
               end
 
-              # item_validation_errors.reject! { |_, v| v.empty? }
               item_schema_errors.reject! { |_, v| v.empty? }
             end
-
-            # # TODO: Setup validations here
-            # Array(options.fetch(:validate, [])).each do |validation|
-            #   validation_args = [self, array]
-            #   validation.call(*validation_args.take(validation.arity))
-            # end
           end
         end
 
