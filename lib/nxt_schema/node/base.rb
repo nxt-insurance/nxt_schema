@@ -56,7 +56,8 @@ module NxtSchema
           [node.level, (!node.leaf?).to_s] <=> [other_node.level, (!other_node.leaf?).to_s]
         end
 
-       sorted_nodes.reverse_each(&:apply_validations)
+        # we have to start from the bottom, leafs before others on the same level
+        sorted_nodes.reverse_each(&:apply_validations)
       end
 
       def register_node
@@ -92,10 +93,6 @@ module NxtSchema
       def build_validations
         validations_from_options = Array(options.fetch(:validate, []))
         self.validations = validations_from_options
-      end
-
-      def errors_on_self
-        schema_errors.errors_on_self
       end
 
       def schema_errors?
