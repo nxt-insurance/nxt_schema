@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Base
-      def initialize(name:, type:, parent_node:, **options, &block)
+      def initialize(name: default_name, type:, parent_node:, **options, &block)
         @name = name
         @parent_node = parent_node
         @options = options
@@ -14,7 +14,14 @@ module NxtSchema
         @errors = {}
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
-        block.call(self) if block_given?
+
+        if block_given?
+          if block.arity == 0
+            instance_exec(&block)
+          else
+            block.call(self)
+          end
+        end
       end
 
       attr_accessor :name,
@@ -149,6 +156,10 @@ module NxtSchema
             acc[current_namespace] += Array(val)
           end
         end
+      end
+
+      def default_name
+        parent_node ? parent_node.size + 1 : :root
       end
     end
   end

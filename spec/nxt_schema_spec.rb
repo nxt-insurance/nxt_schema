@@ -160,4 +160,138 @@ RSpec.describe NxtSchema do
       end
     end
   end
+
+  context 'when an anonymous schema is nested' do
+    subject do
+      NxtSchema.new(:company) do
+        requires(:name, :String)
+        requires(:industry, :String)
+
+        optional(:headquarter, :Hash, default: {}, maybe: nil) do |headquarter|
+          street_number_validator = lambda do |node, street_number|
+            if headquarter[:street] == 'Langer Anger' && street_number <= 0
+              node.add_error('Street number must be greater 0')
+            end
+          end
+
+          headquarter.node(:street, :String)
+          headquarter.node(:street_number, :Integer, validate: street_number_validator)
+        end
+
+        nodes(:employee_names) do
+          schema(:employee_name) do
+            node(:first_name, :String)
+            node(:last_name, :String)
+          end
+
+          schema(:employee_name) do
+            node(:firstname, :String)
+            node(:lastname, :String)
+          end
+        end
+      end
+    end
+
+    describe '#validate' do
+      context 'when there are no errors' do
+        let(:schema) do
+          {
+            name: 'getsafe',
+            industry: 'insurance',
+            headquarter: {
+              street: 'Langer Anger',
+              street_number: 6
+            },
+            employee_names: [
+              { firstname: 'Raphael', lastname: 'Kallensee' },
+              { first_name: 'Raphael', last_name: 'Kallensee' },
+              { first_name: 'Nils', last_name: 'Sommer' },
+              { first_name: 'Lütfi', last_name: 'Demirci' }
+            ]
+          }
+        end
+
+        it do
+          subject.apply(schema)
+          expect(subject.validation_errors?).to be_falsey
+          expect(subject.validation_errors).to be_empty
+          expect(subject.value_store).to eq(schema)
+        end
+      end
+
+      context 'when there are errors' do
+        let(:schema) do
+          {
+            name: 'getsafe',
+            industry: 'insurance',
+            headquarter: {
+              street: 'Langer Anger',
+              street_number: '6'
+            },
+            employee_names: [
+              { first_name: 'Raphael', last_name: 'Kallensee' },
+              { first_name: 'Nils' },
+              { }
+            ]
+          }
+        end
+
+        it do
+          subject.apply(schema)
+
+          expect(subject.validation_errors?).to be_truthy
+          # TODO: We should merge the schema_errors for multiple schemas in an array
+          expect(subject.validation_errors).to eq(
+                                                 {:headquarter=>{:street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]}},
+                                                  :employee_names=>
+                                                    {1=>
+                                                       {:employee_name=>
+                                                          {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
+                                                     2=>{:employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}}
+                                               )
+        end
+      end
+
+      context 'with violation of custom validations' do
+        let(:schema) do
+          {
+            name: 'getsafe',
+            industry: 'insurance',
+            headquarter: {
+              street: 'Langer Anger',
+              street_number: 0
+            },
+            employee_names: [
+              { firstname: 'Raphael', lastname: 'Kallensee' },
+              { first_name: 'Nils' },
+              { }
+            ]
+          }
+        end
+
+        it do
+          subject.apply(schema)
+          expect(subject.validation_errors).to eq(
+                                                 {
+                                                   :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
+                                                   :employee_names=> {
+                                                     1=> {
+                                                       :employee_name=> {:itself=>[
+                                                         "Required key :firstname is missing in {:first_name=>\"Nils\"}",
+                                                         "Required key :lastname is missing in {:first_name=>\"Nils\"}"
+                                                       ]}
+                                                     },
+                                                     2=> {
+                                                       :employee_name=>{:itself=>[
+                                                         "Required key :firstname is missing in {}",
+                                                         "Required key :lastname is missing in {}"
+                                                       ]}
+                                                     }
+                                                   }
+                                                 }
+                                               )
+        end
+      end
+    end
+  end
 end
