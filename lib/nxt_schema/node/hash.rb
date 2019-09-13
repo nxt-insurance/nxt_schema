@@ -9,13 +9,19 @@ module NxtSchema
         super(name: name, type: NxtSchema::Type::Strict::Hash, parent_node: parent_node, **options, &block)
       end
 
+      def dup
+        result = super
+        result.store = store.deep_dup
+        result
+      end
+
       delegate_missing_to :value_store
 
       def apply(hash, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
-        self.schema_errors = parent_schema_errors[name] ||= { schema_errors_key => [] }
-        self.validation_errors = parent_validation_errors[name] ||= { schema_errors_key => [] }
+        self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
+        self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= {}
-        all_nodes << self
+        register_node
 
         if maybe_criteria_applies?(hash)
           self.value_store = parent_value_store[index_or_name] = hash

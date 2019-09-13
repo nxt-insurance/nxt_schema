@@ -99,7 +99,6 @@ RSpec.describe NxtSchema::Node::Array do
 
       it do
         subject.apply(schema)
-        binding.pry
         expect(subject.validation_errors).to eq(
           0=>
            {:parents=>

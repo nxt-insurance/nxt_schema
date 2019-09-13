@@ -11,11 +11,17 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
+      def dup
+        result = super
+        result.store = store.deep_dup
+        result
+      end
+
       def apply(value, parent_schema_errors: {}, parent_value_store: {}, parent_validation_errors: {}, index_or_name: name)
         self.schema_errors = parent_schema_errors[name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= []
-        all_nodes << self
+        register_node
         self.value = value
 
         if maybe_criteria_applies?(value)

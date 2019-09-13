@@ -13,7 +13,8 @@ module NxtSchema
       def apply(value, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
-        all_nodes << self
+
+        register_node
         self.value = value
 
         unless maybe_criteria_applies?(value)

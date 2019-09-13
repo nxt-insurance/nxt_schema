@@ -51,7 +51,6 @@ RSpec.describe NxtSchema do
 
       it do
         subject.apply(schema)
-        binding.pry
         expect(subject.validation_errors?).to be_falsey
       end
     end

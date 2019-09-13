@@ -55,15 +55,16 @@ module NxtSchema
        sorted_nodes.reverse_each(&:apply_validations)
       end
 
+      def register_node
+        all_nodes << self
+      end
+
       def apply_validations
         # We don't run validations in case there are schema errors
         # to avoid weird errors
 
         # First reject empty schema_errors
         #
-
-        p "Validating: #{name} with value: #{value}"
-        p "level: #{level} with leaf?: #{leaf?}"
 
         schema_errors.reject! { |_, v| v.empty? }
         build_validations
