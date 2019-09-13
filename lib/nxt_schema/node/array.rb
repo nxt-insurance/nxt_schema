@@ -15,6 +15,7 @@ module NxtSchema
         self.schema_errors = parent_schema_errors[name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= []
+        all_nodes << self
 
         if maybe_criteria_applies?(value)
           self.value_store = parent_value_store[index_or_name] = value
@@ -22,7 +23,7 @@ module NxtSchema
           array = type[value]
 
           if value_violates_emptiness?(array)
-            add_error("Array is not allowed to be empty")
+            add_schema_error("Array is not allowed to be empty")
           else
             array.each_with_index do |item, index|
               item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
@@ -31,7 +32,9 @@ module NxtSchema
               # a single schema => Would probably be better to merge them somehow!!!
               # Might make sense to not allow the same names for multiple schemas in an array
               store.each do |node|
-                node.apply(
+                current_node = node.dup
+
+                current_node.apply(
                   item,
                   parent_schema_errors: { schema_errors_key => [] },
                   parent_validation_errors: { schema_errors_key => [] },
@@ -39,14 +42,14 @@ module NxtSchema
                   index_or_name: index
                 )
 
-                unless node.schema_errors?
-                  schema_errors[index][node.name] = node.schema_errors
-                  validation_errors[index][node.name] = node.validation_errors
+                unless current_node.schema_errors?
+                  schema_errors[index][current_node.name] = current_node.schema_errors
+                  validation_errors[index][current_node.name] = current_node.validation_errors
                   break
                 else
                   # TODO: merge errors here instead of assigning
-                  schema_errors[index][node.name] = node.schema_errors
-                  validation_errors[index][node.name] = node.validation_errors
+                  schema_errors[index][current_node.name] = current_node.schema_errors
+                  validation_errors[index][current_node.name] = current_node.validation_errors
                 end
               end
 
@@ -55,7 +58,7 @@ module NxtSchema
             end
 
             # TODO: Setup validations here
-            validations.each do |validation|
+            Array(options.fetch(:validate, [])).each do |validation|
               validation_args = [self, array]
               validation.call(*validation_args.take(validation.arity))
             end
@@ -64,7 +67,7 @@ module NxtSchema
 
         self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error
-        add_error(error.message)
+        add_schema_error(error.message)
         self_without_empty_schema_errors
       end
 

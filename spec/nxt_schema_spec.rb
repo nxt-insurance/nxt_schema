@@ -19,7 +19,7 @@ RSpec.describe NxtSchema do
         company.optional(:headquarter, :Hash, default: {}, maybe: nil) do |headquarter|
           street_number_validator = lambda do |node, street_number|
             if headquarter[:street] == 'Langer Anger' && street_number <= 0
-              node.add_error('Street number must be greater 0')
+              node.add_schema_error('Street number must be greater 0')
             end
           end
 

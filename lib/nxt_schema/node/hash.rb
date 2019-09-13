@@ -15,6 +15,7 @@ module NxtSchema
         self.schema_errors = parent_schema_errors[name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= {}
+        all_nodes << self
 
         if maybe_criteria_applies?(hash)
           self.value_store = parent_value_store[index_or_name] = hash
@@ -33,7 +34,7 @@ module NxtSchema
 
             else
               unless node.optional?
-                add_error("Required key :#{key} is missing in #{hash}")
+                add_schema_error("Required key :#{key} is missing in #{hash}")
               end
             end
           end
@@ -41,7 +42,7 @@ module NxtSchema
 
         self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error
-        add_error(error.message)
+        add_schema_error(error.message)
         self_without_empty_schema_errors
       end
     end

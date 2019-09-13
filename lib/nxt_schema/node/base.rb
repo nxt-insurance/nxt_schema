@@ -7,8 +7,9 @@ module NxtSchema
         @options = options
         @type = type
         @schema_errors_key = options.fetch(:schema_errors_key, :itself)
-        @validations = Array(options.fetch(:validate, []))
+        @validations = []
         @level = parent_node ? parent_node.level + 1 : 0
+        @all_nodes = parent_node ? (parent_node.all_nodes || []) : []
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
         block.call(self) if block_given?
@@ -24,9 +25,10 @@ module NxtSchema
                     :validations,
                     :schema_errors_key,
                     :level,
-                    :validation_errors
+                    :validation_errors,
+                    :all_nodes
 
-      def add_error(error, index = schema_errors_key)
+      def add_schema_error(error, index = schema_errors_key)
         schema_errors[index] ||= []
         schema_errors[index] << error
 
@@ -36,6 +38,25 @@ module NxtSchema
         # error_namespace = [namespace, index_key].compact.join('.')
         # errors[error_namespace] ||= []
         # errors[error_namespace] << error
+      end
+
+      def apply_validations
+        # We don't run validations in case there are schema errors
+        # to avoid weird errors
+        unless schema_errors?
+          validations.each do |validation|
+            validation.call(self)
+          end
+        end
+
+        validation_errors.reject! { |_, v| v.empty? }
+      end
+
+      def build_validations
+        validations_from_options = Array(options.fetch(:validate, []))
+        validations_from_options.each do |validation|
+          # valiudations <<
+        end
       end
 
       def errors_on_self

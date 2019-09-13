@@ -8,7 +8,7 @@ TODO:
     => Add level to each node [X]
     => Add a second errors_store next to schema_errors 
         => node_errors should probably be renamed to schema_errors [X]
-        => add validation_errors next to schema_errors
+        => add validation_errors next to schema_errors [X]
             => validation_errors should be initialized with schema_errors
         => collect all nodes with validations in a single all_nodes store
     
