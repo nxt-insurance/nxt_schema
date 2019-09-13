@@ -4,7 +4,7 @@ RSpec.describe NxtSchema do
       let(:email_validator) do
         lambda do |node, value|
           unless value.include?('@')
-            node.add_schema_error('Email is not valid')
+            node.add_error('Email is not valid')
           end
         end
       end
