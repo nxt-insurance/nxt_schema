@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Base
-      def initialize(name: default_name, type:, parent_node:, **options, &block)
+      def initialize(name: name_from_index, type:, parent_node:, **options, &block)
         @name = name
         @parent_node = parent_node
         @options = options
@@ -158,8 +158,16 @@ module NxtSchema
         end
       end
 
-      def default_name
-        parent_node ? parent_node.size + 1 : :root
+      def name_from_index
+        if parent_node
+          if parent_node.is_a?(NxtSchema::Node::Array)
+            size + 1
+          else
+            raise ArgumentError, "Nodes with parent_node: #{parent_node} cannot be anonymous"
+          end
+        else
+          :root
+        end
       end
     end
   end

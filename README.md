@@ -11,7 +11,6 @@ TODO:
 - Validator Registry
 - Type Registry
 - Structure Errors
-- Instance exec if block does not accept argument
 - Enforce uniqueness of names of multiple schemas in array nodes?!
 - Implement default values - Should also be checked against the schema
 - Can we have nodes in the schema depending on others => One node is required / optional if the other is present or contains a certain value?
