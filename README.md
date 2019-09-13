@@ -4,6 +4,7 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 
 TODO:    
 - Test all methods of all nodes
+- Allow attr_setter that return the node for maybe, type, default and validate
 - Merge errors of array nodes with multiple schemas
 - It's not possible to collect namespace errors while walking the tree
 - Implement maybe
