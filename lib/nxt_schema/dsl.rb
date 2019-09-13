@@ -1,14 +1,12 @@
 module NxtSchema
-  def new(&block)
-    Node::Root.new(name: nil, parent_node: nil, &block)
+  def root(name = :root, &block)
+    Node::Hash.new(name: name, parent_node: nil, &block)
   end
 
-  def root(&block)
-    Node::Hash.new(name: :root, parent_node: nil, &block)
-  end
+  alias_method :new, :root
 
-  def roots(&block)
-    Node::Array.new(name: :roots, parent_node: nil, &block)
+  def roots(name = :roots, &block)
+    Node::Array.new(name: name, parent_node: nil, &block)
   end
 
   module_function :new, :root, :roots

@@ -23,11 +23,15 @@ module NxtSchema
                     :errors,
                     :validations,
                     :schema_errors_key,
-                    :level
+                    :level,
+                    :validation_errors
 
       def add_error(error, index = schema_errors_key)
         schema_errors[index] ||= []
         schema_errors[index] << error
+
+        validation_errors[index] ||= []
+        validation_errors[index] << error
 
         # error_namespace = [namespace, index_key].compact.join('.')
         # errors[error_namespace] ||= []

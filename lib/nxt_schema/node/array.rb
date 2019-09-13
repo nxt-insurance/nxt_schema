@@ -11,8 +11,9 @@ module NxtSchema
 
       delegate_missing_to :value_store
 
-      def apply(value, parent_schema_errors: {}, parent_value_store: {}, index_or_name: name)
+      def apply(value, parent_schema_errors: {}, parent_value_store: {}, parent_validation_errors: {}, index_or_name: name)
         self.schema_errors = parent_schema_errors[name] ||= { schema_errors_key => [] }
+        self.validation_errors = parent_validation_errors[name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= []
 
         if maybe_criteria_applies?(value)
@@ -24,25 +25,36 @@ module NxtSchema
             add_error("Array is not allowed to be empty")
           else
             array.each_with_index do |item, index|
-              item_errors = schema_errors[index] ||= { schema_errors_key => [] }
-
+              item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
+              item_validation_errors = validation_errors[index] ||= { schema_errors_key => [] }
               # When an array provides multiple schemas, and none is valid we only return the errors for
               # a single schema => Would probably be better to merge them somehow!!!
               # Might make sense to not allow the same names for multiple schemas in an array
               store.each do |node|
-                node.apply(item, parent_schema_errors: { schema_errors_key => [] }, parent_value_store: value_store, index_or_name: index)
+                node.apply(
+                  item,
+                  parent_schema_errors: { schema_errors_key => [] },
+                  parent_validation_errors: { schema_errors_key => [] },
+                  parent_value_store: value_store,
+                  index_or_name: index
+                )
+
                 unless node.schema_errors?
                   schema_errors[index][node.name] = node.schema_errors
+                  validation_errors[index][node.name] = node.validation_errors
                   break
                 else
                   # TODO: merge errors here instead of assigning
                   schema_errors[index][node.name] = node.schema_errors
+                  validation_errors[index][node.name] = node.validation_errors
                 end
               end
 
-              item_errors.reject! { |_, v| v.empty? }
+              # item_validation_errors.reject! { |_, v| v.empty? }
+              item_schema_errors.reject! { |_, v| v.empty? }
             end
 
+            # TODO: Setup validations here
             validations.each do |validation|
               validation_args = [self, array]
               validation.call(*validation_args.take(validation.arity))

@@ -12,32 +12,30 @@ RSpec.describe NxtSchema do
     # end
 
     subject do
-      NxtSchema.new do |root|
-        root.schema(:company) do |company|
-          company.requires(:name, :String)
-          company.requires(:industry, :String)
+      NxtSchema.new(:company) do |company|
+        company.requires(:name, :String)
+        company.requires(:industry, :String)
 
-          company.optional(:headquarter, :Hash, default: {}, maybe: nil) do |headquarter|
-            street_number_validator = lambda do |node, street_number|
-              if headquarter[:street] == 'Langer Anger' && street_number <= 0
-                node.add_error('Street number must be greater 0')
-              end
+        company.optional(:headquarter, :Hash, default: {}, maybe: nil) do |headquarter|
+          street_number_validator = lambda do |node, street_number|
+            if headquarter[:street] == 'Langer Anger' && street_number <= 0
+              node.add_error('Street number must be greater 0')
             end
-
-            headquarter.node(:street, :String)
-            headquarter.node(:street_number, :Integer, validate: street_number_validator) # validator(:gte, -> { DateTime.current })
           end
 
-          company.nodes(:employee_names) do |nodes|
-            nodes.node(:employee_name, :Hash) do |employee_name|
-              employee_name.node(:first_name, :String)
-              employee_name.node(:last_name, :String)
-            end
+          headquarter.node(:street, :String)
+          headquarter.node(:street_number, :Integer, validate: street_number_validator) # validator(:gte, -> { DateTime.current })
+        end
 
-            nodes.schema(:employee_name) do |employee_name|
-              employee_name.node(:firstname, :String)
-              employee_name.node(:lastname, :String)
-            end
+        company.nodes(:employee_names) do |nodes|
+          nodes.node(:employee_name, :Hash) do |employee_name|
+            employee_name.node(:first_name, :String)
+            employee_name.node(:last_name, :String)
+          end
+
+          nodes.schema(:employee_name) do |employee_name|
+            employee_name.node(:firstname, :String)
+            employee_name.node(:lastname, :String)
           end
         end
       end
@@ -65,20 +63,18 @@ RSpec.describe NxtSchema do
       context 'when there are no errors' do
         let(:schema) do
           {
-            company: {
-              name: 'getsafe',
-              industry: 'insurance',
-              headquarter: {
-                street: 'Langer Anger',
-                street_number: 6
-              },
-              employee_names: [
-                { firstname: 'Raphael', lastname: 'Kallensee' },
-                { first_name: 'Raphael', last_name: 'Kallensee' },
-                { first_name: 'Nils', last_name: 'Sommer' },
-                { first_name: 'Lütfi', last_name: 'Demirci' }
-              ]
-            }
+            name: 'getsafe',
+            industry: 'insurance',
+            headquarter: {
+              street: 'Langer Anger',
+              street_number: 6
+            },
+            employee_names: [
+              { firstname: 'Raphael', lastname: 'Kallensee' },
+              { first_name: 'Raphael', last_name: 'Kallensee' },
+              { first_name: 'Nils', last_name: 'Sommer' },
+              { first_name: 'Lütfi', last_name: 'Demirci' }
+            ]
           }
         end
 
@@ -93,19 +89,17 @@ RSpec.describe NxtSchema do
       context 'when there are errors' do
         let(:schema) do
           {
-            company: {
-              name: 'getsafe',
-              industry: 'insurance',
-              headquarter: {
-                street: 'Langer Anger',
-                street_number: '6'
-              },
-              employee_names: [
-                { first_name: 'Raphael', last_name: 'Kallensee' },
-                { first_name: 'Nils' },
-                { }
-              ]
-            }
+            name: 'getsafe',
+            industry: 'insurance',
+            headquarter: {
+              street: 'Langer Anger',
+              street_number: '6'
+            },
+            employee_names: [
+              { first_name: 'Raphael', last_name: 'Kallensee' },
+              { first_name: 'Nils' },
+              { }
+            ]
           }
         end
 
@@ -114,57 +108,54 @@ RSpec.describe NxtSchema do
           expect(subject.schema_errors?).to be_truthy
           # TODO: We should merge the schema_errors for multiple schemas in an array
           expect(subject.schema_errors).to eq(
-            :company=>
-              {:headquarter=>{:street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]}},
-                :employee_names=>
-                  {1=>
-                    {:employee_name=>
+             {:headquarter=>{:street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]}},
+              :employee_names=>
+                {1=>
+                   {:employee_name=>
                       {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
-                  2=>{:employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}}
-          )
+                 2=>{:employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}}
+           )
         end
       end
 
       context 'with violation of custom validations' do
         let(:schema) do
           {
-            company: {
-              name: 'getsafe',
-              industry: 'insurance',
-              headquarter: {
-                street: 'Langer Anger',
-                street_number: 0
-              },
-              employee_names: [
-                { firstname: 'Raphael', lastname: 'Kallensee' },
-                { first_name: 'Nils' },
-                { }
-              ]
-            }
+            name: 'getsafe',
+            industry: 'insurance',
+            headquarter: {
+              street: 'Langer Anger',
+              street_number: 0
+            },
+            employee_names: [
+              { firstname: 'Raphael', lastname: 'Kallensee' },
+              { first_name: 'Nils' },
+              { }
+            ]
           }
         end
 
         it do
           subject.apply(schema)
           expect(subject.schema_errors).to eq(
-            :company => {
-              :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
-              :employee_names=> {
-                1=> {
-                  :employee_name=> {:itself=>[
-                    "Required key :firstname is missing in {:first_name=>\"Nils\"}",
-                    "Required key :lastname is missing in {:first_name=>\"Nils\"}"
-                  ]}
-                },
-                2=> {
-                  :employee_name=>{:itself=>[
-                    "Required key :firstname is missing in {}",
-                    "Required key :lastname is missing in {}"
-                  ]}
-                }
-              }
-            }
-          )
+                                             {
+                                               :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
+                                               :employee_names=> {
+                                                 1=> {
+                                                   :employee_name=> {:itself=>[
+                                                     "Required key :firstname is missing in {:first_name=>\"Nils\"}",
+                                                     "Required key :lastname is missing in {:first_name=>\"Nils\"}"
+                                                   ]}
+                                                 },
+                                                 2=> {
+                                                   :employee_name=>{:itself=>[
+                                                     "Required key :firstname is missing in {}",
+                                                     "Required key :lastname is missing in {}"
+                                                   ]}
+                                                 }
+                                               }
+                                             }
+                                           )
         end
       end
     end
