@@ -7,14 +7,22 @@ module NxtSchema
     module HasSubNodes
       attr_accessor :store, :value_store
 
-      def node(name, type, **options, &block)
-        child_node = case type.to_s.to_sym
+      def node(name, type_or_node, **options, &block)
+        child_node = case type_or_node.to_s.to_sym
         when :Hash
           NxtSchema::Node::Hash.new(name: name, parent_node: self, **options, &block)
         when :Array
           NxtSchema::Node::Array.new(name: name, parent_node: self, **options, &block)
         else
-          NxtSchema::Node::Leaf.new(name: name, type: type, parent_node: self, **options)
+          if type_or_node.is_a?(NxtSchema::Node::Base)
+            node = type_or_node.dup
+            node.options.merge!(options)
+            node.name = name
+            node.parent_node = self
+            node
+          else
+            NxtSchema::Node::Leaf.new(name: name, type: type_or_node, parent_node: self, **options)
+          end
         end
 
         store.push(child_node)
