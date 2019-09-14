@@ -39,14 +39,16 @@ Or install it yourself as:
 
 ```ruby
 # Schema with hash root
-NxtSchema.root(:company) do 
+schema = NxtSchema.root(:company) do 
   requires(:name, :String)  
   requires(:value, :Integer).maybe(nil)  
   requires(:in_insure_tech, :Boolean).default(false)
+  
   schema(:address) do
     requires(:street, :String)
     requires(:street_number, :Integer)
-  end  
+  end
+    
   nodes(:employees) do
     schema(:employee) do
       requires(:first_name, :String)
@@ -54,7 +56,7 @@ NxtSchema.root(:company) do
       optional(:email, :String).validate(
         lambda do |node|
           if node[:email] && !node[:email].include?('@')
-            add_error("Email not valid: #{node[:email]}")  
+            node.add_error("Email not valid: #{node[:email]}")  
           end
         end
       )
@@ -63,12 +65,15 @@ NxtSchema.root(:company) do
 end
   
 # Schema with array root
-NxtSchema.roots(:companies) do
+schema = NxtSchema.roots(:companies) do
   schema(:company) do
     requires(:name, :String)  
     requires(:value, :Integer).maybe(nil)
   end
 end
+
+schema.apply(your: 'values here')
+schema.errors # { 'name.spaced.key': ['all the errors'] }
 ```
 
 ## Development
