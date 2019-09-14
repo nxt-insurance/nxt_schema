@@ -37,7 +37,39 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+# Schema with hash root
+NxtSchema.root(:company) do 
+  requires(:name, :String)  
+  requires(:value, :Integer).maybe(nil)  
+  requires(:in_insure_tech, :Boolean).default(false)
+  schema(:address) do
+    requires(:street, :String)
+    requires(:street_number, :Integer)
+  end  
+  nodes(:employees) do
+    schema(:employee) do
+      requires(:first_name, :String)
+      requires(:last_name, :String)
+      optional(:email, :String).validate(
+        lambda do |node|
+          if node[:email] && !node[:email].include?('@')
+            add_error("Email not valid: #{node[:email]}")  
+          end
+        end
+      )
+    end
+  end
+end
+  
+# Schema with array root
+NxtSchema.roots(:companies) do
+  schema(:company) do
+    requires(:name, :String)  
+    requires(:value, :Integer).maybe(nil)
+  end
+end
+```
 
 ## Development
 
