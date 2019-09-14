@@ -34,7 +34,7 @@ module NxtSchema
               # Might make sense to not allow the same names for multiple schemas in an array
               template_store.each do |node_name, node|
                 current_node = node.dup
-                current_node_store[node_name] = node
+                current_node_store[node_name] = current_node
                 # register_node(current_parent_node)
                 # current_parent_node.value_store = value_store.deep_dup
 
@@ -48,9 +48,13 @@ module NxtSchema
                 )
 
                 unless current_node.schema_errors?
-                  schema_errors[index] = { schema_errors_key => [] }
-                  item_schema_errors = schema_errors[index]
-                  validation_errors[index] = { schema_errors_key => [] }
+                  current_node_store.each do |node_name, node|
+                    node.schema_errors = { }
+                    node.validation_errors = { }
+                    item_schema_errors = schema_errors[index][node_name] = node.schema_errors
+                    validation_errors[index][node_name] = node.validation_errors
+                  end
+
                   break
                 else
                   schema_errors[index][node_name] = current_node.schema_errors

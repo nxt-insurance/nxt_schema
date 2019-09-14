@@ -80,7 +80,6 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          binding.pry
           expect(subject.validation_errors?).to be_falsey
           expect(subject.validation_errors).to be_empty
           expect(subject.value_store).to eq(schema)

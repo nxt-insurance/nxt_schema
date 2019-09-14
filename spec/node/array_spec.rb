@@ -234,38 +234,80 @@ RSpec.describe NxtSchema::Node::Array do
   end
 
   describe 'with multiple schemas in an array node' do
-    subject do
-      NxtSchema.nodes(:furniture) do
-        schema(:table) do
-          requires(:height, :Integer)
+    context 'with multiple hash schemas' do
+      subject do
+        NxtSchema.nodes(:furniture) do
+          schema(:table) do
+            requires(:height, :Integer)
+          end
+          schema(:cupboard) do
+            requires(:doors, :Integer)
+          end
+          schema(:couch) do
+            requires(:seats, :Integer)
+          end
         end
-        schema(:cupboard) do
-          requires(:doors, :Integer)
-        end
-        schema(:couch) do
-          requires(:seats, :Integer)
-        end
+      end
+
+      let(:schema) do
+        [
+          { height: 100 },
+          { height: 90 },
+          { doors: 3 },
+          { doors: 5 },
+          { seats: 3 },
+          { seats: 4 },
+          { amount: 12 },
+          { other: 12 },
+          { },
+          nil
+        ]
+      end
+
+      it 'merges the errors of all nodes' do
+        subject.apply(schema)
+        expect(subject.errors).to eq(
+                                    "furniture.6.table"=>["Required key :height is missing in {:amount=>12}"],
+                                    "furniture.6.cupboard"=>["Required key :doors is missing in {:amount=>12}"],
+                                    "furniture.6.couch"=>["Required key :seats is missing in {:amount=>12}"],
+                                    "furniture.7.table"=>["Required key :height is missing in {:other=>12}"],
+                                    "furniture.7.cupboard"=>["Required key :doors is missing in {:other=>12}"],
+                                    "furniture.7.couch"=>["Required key :seats is missing in {:other=>12}"],
+                                    "furniture.8.table"=>["Required key :height is missing in {}"],
+                                    "furniture.8.cupboard"=>["Required key :doors is missing in {}"],
+                                    "furniture.8.couch"=>["Required key :seats is missing in {}"],
+                                    "furniture.9.table"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"],
+                                    "furniture.9.cupboard"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"],
+                                    "furniture.9.couch"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"]
+                                  )
       end
     end
 
-    let(:schema) do
-      [
-        { height: 100 },
-        { height: 90 },
-        { doors: 3 },
-        { doors: 5 },
-        { seats: 3 },
-        { seats: 4 },
-        { amount: 12 },
-        { other: 12 },
-        { },
-        nil
-      ]
-    end
+    context 'with different leaf nodes' do
+      subject do
+        NxtSchema.roots(:diverse) do
+          node(:name, :String)
+          node(:age, :Integer)
+        end
+      end
 
-    it 'merges the errors of all nodes' do
-      subject.apply(schema)
-      binding.pry
+      let(:schema) do
+        [17, 30, 30, 'Nils', 'Rapha', 'Andy', nil, false, {}, []]
+      end
+
+      it do
+        subject.apply(schema)
+        expect(subject.errors).to eq(
+          "diverse.6.name"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"],
+          "diverse.6.age"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Integer"],
+          "diverse.7.name"=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"],
+          "diverse.7.age"=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::Integer"],
+          "diverse.8.name"=>["Could not coerce '{}' into type: NxtSchema::Type::Strict::String"],
+          "diverse.8.age"=>["Could not coerce '{}' into type: NxtSchema::Type::Strict::Integer"],
+          "diverse.9.name"=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::String"],
+          "diverse.9.age"=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::Integer"]
+        )
+      end
     end
   end
 end
