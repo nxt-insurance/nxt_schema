@@ -2,7 +2,7 @@ module NxtSchema
   module Node
     class Array < Node::Base
       def initialize(name:, parent_node:, **options, &block)
-        @store = []
+        @template_store = []
 
         super(name: name, type: NxtSchema::Type::Strict::Array, parent_node: parent_node, **options, &block)
       end
@@ -11,7 +11,7 @@ module NxtSchema
 
       def dup
         result = super
-        result.store = store.deep_dup
+        result.template_store = template_store.deep_dup
         result.options = options.deep_dup
         result
       end
@@ -39,7 +39,7 @@ module NxtSchema
               # When an array provides multiple schemas, and none is valid we only return the errors for
               # a single schema => Would probably be better to merge them somehow!!!
               # Might make sense to not allow the same names for multiple schemas in an array
-              store.each do |node|
+              template_store.each do |node|
                 current_node = node.dup
                 # register_node(current_parent_node)
                 # current_parent_node.value_store = value_store.deep_dup

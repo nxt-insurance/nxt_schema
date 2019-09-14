@@ -5,7 +5,7 @@ require_relative 'leaf'
 module NxtSchema
   module Node
     module HasSubNodes
-      attr_accessor :store, :value_store
+      attr_accessor :template_store, :value_store
 
       def node(name, type_or_node, **options, &block)
         child_node = case type_or_node.to_s.to_sym
@@ -25,7 +25,7 @@ module NxtSchema
           end
         end
 
-        store.push(child_node)
+        template_store.push(child_node)
 
         child_node
       end

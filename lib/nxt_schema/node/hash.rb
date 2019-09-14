@@ -2,14 +2,14 @@ module NxtSchema
   module Node
     class Hash < Node::Base
       def initialize(name:, parent_node:, **options, &block)
-        @store = HashNodeStore.new
+        @template_store = HashNodeStore.new
 
         super(name: name, type: NxtSchema::Type::Strict::Hash, parent_node: parent_node, **options, &block)
       end
 
       def dup
         result = super
-        result.store = store.deep_dup
+        result.template_store = template_store.deep_dup
         result.options = options.deep_dup
         result
       end
@@ -30,7 +30,7 @@ module NxtSchema
           hash = type[hash]
           self.value = hash
 
-          store.each do |key, node|
+          template_store.each do |key, node|
             if hash.key?(key)
 
               node.apply(
