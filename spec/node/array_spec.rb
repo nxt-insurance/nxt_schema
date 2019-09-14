@@ -232,4 +232,40 @@ RSpec.describe NxtSchema::Node::Array do
   describe '#default' do
 
   end
+
+  describe 'with multiple schemas in an array node' do
+    subject do
+      NxtSchema.nodes(:furniture) do
+        schema(:table) do
+          requires(:height, :Integer)
+        end
+        schema(:cupboard) do
+          requires(:doors, :Integer)
+        end
+        schema(:couch) do
+          requires(:seats, :Integer)
+        end
+      end
+    end
+
+    let(:schema) do
+      [
+        { height: 100 },
+        { height: 90 },
+        { doors: 3 },
+        { doors: 5 },
+        { seats: 3 },
+        { seats: 4 },
+        { amount: 12 },
+        { other: 12 },
+        { },
+        nil
+      ]
+    end
+
+    it 'merges the errors of all nodes' do
+      subject.apply(schema)
+      binding.pry
+    end
+  end
 end

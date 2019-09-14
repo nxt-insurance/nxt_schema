@@ -2,7 +2,7 @@ module NxtSchema
   module Node
     class Hash < Node::Base
       def initialize(name:, parent_node:, **options, &block)
-        @template_store = HashNodeStore.new
+        @template_store = TemplateStore.new
 
         super(name: name, type: NxtSchema::Type::Strict::Hash, parent_node: parent_node, **options, &block)
       end

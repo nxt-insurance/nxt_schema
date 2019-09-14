@@ -25,6 +25,7 @@ module NxtSchema
           end
         end
 
+        # TODO: Should we check if there is a
         template_store.push(child_node)
 
         child_node

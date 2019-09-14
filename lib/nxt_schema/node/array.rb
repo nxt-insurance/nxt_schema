@@ -2,7 +2,7 @@ module NxtSchema
   module Node
     class Array < Node::Base
       def initialize(name:, parent_node:, **options, &block)
-        @template_store = []
+        @template_store = TemplateStore.new
 
         super(name: name, type: NxtSchema::Type::Strict::Array, parent_node: parent_node, **options, &block)
       end
@@ -24,14 +24,17 @@ module NxtSchema
           if value_violates_emptiness?(array)
             add_schema_error("Array is not allowed to be empty")
           else
+            current_node_store = {}
+
             array.each_with_index do |item, index|
               item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
               validation_errors[index] ||= { schema_errors_key => [] }
               # When an array provides multiple schemas, and none is valid we only return the errors for
               # a single schema => Would probably be better to merge them somehow!!!
               # Might make sense to not allow the same names for multiple schemas in an array
-              template_store.each do |node|
+              template_store.each do |node_name, node|
                 current_node = node.dup
+                current_node_store[node_name] = node
                 # register_node(current_parent_node)
                 # current_parent_node.value_store = value_store.deep_dup
 
@@ -45,13 +48,13 @@ module NxtSchema
                 )
 
                 unless current_node.schema_errors?
-                  schema_errors[index][current_node.name] = current_node.schema_errors
-                  validation_errors[index][current_node.name] = current_node.validation_errors
+                  schema_errors[index] = { schema_errors_key => [] }
+                  item_schema_errors = schema_errors[index]
+                  validation_errors[index] = { schema_errors_key => [] }
                   break
                 else
-                  # TODO: merge errors here instead of assigning
-                  schema_errors[index][current_node.name] = current_node.schema_errors
-                  validation_errors[index][current_node.name] = current_node.validation_errors
+                  schema_errors[index][node_name] = current_node.schema_errors
+                  validation_errors[index][node_name] = current_node.validation_errors
                 end
               end
 

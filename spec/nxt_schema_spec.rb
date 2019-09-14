@@ -28,7 +28,7 @@ RSpec.describe NxtSchema do
         end
 
         company.nodes(:employee_names) do |nodes|
-          nodes.node(:employee_name, :Hash) do |employee_name|
+          nodes.node(:employee_name_underscore, :Hash) do |employee_name|
             employee_name.node(:first_name, :String)
             employee_name.node(:last_name, :String)
           end
@@ -80,6 +80,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
+          binding.pry
           expect(subject.validation_errors?).to be_falsey
           expect(subject.validation_errors).to be_empty
           expect(subject.value_store).to eq(schema)
@@ -106,14 +107,21 @@ RSpec.describe NxtSchema do
         it do
           subject.apply(schema)
           expect(subject.validation_errors?).to be_truthy
-          # TODO: We should merge the schema_errors for multiple schemas in an array
           expect(subject.validation_errors).to eq(
-             {:headquarter=>{:street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]}},
-              :employee_names=>
-                {1=>
-                   {:employee_name=>
-                      {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
-                 2=>{:employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}}
+            :headquarter => {
+              :street_number => {
+                :itself => ["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]
+              }
+            },
+            :employee_names => {
+              1 => {
+                :employee_name_underscore => { :itself => ["Required key :last_name is missing in {:first_name=>\"Nils\"}"] },
+                :employee_name => { :itself => ["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"] } },
+              2 => {
+                :employee_name_underscore => { :itself => ["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"] },
+                :employee_name => { :itself => ["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"] }
+              }
+            }
            )
         end
       end
@@ -138,24 +146,16 @@ RSpec.describe NxtSchema do
         it do
           subject.apply(schema)
           expect(subject.validation_errors).to eq(
-                                             {
-                                               :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
-                                               :employee_names=> {
-                                                 1=> {
-                                                   :employee_name=> {:itself=>[
-                                                     "Required key :firstname is missing in {:first_name=>\"Nils\"}",
-                                                     "Required key :lastname is missing in {:first_name=>\"Nils\"}"
-                                                   ]}
-                                                 },
-                                                 2=> {
-                                                   :employee_name=>{:itself=>[
-                                                     "Required key :firstname is missing in {}",
-                                                     "Required key :lastname is missing in {}"
-                                                   ]}
-                                                 }
-                                               }
-                                             }
-                                           )
+           :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
+           :employee_names=>
+             {1=>
+                {:employee_name_underscore=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Nils\"}"]},
+                 :employee_name=>
+                   {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
+              2=>
+                {:employee_name_underscore=>{:itself=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"]},
+                 :employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}
+          )
         end
       end
     end
@@ -179,7 +179,7 @@ RSpec.describe NxtSchema do
         end
 
         nodes(:employee_names) do
-          schema(:employee_name) do
+          schema(:employee_name_underscore) do
             node(:first_name, :String)
             node(:last_name, :String)
           end
@@ -240,15 +240,21 @@ RSpec.describe NxtSchema do
           subject.apply(schema)
 
           expect(subject.validation_errors?).to be_truthy
-          # TODO: We should merge the schema_errors for multiple schemas in an array
           expect(subject.validation_errors).to eq(
-                                                 {:headquarter=>{:street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]}},
-                                                  :employee_names=>
-                                                    {1=>
-                                                       {:employee_name=>
-                                                          {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
-                                                     2=>{:employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}}
-                                               )
+            :headquarter => {
+              :street_number => { :itself => ["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"] }
+            },
+            :employee_names => {
+              1 => {
+                :employee_name_underscore => { :itself => ["Required key :last_name is missing in {:first_name=>\"Nils\"}"] },
+                :employee_name => { :itself => ["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"] }
+              },
+              2 => {
+                :employee_name_underscore => { :itself => ["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"] },
+                :employee_name => { :itself => ["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"] }
+              }
+            }
+          )
         end
       end
 
@@ -272,24 +278,16 @@ RSpec.describe NxtSchema do
         it do
           subject.apply(schema)
           expect(subject.validation_errors).to eq(
-                                                 {
-                                                   :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
-                                                   :employee_names=> {
-                                                     1=> {
-                                                       :employee_name=> {:itself=>[
-                                                         "Required key :firstname is missing in {:first_name=>\"Nils\"}",
-                                                         "Required key :lastname is missing in {:first_name=>\"Nils\"}"
-                                                       ]}
-                                                     },
-                                                     2=> {
-                                                       :employee_name=>{:itself=>[
-                                                         "Required key :firstname is missing in {}",
-                                                         "Required key :lastname is missing in {}"
-                                                       ]}
-                                                     }
-                                                   }
-                                                 }
-                                               )
+            :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
+            :employee_names=>
+              {1=>
+                  {:employee_name_underscore=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Nils\"}"]},
+                  :employee_name=>
+                    {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
+                2=>
+                  {:employee_name_underscore=>{:itself=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"]},
+                  :employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}
+          )
         end
       end
     end

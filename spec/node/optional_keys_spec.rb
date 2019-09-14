@@ -89,7 +89,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          # TODO: Proper error messages for optional evals
+          binding.pry
           expect(subject.errors).to eq(
             "root.employees.0.employee"=>["Required key missing!"],
             "root.employees.1.employee"=>["Required key missing!"],
