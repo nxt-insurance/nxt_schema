@@ -60,11 +60,11 @@ RSpec.describe NxtSchema do
 
     context 'when keys in the schema are conditionally optional' do
       subject do
-        NxtSchema.root do |company|
-          company.nodes(:employees) do |employees|
-            employees.schema(:employee) do |employee|
-              employee.node(:name, :String)
-              employee.node(:email, :String).optional ->(node) { node[:name] == 'Andy' }
+        NxtSchema.root do
+          nodes(:employees) do
+            schema(:employee) do
+              node(:name, :String).optional ->(node) { node.empty? }
+              node(:email, :String).optional ->(node) { node[:name] == 'Andy' }
             end
           end
         end
@@ -77,16 +77,27 @@ RSpec.describe NxtSchema do
               street: 'Langer Anger'
             },
             employees: [
+              { },
+              { email: 'andy@awesome.com' },
               { name: 'Andy' },
               { name: 'Nils' },
-              { name: 'Raphael', email: 'rapha@kallensee.de' }
+              { name: 'Raphael', email: 'rapha@kallensee.de' },
+              nil,
+              'Here'
             ]
           }
         end
 
         it do
           subject.apply(schema)
-          expect(subject.errors).to eq("root.employees.1.employee"=>["Required key missing!"])
+          # TODO: Proper error messages for optional evals
+          expect(subject.errors).to eq(
+            "root.employees.0.employee"=>["Required key missing!"],
+            "root.employees.1.employee"=>["Required key missing!"],
+            "root.employees.3.employee"=>["Required key missing!"],
+            "root.employees.5.employee"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"],
+            "root.employees.6.employee"=>["Could not coerce 'Here' into type: NxtSchema::Type::Strict::Hash"]
+          )
         end
       end
     end
