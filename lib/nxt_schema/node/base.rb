@@ -43,6 +43,12 @@ module NxtSchema
         self
       end
 
+      def optional(optional_value, &block)
+        options.merge!(optional: optional_value)
+        evaluate_block(block) if block_given?
+        self
+      end
+
       def validate(*validators, &block)
         add_validators(*validators)
         evaluate_block(block) if block_given?

@@ -13,7 +13,7 @@ RSpec.describe NxtSchema do
         NxtSchema.root do |person|
           person.requires(:first_name, :String)
           person.optional(:last_name, :String)
-          person.optional(:email, :String, validate: email_validator)
+          person.optional(:email, :String).validate(email_validator)
         end
       end
 
@@ -64,7 +64,7 @@ RSpec.describe NxtSchema do
           company.nodes(:employees) do |employees|
             employees.schema(:employee) do |employee|
               employee.node(:name, :String)
-              employee.node(:email, :String, optional: ->(node) { node[:name] == 'Andy' })
+              employee.node(:email, :String).optional ->(node) { node[:name] == 'Andy' }
             end
           end
         end
