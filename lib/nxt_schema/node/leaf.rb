@@ -10,16 +10,20 @@ module NxtSchema
         true
       end
 
-      def apply(value, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
+      def apply(value, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
+        self.parent_node = parent_node
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
 
         register_node
         self.value = value
 
-        unless maybe_criteria_applies?(value)
+        if !maybe_criteria_applies?(value)
           value = type[value]
           self.value = value
+        elsif options[:optional].respond_to?(:call)
+          # TODO: Implement proper optional leafs
+          add_validators(OptionalNodeValidator.new(options[:optional]))
         end
 
         parent_value_store[index_or_name] = value

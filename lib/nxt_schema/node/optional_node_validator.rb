@@ -7,7 +7,9 @@ module NxtSchema
 
       def call(node, value)
         evaluator_args = [node, value]
-        validator.call(*evaluator_args.take(validator.arity))
+        unless validator.call(*evaluator_args.take(validator.arity))
+          node.add_error("Required key missing!")
+        end
       end
 
       private

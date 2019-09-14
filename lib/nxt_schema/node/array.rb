@@ -14,10 +14,12 @@ module NxtSchema
       def dup
         result = super
         result.store = store.deep_dup
+        result.options = options.deep_dup
         result
       end
 
-      def apply(value, parent_schema_errors: {}, parent_value_store: {}, parent_validation_errors: {}, index_or_name: name)
+      def apply(value, parent_node: parent_node, parent_schema_errors: {}, parent_value_store: {}, parent_validation_errors: {}, index_or_name: name)
+        self.parent_node = parent_node
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= []
@@ -41,9 +43,12 @@ module NxtSchema
               # Might make sense to not allow the same names for multiple schemas in an array
               store.each do |node|
                 current_node = node.dup
+                # register_node(current_parent_node)
+                # current_parent_node.value_store = value_store.deep_dup
 
                 current_node.apply(
                   item,
+                  parent_node: self,
                   parent_schema_errors: { schema_errors_key => [] },
                   parent_validation_errors: { schema_errors_key => [] },
                   parent_value_store: value_store,

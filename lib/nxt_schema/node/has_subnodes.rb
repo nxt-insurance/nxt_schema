@@ -15,7 +15,7 @@ module NxtSchema
           NxtSchema::Node::Array.new(name: name, parent_node: self, **options, &block)
         else
           if type_or_node.is_a?(NxtSchema::Node::Base)
-            node = type_or_node.dup
+            node = type_or_node.clone
             node.options.merge!(options)
             node.name = name
             node.parent_node = self

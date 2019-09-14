@@ -12,12 +12,14 @@ module NxtSchema
       def dup
         result = super
         result.store = store.deep_dup
+        result.options = options.deep_dup
         result
       end
 
       delegate_missing_to :value_store
 
-      def apply(hash, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
+      def apply(hash, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
+        self.parent_node = parent_node
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= {}
@@ -35,13 +37,18 @@ module NxtSchema
 
               node.apply(
                 hash[key],
+                parent_node: self,
                 parent_schema_errors: schema_errors,
                 parent_validation_errors: validation_errors,
                 parent_value_store: value_store
               ).schema_errors?
 
             else
-              unless node.optional?
+              # TODO: Implement proper optional hash nodes
+              if node.options[:optional].respond_to?(:call)
+                add_validators(OptionalNodeValidator.new(node.options[:optional]))
+                elsif node.options[:optional]
+                else
                 add_schema_error("Required key :#{key} is missing in #{hash}")
               end
             end
