@@ -47,6 +47,12 @@ module NxtSchema
       def schema(name, **options, &block)
         node(name, :Hash, options, &block)
       end
+
+      private
+
+      def value_violates_emptiness?(value)
+        value.empty?
+      end
     end
   end
 end

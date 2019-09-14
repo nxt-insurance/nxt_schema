@@ -1,8 +1,6 @@
 module NxtSchema
   module Node
     class Array < Node::Base
-      include NxtSchema::Node::Collection
-
       def initialize(name:, parent_node:, **options, &block)
         @store = []
 
