@@ -23,6 +23,7 @@ module NxtSchema
           self.value = value
         elsif options[:optional].respond_to?(:call)
           # TODO: Implement proper optional leafs
+          # Be aware that the arg yielded to validators should be the same in both cases ... ?!
           add_validators(OptionalNodeValidator.new(options[:optional]))
         end
 
