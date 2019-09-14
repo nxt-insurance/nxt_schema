@@ -17,7 +17,6 @@ RSpec.describe NxtSchema do
         end
       end
 
-
       context 'when the optional keys are not given' do
         let(:schema) do
           { first_name: 'Andy' }
@@ -100,6 +99,63 @@ RSpec.describe NxtSchema do
           )
         end
       end
+    end
+  end
+
+  context 'complex example' do
+    subject do
+      NxtSchema.roots(:movies) do
+        schema(:movie) do
+          requires(:title, :String)
+          nodes(:categories) do
+            requires(:category, :String)
+          end
+          nodes(:ratings) do
+            schema(:rating) do
+              optional(:stars, :Integer).validate -> (node, value) { node.add_error('Max 5 stars!') if value > 5 }
+              node(:is_good_rating, :Boolean).optional -> (node) { node[:stars] && node[:stars] < 3 }
+            end
+          end
+        end
+      end
+    end
+
+    let(:schema) do
+      [
+        {
+          title: 'Forest Gump',
+          categories: ['Comedy', 'Drama'],
+          ratings: [
+            { stars: 1 },
+            { stars: 4 },
+            { stars: 5, is_good_rating: true }
+          ]
+        },
+        {
+          title: 'Blow',
+          categories: ['Action', 'Drama'],
+          ratings: [
+            { stars: nil },
+            { stars: 4 },
+            { stars: 5, is_good_rating: true },
+            nil,
+            {}
+          ]
+        }
+      ]
+    end
+
+    it 'works' do
+      subject.apply(schema)
+      expect(subject.errors).to eq(
+        "movies.0.movie.ratings.1.rating"=>["Required key missing!"],
+        "movies.1.movie.ratings.0.rating"=>["Required key missing!"],
+        "movies.1.movie.ratings.0.rating.stars"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Integer"],
+        "movies.1.movie.ratings.1.rating"=>["Required key missing!"],
+        "movies.1.movie.ratings.3.rating"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"],
+        "movies.1.movie.ratings.4.rating"=>["Required key missing!"]
+      )
+      expect(subject.value).to eq(schema)
     end
   end
 end

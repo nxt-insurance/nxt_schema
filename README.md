@@ -6,6 +6,7 @@ TODO:
 - Check if we can easily merge schemas -> if not throw the whole thing away
     => Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
+    => Structure tests by nodes and method
 - Allow attr_setter that return the node for :maybe, :type, :default and :validate
 - Merge errors of array nodes with multiple schemas
 - Implement maybe
