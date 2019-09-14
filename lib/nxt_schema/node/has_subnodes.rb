@@ -48,6 +48,15 @@ module NxtSchema
         node(name, :Hash, options, &block)
       end
 
+      def dup
+        result = super
+        result.template_store = template_store.deep_dup
+        result.options = options.deep_dup
+        result
+      end
+
+      delegate_missing_to :value_store
+
       private
 
       def value_violates_emptiness?(value)

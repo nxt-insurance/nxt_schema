@@ -7,15 +7,6 @@ module NxtSchema
         super(name: name, type: NxtSchema::Type::Strict::Hash, parent_node: parent_node, **options, &block)
       end
 
-      def dup
-        result = super
-        result.template_store = template_store.deep_dup
-        result.options = options.deep_dup
-        result
-      end
-
-      delegate_missing_to :value_store
-
       def apply(hash, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
         self.parent_node = parent_node
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
