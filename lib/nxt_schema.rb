@@ -3,6 +3,8 @@ require "pry"
 require "dry-container"
 require "active_support/all"
 
+require "nxt_schema/registry"
+
 require "nxt_schema/errors"
 require "nxt_schema/errors/error"
 require "nxt_schema/errors/required_key_missing_error"
