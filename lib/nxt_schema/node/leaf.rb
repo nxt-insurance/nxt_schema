@@ -55,7 +55,11 @@ module NxtSchema
       private
 
       def resolve_type(name)
-        Type.resolve(name)
+        default_type_system.resolve(name)
+      rescue KeyError
+        NxtSchema::Type.resolve(name)
+      rescue KeyError
+        raise KeyError, "Could not resolve type in neither #{default_type_system} nor in #{NxtSchema::Type}"
       end
     end
   end

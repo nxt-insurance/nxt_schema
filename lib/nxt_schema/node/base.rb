@@ -5,6 +5,7 @@ module NxtSchema
         @name = name
         @parent_node = parent_node
         @options = options
+        @default_type_system = resolve_default_type_system
         @type = type
         @schema_errors_key = options.fetch(:schema_errors_key, :itself)
         @validations = []
@@ -29,7 +30,8 @@ module NxtSchema
                     :level,
                     :validation_errors,
                     :all_nodes,
-                    :value
+                    :value,
+                    :default_type_system
 
       def default(default_value, &block)
         options.merge!(default: default_value)
@@ -193,6 +195,12 @@ module NxtSchema
           instance_exec(&block)
         else
           block.call(self)
+        end
+      end
+
+      def resolve_default_type_system
+        options.fetch(:default_type_system) do
+          parent_node && parent_node.options[:default_type_system] || NxtSchema::Type::Strict
         end
       end
     end

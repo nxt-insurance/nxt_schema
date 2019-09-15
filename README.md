@@ -16,8 +16,10 @@ TODO:
 - Enforce uniqueness of names of multiple schemas in array nodes?!
 - Implement default values - Should also be checked against the schema
 - Can we have nodes in the schema depending on others => One node is required / optional if the other is present or contains a certain value?
-- NxtSchema::Params => Use param types
-- NxtSchema::Json => Use json types, maybe even parse Json with Oj
+- Type system per Schema? - Could even be per node => type_system: Type::Strict 
+    - NxtSchema::Params => Use param types
+    - NxtSchema::Json => Use json types, maybe even parse Json with Oj
+- Default options for schemas?
  
 
 ## Installation
