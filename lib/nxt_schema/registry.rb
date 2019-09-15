@@ -1,7 +1,8 @@
 module NxtSchema
   class Registry
-    def initialize
+    def initialize(namespace_separator = '::')
       @store = ActiveSupport::HashWithIndifferentAccess.new
+      @namespace_separator = namespace_separator
     end
 
     delegate_missing_to :store
@@ -29,7 +30,7 @@ module NxtSchema
 
     private
 
-    attr_reader :store
+    attr_reader :store, :namespace_separator
 
     def namespaced_store(key)
       parts = namespaced_key_parts(key)
@@ -44,7 +45,7 @@ module NxtSchema
     end
 
     def namespaced_key_parts(key)
-      key.downcase.split('::')
+      key.downcase.split(namespace_separator)
     end
 
     def flat_key(key)
