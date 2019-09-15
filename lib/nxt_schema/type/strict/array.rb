@@ -7,8 +7,8 @@ module NxtSchema
           raise_coercion_error(value)
         end
       end
-    end
 
-    register :Array, Type::Strict::Array
+      register :array, Type::Strict::Array
+    end
   end
 end

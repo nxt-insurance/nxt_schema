@@ -6,8 +6,8 @@ module NxtSchema
           coerce_with_kernel_method(value, :BigDecimal)
         end
       end
-    end
 
-    register(:BigDecimal, Type::Strict::BigDecimal)
+      register :big_decimal, Type::Strict::BigDecimal
+    end
   end
 end

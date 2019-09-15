@@ -9,8 +9,8 @@ module NxtSchema
           raise_coercion_error(value)
         end
       end
-    end
 
-    register :Hash, Type::Strict::Hash
+      register :hash, Type::Strict::Hash
+    end
   end
 end

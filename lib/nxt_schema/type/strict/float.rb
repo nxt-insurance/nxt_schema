@@ -6,8 +6,8 @@ module NxtSchema
           coerce_with_kernel_method(value, :Float)
         end
       end
-    end
 
-    register :Float, Type::Strict::Float
+      register :float, Type::Strict::Float
+    end
   end
 end

@@ -11,8 +11,8 @@ module NxtSchema
           raise_coercion_error(value)
         end
       end
-    end
 
-    register(:Boolean, Type::Strict::Boolean)
+      register :boolean, Type::Strict::Boolean
+    end
   end
 end

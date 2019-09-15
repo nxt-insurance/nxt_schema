@@ -6,8 +6,8 @@ module NxtSchema
           coerce_with_kernel_method(value, :Integer)
         end
       end
-    end
 
-    register :Integer, Type::Strict::Integer
+      register :integer, Type::Strict::Integer
+    end
   end
 end
