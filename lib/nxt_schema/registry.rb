@@ -15,8 +15,9 @@ module NxtSchema
       namespaced_store(key)[flat_key(key)] = value
     end
 
-    def resolve
-
+    def resolve(key)
+      key = key.to_s
+      namespaced_store(key).fetch(flat_key(key))
     end
 
     private
