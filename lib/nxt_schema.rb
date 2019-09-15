@@ -1,6 +1,5 @@
 require "nxt_schema/version"
 require "pry"
-require "dry-container"
 require "active_support/all"
 
 require "nxt_schema/registry"
