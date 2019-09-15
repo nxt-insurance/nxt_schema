@@ -7,6 +7,7 @@ RSpec.describe NxtSchema::Registry do
     context 'when the key is not namespaced' do
       let(:key) { 'string' }
       let(:value) { 'String'}
+
       context 'and the key was not registered yet' do
         it 'registers the value' do
           subject.register(key, value)
@@ -51,6 +52,32 @@ RSpec.describe NxtSchema::Registry do
   end
 
   describe '#resolve' do
+    context 'simple value' do
+      before do
+        subject.register('string', 'String')
+      end
 
+      it 'returns the value' do
+        expect(subject.resolve('string')).to eq('String')
+      end
+    end
+
+    context 'procs' do
+      before do
+        subject.register('current_state', -> { 'awesome' })
+        subject.register('times_two', ->(amount) { amount * 2 })
+        subject.register('adder', ->(amount, other) { amount + other })
+      end
+
+      it 'returns the value' do
+        expect(subject.resolve('current_state')).to eq('awesome')
+        expect(subject.resolve('times_two', 100)).to eq(200)
+        expect(subject.resolve('adder', 100, 200)).to eq(300)
+      end
+    end
+
+    context 'namespaced' do
+
+    end
   end
 end

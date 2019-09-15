@@ -15,7 +15,14 @@ module NxtSchema
       namespaced_store(key)[flat_key(key)] = value
     end
 
-    def resolve(key)
+    def resolve(key, *args)
+      value = resolve_value(key)
+      return value unless value.respond_to?(:call)
+
+      value.call(*args)
+    end
+
+    def resolve_value(key)
       key = key.to_s
       namespaced_store(key).fetch(flat_key(key))
     end
@@ -37,7 +44,7 @@ module NxtSchema
     end
 
     def namespaced_key_parts(key)
-      @namespaced_key_parts ||= key.downcase.split('::')
+      key.downcase.split('::')
     end
 
     def flat_key(key)
