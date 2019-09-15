@@ -57,6 +57,7 @@ module NxtSchema
         self
       end
 
+      # TODO: Make private what should be private
       def add_schema_error(error, index = schema_errors_key)
         schema_errors[index] ||= []
         schema_errors[index] << error
@@ -140,6 +141,11 @@ module NxtSchema
 
       def leaf?
         false
+      end
+
+      def valid?
+        # TODO: We should probably check if we applied and validation errors ran.
+        validation_errors.empty?
       end
 
       def add_validators(*validators)

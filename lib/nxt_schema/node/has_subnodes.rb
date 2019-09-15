@@ -26,6 +26,7 @@ module NxtSchema
         end
 
         # TODO: Should we check if there is a
+        raise KeyError, "Duplicate registration for key: #{name}" if template_store.key?(name)
         template_store.push(child_node)
 
         child_node
