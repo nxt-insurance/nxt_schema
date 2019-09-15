@@ -1,5 +1,7 @@
 module NxtSchema
   module Type
-    extend ::Dry::Container::Mixin
+    REGISTRY = Registry.new
+    delegate :register, :resolve, :resolve_value, to: :REGISTRY
+    module_function :register, :resolve, :resolve_value
   end
 end
