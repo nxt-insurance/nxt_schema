@@ -7,14 +7,15 @@ TODO:
 - Test all methods of all nodes
     => Structure tests by nodes and method
 - Merge errors of array nodes with multiple schemas
-- Implement maybe
+- Types
+    => Implement maybe for types
+    => Implement default for types
 - Implement optional keys for all nodes
 - Implement defaults for all nodes
 - Validator Registry
 - Type Registry
 - Structure Errors
 - Enforce uniqueness of names of multiple schemas in array nodes?!
-- Implement default values - Should also be checked against the schema
 - Can we have nodes in the schema depending on others => One node is required / optional if the other is present or contains a certain value?
 - Type system per Schema? - Could even be per node => type_system: Type::Strict 
     - NxtSchema::Params => Use param types
@@ -42,18 +43,18 @@ Or install it yourself as:
 
 ```ruby
 # Schema with hash root
-schema = NxtSchema.root(:company) do 
+schema = NxtSchema.hash(:company) do 
   requires(:name, :String)  
   requires(:value, :Integer).maybe(nil)  
   requires(:in_insure_tech, :Boolean).default(false)
   
-  schema(:address) do
+  hash(:address) do
     requires(:street, :String)
     requires(:street_number, :Integer)
   end
     
-  nodes(:employees) do
-    schema(:employee) do
+  array(:employees) do
+    hash(:employee) do
       requires(:first_name, :String)
       requires(:last_name, :String)
       optional(:email, :String).validate(

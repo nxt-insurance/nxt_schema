@@ -46,9 +46,13 @@ module NxtSchema
         node(name, :Array, options, &block)
       end
 
+      alias_method :array, :nodes
+
       def schema(name, **options, &block)
         node(name, :Hash, options, &block)
       end
+
+      alias_method :hash, :schema
 
       def dup
         result = super

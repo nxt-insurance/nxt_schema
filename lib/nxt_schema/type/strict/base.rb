@@ -8,6 +8,11 @@ module NxtSchema
           end
         end
 
+        def initialize(default: nil, maybe: nil)
+          @default = default
+          @maybe = maybe
+        end
+
         def coerce_with_kernel_method(value, method)
           raise_coercion_error(value) unless value.is_a?(Object.const_get(method))
           value&.tap { |v| Kernel.send(method, v) }
