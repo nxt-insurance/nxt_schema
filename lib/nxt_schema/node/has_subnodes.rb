@@ -1,5 +1,6 @@
 require_relative 'hash'
 require_relative 'array'
+require_relative 'open_struct'
 require_relative 'leaf'
 
 module NxtSchema
@@ -11,6 +12,8 @@ module NxtSchema
         child_node = case type_or_node.to_s.to_sym
         when :Hash
           NxtSchema::Node::Hash.new(name: name, parent_node: self, **options, &block)
+        when :struct
+          NxtSchema::Node::OpenStruct.new(name: name, parent_node: self, **options, &block)
         when :Array
           NxtSchema::Node::Array.new(name: name, parent_node: self, **options, &block)
         else
@@ -74,3 +77,4 @@ end
 
 NxtSchema::Node::Hash.include(::NxtSchema::Node::HasSubNodes)
 NxtSchema::Node::Array.include(::NxtSchema::Node::HasSubNodes)
+NxtSchema::Node::OpenStruct.include(::NxtSchema::Node::HasSubNodes)

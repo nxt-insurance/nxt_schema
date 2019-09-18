@@ -62,6 +62,8 @@ module NxtSchema
                 end
               end
 
+
+              binding.pry
               item_schema_errors.reject! { |_, v| v.empty? }
             end
           end

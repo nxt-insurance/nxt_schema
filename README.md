@@ -13,6 +13,7 @@ TODO:
 - Implement optional keys for all nodes
 - Implement defaults for all nodes
 - Validator Registry
+    => Allow chaining validations?
 - Type Registry
 - Structure Errors
 - Enforce uniqueness of names of multiple schemas in array nodes?!
