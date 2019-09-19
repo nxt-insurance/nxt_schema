@@ -74,12 +74,6 @@ module NxtSchema
         add_schema_error(error.message)
         self_without_empty_schema_errors
       end
-
-      private
-
-      def merge_errors(first, second)
-
-      end
     end
   end
 end
