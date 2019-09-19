@@ -62,11 +62,11 @@ module NxtSchema
                 end
               end
 
-
-              binding.pry
               item_schema_errors.reject! { |_, v| v.empty? }
             end
           end
+
+          self.value_store = parent_value_store[index_or_name] = value_store
         end
 
         self_without_empty_schema_errors

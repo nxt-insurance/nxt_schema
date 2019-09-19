@@ -3,6 +3,11 @@
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nxt_schema`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO:    
+======================================================
+Only assign values after subtree has been applied!!!!
+======================================================
+
+
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
