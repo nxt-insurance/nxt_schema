@@ -19,7 +19,6 @@ module NxtSchema
           self.value = hash
         else
           hash = type[hash]
-          self.value = hash
 
           template_store.each do |key, node|
             if hash.key?(key)
@@ -42,6 +41,9 @@ module NxtSchema
               end
             end
           end
+
+          self.value = type[value_store]
+          self.value_store = parent_value_store[index_or_name] = value_store
         end
 
         self_without_empty_schema_errors

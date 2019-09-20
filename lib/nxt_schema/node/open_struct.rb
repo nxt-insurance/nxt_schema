@@ -19,7 +19,6 @@ module NxtSchema
           self.value = hash
         else
           hash = type[hash]
-          self.value = hash
 
           template_store.each do |key, node|
             if hash.to_h.with_indifferent_access.key?(key)
@@ -44,7 +43,8 @@ module NxtSchema
           end
         end
 
-        self.value_store = parent_value_store[index_or_name] = value_store
+        #self.value_store = parent_value_store[index_or_name] = value_store
+        self.value = type[value_store]
 
         self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error

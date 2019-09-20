@@ -66,7 +66,7 @@ module NxtSchema
             end
           end
 
-          self.value_store = parent_value_store[index_or_name] = value_store
+          self.value_store = parent_value_store[index_or_name] = type[value_store]
         end
 
         self_without_empty_schema_errors
