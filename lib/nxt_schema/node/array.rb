@@ -33,8 +33,6 @@ module NxtSchema
               template_store.each do |node_name, node|
                 current_node = node.dup
                 current_node_store[node_name] = current_node
-                # register_node(current_parent_node)
-                # current_parent_node.value_store = value_store.deep_dup
 
                 current_node.apply(
                   item,
