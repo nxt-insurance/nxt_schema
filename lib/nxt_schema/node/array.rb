@@ -29,9 +29,7 @@ module NxtSchema
             array.each_with_index do |item, index|
               item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
               validation_errors[index] ||= { schema_errors_key => [] }
-              # When an array provides multiple schemas, and none is valid we only return the errors for
-              # a single schema => Would probably be better to merge them somehow!!!
-              # Might make sense to not allow the same names for multiple schemas in an array
+
               template_store.each do |node_name, node|
                 current_node = node.dup
                 current_node_store[node_name] = current_node
@@ -73,12 +71,6 @@ module NxtSchema
       rescue NxtSchema::Errors::CoercionError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
-      end
-
-      private
-
-      def merge_errors(first, second)
-
       end
     end
   end
