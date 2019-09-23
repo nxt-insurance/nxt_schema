@@ -1,10 +1,10 @@
 module NxtSchema
   module Node
-    class Array < Node::Base
-      def initialize(name:, parent_node:, **options, &block)
+    class Collection < Node::Base
+      def initialize(name:, type: NxtSchema::Type::Strict::Array, parent_node:, **options, &block)
         @template_store = TemplateStore.new
 
-        super(name: name, type: NxtSchema::Type::Strict::Array, parent_node: parent_node, **options, &block)
+        super(name: name, type: type, parent_node: parent_node, **options, &block)
       end
 
       def apply(value, parent_node: parent_node, parent_schema_errors: {}, parent_value_store: {}, parent_validation_errors: {}, index_or_name: name)

@@ -1,4 +1,4 @@
-RSpec.describe NxtSchema::Node::Hash do
+RSpec.describe NxtSchema::Node::Schema do
   describe '#apply' do
     subject do
       described_class.new(name: :company, parent_node: nil) do |company|
