@@ -5,11 +5,9 @@ RSpec.describe NxtSchema::Node::Leaf do
     end
 
     let(:value) { 'Andy' }
-    let(:value_store) { {} }
 
     it do
-      # TODO: Get rid of passing in parent value store
-      subject.apply(value, parent_value_store: value_store)
+      subject.apply(value)
       expect(subject.value).to eq("Andy")
     end
   end
@@ -20,11 +18,9 @@ RSpec.describe NxtSchema::Node::Leaf do
     end
 
     let(:value) { nil }
-    let(:parent_value_store) { {} }
 
     it do
-      # TODO: Get rid of passing in parent value store
-      subject.apply(value, parent_value_store: parent_value_store)
+      subject.apply(value)
       expect(subject.value).to eq(nil)
     end
   end
