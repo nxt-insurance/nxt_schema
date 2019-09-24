@@ -3,8 +3,7 @@ module NxtSchema
     class Collection < Node::Base
       def initialize(name:, type: NxtSchema::Type::Strict::Array, parent_node:, **options, &block)
         @template_store = TemplateStore.new
-
-        super(name: name, type: type, parent_node: parent_node, **options, &block)
+        super
       end
 
       def apply(value, parent_node: parent_node, parent_schema_errors: {}, parent_value_store: {}, parent_validation_errors: {}, index_or_name: name)
@@ -12,8 +11,8 @@ module NxtSchema
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= []
-        register_node
         self.value = value
+        register_node
 
         if maybe_criteria_applies?(value)
           self.value_store = parent_value_store[index_or_name] = value

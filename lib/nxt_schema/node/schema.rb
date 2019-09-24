@@ -3,8 +3,7 @@ module NxtSchema
     class Schema < Node::Base
       def initialize(name:, type: NxtSchema::Type::Strict::Hash, parent_node:, **options, &block)
         @template_store = TemplateStore.new
-
-        super(name: name, type: type, parent_node: parent_node, **options, &block)
+        super
       end
 
       def apply(hash, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
