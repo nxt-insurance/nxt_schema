@@ -28,7 +28,11 @@ module NxtSchema
                 parent_schema_errors: schema_errors,
                 parent_validation_errors: validation_errors,
                 parent_value_store: value_store
-              ).schema_errors?
+              )
+
+              unless node.schema_errors?
+                value_store[key] = node.value
+              end
 
             else
               # TODO: Implement proper optional hash nodes

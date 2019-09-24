@@ -50,6 +50,8 @@ module NxtSchema
                     validation_errors[index][node_name] = node.validation_errors
                   end
 
+                  value_store[index] = current_node.value
+
                   break
                 else
                   schema_errors[index][node_name] = current_node.schema_errors

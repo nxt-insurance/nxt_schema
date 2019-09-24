@@ -27,7 +27,7 @@ module NxtSchema
           add_validators(OptionalNodeValidator.new(options[:optional]))
         end
 
-        parent_value_store[index_or_name] = value
+        # parent_value_store[index_or_name] = value
 
         self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error

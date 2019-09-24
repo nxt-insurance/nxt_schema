@@ -136,7 +136,8 @@ RSpec.describe NxtSchema::Node::Collection do
               {},
               {},
               {},
-              {:first_name=>"Rapha"}, {:last_name=>"Sommer"}
+              {:first_name=>"Rapha"},
+              {:last_name=>"Sommer"}
             ]
           ]
         )
