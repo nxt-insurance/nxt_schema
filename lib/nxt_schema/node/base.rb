@@ -150,6 +150,7 @@ module NxtSchema
 
       def add_validators(*validators)
         options[:validate] ||= []
+        options[:validate] = Array(options.fetch(:validate, []))
         options[:validate] += validators
       end
 
