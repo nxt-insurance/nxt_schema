@@ -1,18 +1,17 @@
 module NxtSchema
-  def hash(name = :root, &block)
-    Node::Hash.new(name: name, parent_node: nil, &block)
+  def schema(name = :root, &block)
+    Node::Schema.new(name: name, parent_node: nil, &block)
   end
 
-  def array(name = :roots, &block)
-    Node::Array.new(name: name, parent_node: nil, &block)
+  def collection(name = :roots, &block)
+    Node::Collection.new(name: name, parent_node: nil, &block)
   end
 
-  alias_method :new, :hash
-  alias_method :node, :hash
-  alias_method :schema, :hash
-  alias_method :root, :hash
-  alias_method :nodes, :array
-  alias_method :roots, :array
+  alias_method :new, :schema
+  alias_method :node, :schema
+  alias_method :root, :schema
+  alias_method :nodes, :collection
+  alias_method :roots, :collection
 
-  module_function :new, :root, :roots, :node, :nodes, :hash, :array, :schema
+  module_function :new, :root, :roots, :node, :nodes, :collection, :schema
 end

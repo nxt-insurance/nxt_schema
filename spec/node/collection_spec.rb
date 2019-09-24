@@ -1,4 +1,4 @@
-RSpec.describe NxtSchema::Node::Array do
+RSpec.describe NxtSchema::Node::Collection do
   describe '#apply' do
     subject do
       described_class.new(name: :test, parent_node: nil) do |node|

@@ -99,7 +99,7 @@ module NxtSchema
           end
         end
 
-        if self.is_a?(NxtSchema::Node::Array) && value.respond_to?(:each)
+        if self.is_a?(NxtSchema::Node::Collection) && value.respond_to?(:each)
           value.each_with_index do |item, index|
             validation_errors[index]&.reject! { |_, v| v.empty? }
           end

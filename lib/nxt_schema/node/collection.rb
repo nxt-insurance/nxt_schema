@@ -1,10 +1,9 @@
 module NxtSchema
   module Node
-    class Array < Node::Base
-      def initialize(name:, parent_node:, **options, &block)
+    class Collection < Node::Base
+      def initialize(name:, type: NxtSchema::Type::Strict::Array, parent_node:, **options, &block)
         @template_store = TemplateStore.new
-
-        super(name: name, type: NxtSchema::Type::Strict::Array, parent_node: parent_node, **options, &block)
+        super
       end
 
       def apply(value, parent_node: parent_node, parent_schema_errors: {}, parent_value_store: {}, parent_validation_errors: {}, index_or_name: name)
@@ -12,8 +11,8 @@ module NxtSchema
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
         self.value_store = parent_value_store[index_or_name] ||= []
-        register_node
         self.value = value
+        register_node
 
         if maybe_criteria_applies?(value)
           self.value_store = parent_value_store[index_or_name] = value
@@ -29,14 +28,10 @@ module NxtSchema
             array.each_with_index do |item, index|
               item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
               validation_errors[index] ||= { schema_errors_key => [] }
-              # When an array provides multiple schemas, and none is valid we only return the errors for
-              # a single schema => Would probably be better to merge them somehow!!!
-              # Might make sense to not allow the same names for multiple schemas in an array
+
               template_store.each do |node_name, node|
                 current_node = node.dup
                 current_node_store[node_name] = current_node
-                # register_node(current_parent_node)
-                # current_parent_node.value_store = value_store.deep_dup
 
                 current_node.apply(
                   item,
@@ -66,7 +61,7 @@ module NxtSchema
             end
           end
 
-          self.value_store = parent_value_store[index_or_name] = value_store
+          self.value_store = parent_value_store[index_or_name] = type[value_store]
         end
 
         self_without_empty_schema_errors

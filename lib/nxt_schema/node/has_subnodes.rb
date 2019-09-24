@@ -1,5 +1,5 @@
-require_relative 'hash'
-require_relative 'array'
+require_relative 'schema'
+require_relative 'collection'
 require_relative 'open_struct'
 require_relative 'leaf'
 
@@ -11,11 +11,11 @@ module NxtSchema
       def node(name, type_or_node, **options, &block)
         child_node = case type_or_node.to_s.to_sym
         when :Hash
-          NxtSchema::Node::Hash.new(name: name, parent_node: self, **options, &block)
+          NxtSchema::Node::Schema.new(name: name, type: NxtSchema::Type::Strict::Hash, parent_node: self, **options, &block)
         when :struct
-          NxtSchema::Node::OpenStruct.new(name: name, parent_node: self, **options, &block)
+          NxtSchema::Node::OpenStruct.new(name: name, type: NxtSchema::Type::Strict::OpenStruct, parent_node: self, **options, &block)
         when :Array
-          NxtSchema::Node::Array.new(name: name, parent_node: self, **options, &block)
+          NxtSchema::Node::Collection.new(name: name, type: NxtSchema::Type::Strict::Array, parent_node: self, **options, &block)
         else
           if type_or_node.is_a?(NxtSchema::Node::Base)
             node = type_or_node.clone
@@ -75,6 +75,6 @@ module NxtSchema
   end
 end
 
-NxtSchema::Node::Hash.include(::NxtSchema::Node::HasSubNodes)
-NxtSchema::Node::Array.include(::NxtSchema::Node::HasSubNodes)
+NxtSchema::Node::Schema.include(::NxtSchema::Node::HasSubNodes)
+NxtSchema::Node::Collection.include(::NxtSchema::Node::HasSubNodes)
 NxtSchema::Node::OpenStruct.include(::NxtSchema::Node::HasSubNodes)

@@ -1,10 +1,9 @@
 module NxtSchema
   module Node
     class OpenStruct < Node::Base
-      def initialize(name:, parent_node:, **options, &block)
+      def initialize(name:, type: NxtSchema::Type::Strict::OpenStruct, parent_node:, **options, &block)
         @template_store = TemplateStore.new
-
-        super(name: name, type: NxtSchema::Type::Strict::OpenStruct, parent_node: parent_node, **options, &block)
+        super
       end
 
       def apply(hash, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, parent_value_store: {}, index_or_name: name)
@@ -19,7 +18,6 @@ module NxtSchema
           self.value = hash
         else
           hash = type[hash]
-          self.value = hash
 
           template_store.each do |key, node|
             if hash.to_h.with_indifferent_access.key?(key)
@@ -44,7 +42,8 @@ module NxtSchema
           end
         end
 
-        self.value_store = parent_value_store[index_or_name] = value_store
+        #self.value_store = parent_value_store[index_or_name] = value_store
+        self.value = type[value_store]
 
         self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error
