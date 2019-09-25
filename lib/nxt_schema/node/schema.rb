@@ -20,6 +20,7 @@ module NxtSchema
         else
           hash = type[hash]
 
+          # TODO: Handle additional keys here!
           template_store.each do |key, node|
             if hash.key?(key)
 
