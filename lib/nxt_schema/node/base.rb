@@ -91,9 +91,11 @@ module NxtSchema
         # First reject empty schema_errors
 
         schema_errors.reject! { |_, v| v.empty? }
-        build_validations
 
-        unless schema_errors[schema_errors_key] && schema_errors[schema_errors_key].any?
+        # TODO: Is this correct? - Do not apply validations when maybe criteria applies?
+        unless schema_errors[schema_errors_key]&.any? && !maybe_criteria_applies?
+          build_validations
+
           validations.each do |validation|
             validation.call(self, value)
           end
