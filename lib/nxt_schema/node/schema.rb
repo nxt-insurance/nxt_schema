@@ -6,10 +6,10 @@ module NxtSchema
         super
       end
 
-      def apply(hash, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, index_or_name: name)
+      def apply(hash, parent_node: parent_node, index_or_name: name)
         self.parent_node = parent_node
-        self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
-        self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
+        self.schema_errors = { schema_errors_key => [] }
+        self.validation_errors = { schema_errors_key => [] }
         self.value_store = {}
         self.value = hash
         register_node
@@ -26,15 +26,13 @@ module NxtSchema
 
               node.apply(
                 hash[key],
-                parent_node: self,
-                parent_schema_errors: schema_errors,
-                parent_validation_errors: validation_errors
+                parent_node: self
               ).schema_errors?
 
               value_store[key] = node.value
               # TODO: Assemble error after applying node
-              # schema_errors[key] = node.schema_errors
-              # validation_errors[key] = node.validation_errors
+              schema_errors[key] = node.schema_errors
+              validation_errors[key] = node.validation_errors
 
             else
               # TODO: Implement proper optional hash nodes

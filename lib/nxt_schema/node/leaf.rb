@@ -10,10 +10,10 @@ module NxtSchema
         true
       end
 
-      def apply(value, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, index_or_name: name)
+      def apply(value, parent_node: parent_node, index_or_name: name)
         self.parent_node = parent_node
-        self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
-        self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
+        self.schema_errors = { schema_errors_key => [] }
+        self.validation_errors = { schema_errors_key => [] }
 
         register_node
         self.value = value
