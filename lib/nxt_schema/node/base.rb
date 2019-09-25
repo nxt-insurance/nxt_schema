@@ -156,9 +156,10 @@ module NxtSchema
 
       private
 
-      def maybe_criteria_applies?(value)
-        return unless options.key?(:maybe)
-        MaybeEvaluator.new(options.fetch(:maybe), value).call
+      def maybe_criteria_applies?
+        @maybe_criteria_applies ||= begin
+          options.key?(:maybe) && MaybeEvaluator.new(options.fetch(:maybe), value).call
+        end
       end
 
       def self_without_empty_schema_errors

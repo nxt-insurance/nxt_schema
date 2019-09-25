@@ -18,7 +18,7 @@ module NxtSchema
         self.validation_errors = { schema_errors_key => [] }
         self.value = value
 
-        if !maybe_criteria_applies?(value)
+        if !maybe_criteria_applies?
           self.value = type[value]
         elsif options[:optional].respond_to?(:call)
           # TODO: Implement proper optional leafs

@@ -15,7 +15,7 @@ module NxtSchema
         self.value_store = {}
         self.value = hash
 
-        if maybe_criteria_applies?(hash)
+        if maybe_criteria_applies?
           self.value_store = hash
           self.value = hash
         else

@@ -15,7 +15,7 @@ module NxtSchema
         self.value_store = []
         self.value = value
 
-        if maybe_criteria_applies?(value)
+        if maybe_criteria_applies?
           self.value_store = value
         else
           array = type[value]

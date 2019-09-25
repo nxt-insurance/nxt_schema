@@ -11,9 +11,10 @@ module NxtSchema
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
         self.value_store = {}
+        self.value = hash
         register_node
 
-        if maybe_criteria_applies?(hash)
+        if maybe_criteria_applies?
           self.value_store = hash
           self.value = value_store
         else

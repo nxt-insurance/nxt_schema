@@ -7,7 +7,7 @@ TODO:
 Only assign values after subtree has been applied!!!!
 ======================================================
 
-
+- Can we use dry types for the type system?
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
