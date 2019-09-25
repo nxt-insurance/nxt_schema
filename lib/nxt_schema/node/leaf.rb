@@ -44,10 +44,6 @@ module NxtSchema
         validation_errors[schema_errors_key] << error
       end
 
-      def schema_errors?
-        schema_errors.any?
-      end
-
       def leaf?
         true
       end
