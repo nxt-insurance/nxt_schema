@@ -6,14 +6,14 @@ module NxtSchema
         super
       end
 
-      def apply(value, parent_node: parent_node, index_or_name: name)
+      def apply(value, parent_node: self.parent_node)
+        register_node
+
         self.parent_node = parent_node
         self.schema_errors = { schema_errors_key => [] }
         self.validation_errors = { schema_errors_key => [] }
-        # TODO Stop referencing parent attributes in child
         self.value_store = []
         self.value = value
-        register_node
 
         if maybe_criteria_applies?(value)
           self.value_store = value
@@ -34,11 +34,7 @@ module NxtSchema
                 current_node = node.dup
                 current_node_store[node_name] = current_node
 
-                current_node.apply(
-                  item,
-                  parent_node: self,
-                  index_or_name: index
-                )
+                current_node.apply(item, parent_node: self)
 
                 value_store[index] = current_node.value
 

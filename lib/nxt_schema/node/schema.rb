@@ -6,13 +6,14 @@ module NxtSchema
         super
       end
 
-      def apply(hash, parent_node: parent_node, index_or_name: name)
+      def apply(hash, parent_node: self.parent_node)
+        register_node
+
         self.parent_node = parent_node
         self.schema_errors = { schema_errors_key => [] }
         self.validation_errors = { schema_errors_key => [] }
         self.value_store = {}
         self.value = hash
-        register_node
 
         if maybe_criteria_applies?(hash)
           self.value_store = hash
@@ -24,10 +25,7 @@ module NxtSchema
           template_store.each do |key, node|
             if hash.key?(key)
 
-              node.apply(
-                hash[key],
-                parent_node: self
-              ).schema_errors?
+              node.apply(hash[key], parent_node: self).schema_errors?
 
               value_store[key] = node.value
               # TODO: Assemble error after applying node

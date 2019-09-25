@@ -10,12 +10,12 @@ module NxtSchema
         true
       end
 
-      def apply(value, parent_node: parent_node, index_or_name: name)
+      def apply(value, parent_node: self.parent_node)
+        register_node
+
         self.parent_node = parent_node
         self.schema_errors = { schema_errors_key => [] }
         self.validation_errors = { schema_errors_key => [] }
-
-        register_node
         self.value = value
 
         if !maybe_criteria_applies?(value)
