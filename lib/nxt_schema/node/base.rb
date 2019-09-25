@@ -12,6 +12,7 @@ module NxtSchema
         @level = parent_node ? parent_node.level + 1 : 0
         @all_nodes = parent_node ? (parent_node.all_nodes || []) : []
         @root = parent_node.nil?
+        @root_node = parent_node.nil? ? self : parent_node.root_node
         @errors = {}
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
@@ -31,7 +32,14 @@ module NxtSchema
                     :validation_errors,
                     :all_nodes,
                     :value,
-                    :default_type_system
+                    :default_type_system,
+                    :root_node
+
+      def parent(level = 1)
+        level.times.inject(self) { |acc| acc.parent_node }
+      end
+
+      alias_method :up, :parent
 
       def default(default_value, &block)
         options.merge!(default: default_value)
