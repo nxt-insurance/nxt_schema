@@ -19,7 +19,7 @@ module NxtSchema
           self.value_store = hash
           self.value = hash
         else
-          hash = type[hash]
+          self.value = type[hash]
 
           # TODO: Handle additional keys here!
           template_store.each do |key, node|
