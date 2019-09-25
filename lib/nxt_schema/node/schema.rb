@@ -32,6 +32,9 @@ module NxtSchema
               ).schema_errors?
 
               value_store[key] = node.value
+              # TODO: Assemble error after applying node
+              # schema_errors[key] = node.schema_errors
+              # validation_errors[key] = node.validation_errors
 
             else
               # TODO: Implement proper optional hash nodes
