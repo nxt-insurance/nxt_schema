@@ -26,9 +26,6 @@ module NxtSchema
           add_validators(OptionalNodeValidator.new(options[:optional]))
         end
 
-        self.value = type[value]
-
-
         self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error
         add_schema_error(error.message)
