@@ -35,14 +35,14 @@ module NxtSchema
         self_without_empty_schema_errors
       end
 
-      def add_schema_error(error)
-        schema_errors[schema_errors_key] << error
-        validation_errors[schema_errors_key] << error
-      end
+      # def add_schema_error(error)
+      #   schema_errors[schema_errors_key] << error
+      #   validation_errors[schema_errors_key] << error
+      # end
 
-      def add_error(error)
-        validation_errors[schema_errors_key] << error
-      end
+      # def add_error(error)
+      #   validation_errors[schema_errors_key] << error
+      # end
 
       private
 
