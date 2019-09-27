@@ -11,7 +11,7 @@ Only assign values after subtree has been applied!!!!
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
-- Merge errors of array nodes with multiple schemas
+
 - Types
     => Implement maybe for types
     => Implement default for types
@@ -20,12 +20,9 @@ Only assign values after subtree has been applied!!!!
 - Validator Registry
     => Allow chaining validations?
 - Type Registry
-- Structure Errors
-- Enforce uniqueness of names of multiple schemas in array nodes?!
-- Can we have nodes in the schema depending on others => One node is required / optional if the other is present or contains a certain value?
-- Type system per Schema? - Could even be per node => type_system: Type::Strict 
-    - NxtSchema::Params => Use param types
-    - NxtSchema::Json => Use json types, maybe even parse Json with Oj
+- Structure Errors 
+- NxtSchema::Params => Use param types
+- NxtSchema::Json => Use json types, maybe even parse Json with Oj
 - Default options for schemas?
  
 
