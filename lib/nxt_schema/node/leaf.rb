@@ -17,30 +17,13 @@ module NxtSchema
         self.schema_errors = { schema_errors_key => [] }
         self.validation_errors = { schema_errors_key => [] }
         self.value = value
-
-        if !maybe_criteria_applies?
-          self.value = type[value]
-        elsif options[:optional].respond_to?(:call)
-          # TODO: Does this make any sense at all to have this in leafs?
-          # TODO: Implement proper optional leafs
-          # Be aware that the arg yielded to validators should be the same in both cases ... ?!
-          add_validators(OptionalNodeValidator.new(options[:optional]))
-        end
+        self.value = type[value] unless maybe_criteria_applies?
 
         self_without_empty_schema_errors
       rescue NxtSchema::Errors::CoercionError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
       end
-
-      # def add_schema_error(error)
-      #   schema_errors[schema_errors_key] << error
-      #   validation_errors[schema_errors_key] << error
-      # end
-
-      # def add_error(error)
-      #   validation_errors[schema_errors_key] << error
-      # end
 
       private
 
