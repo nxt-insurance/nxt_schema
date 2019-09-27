@@ -21,6 +21,7 @@ module NxtSchema
         if !maybe_criteria_applies?
           self.value = type[value]
         elsif options[:optional].respond_to?(:call)
+          # TODO: Does this make any sense at all to have this in leafs?
           # TODO: Implement proper optional leafs
           # Be aware that the arg yielded to validators should be the same in both cases ... ?!
           add_validators(OptionalNodeValidator.new(options[:optional]))
