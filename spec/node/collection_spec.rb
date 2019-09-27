@@ -33,7 +33,7 @@ RSpec.describe NxtSchema::Node::Collection do
           6=>{:item=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]}},
           7=>{:item=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]}}
         )
-        expect(subject.value_store).to eq(['Rapha', 'Nils'])
+        expect(subject.value_store).to eq(schema)
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe NxtSchema::Node::Collection do
           3=>{:children=>{:itself=>["Array is not allowed to be empty"]}},
           4=>{:children=>{0=>{:child=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]}}}}
         )
-        expect(subject.value_store).to eq([["Andy"], ["Rapha", "Nils"], ["Lütfi"], [], []])
+        expect(subject.value_store).to eq(schema)
       end
     end
 
@@ -119,27 +119,7 @@ RSpec.describe NxtSchema::Node::Collection do
                6=>{:parent=>{:itself=>["Required key :first_name is missing in {:last_name=>\"Sommer\"}"]}}}}
           )
 
-        expect(subject.value_store).to eq(
-          [
-            [
-              {:first_name=>"Lütfi", :last_name=>"Demirci"},
-              {},
-              {},
-              {},
-              {},
-              {},
-              {:first_name=>"Nils"}
-            ],
-            [
-              {},
-              {},
-              {},
-              {},
-              {},
-              {:first_name=>"Rapha"}, {:last_name=>"Sommer"}
-            ]
-          ]
-        )
+        expect(subject.value_store).to eq(schema)
       end
     end
   end
@@ -199,14 +179,10 @@ RSpec.describe NxtSchema::Node::Collection do
         end
       end
 
-      let(:parent_value_store) do
-        {}
-      end
-
       it do
-        subject.apply([], parent_value_store: parent_value_store)
+        subject.apply([])
         expect(subject.validation_errors?).to be_falsey
-        expect(parent_value_store).to eq(test: [])
+        expect(subject.value).to eq([])
       end
     end
 
@@ -217,14 +193,10 @@ RSpec.describe NxtSchema::Node::Collection do
         end
       end
 
-      let(:parent_value_store) do
-        {}
-      end
-
       it do
-        subject.apply(nil, parent_value_store: parent_value_store)
+        subject.apply(nil)
         expect(subject.validation_errors?).to be_falsey
-        expect(parent_value_store).to eq(test: nil)
+        expect(subject.value).to eq(nil)
       end
     end
   end

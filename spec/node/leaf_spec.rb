@@ -5,11 +5,10 @@ RSpec.describe NxtSchema::Node::Leaf do
     end
 
     let(:value) { 'Andy' }
-    let(:value_store) { {} }
 
     it do
-      subject.apply(value, parent_value_store: value_store)
-      expect(value_store).to eq(test: "Andy")
+      subject.apply(value)
+      expect(subject.value).to eq("Andy")
     end
   end
 
@@ -19,11 +18,10 @@ RSpec.describe NxtSchema::Node::Leaf do
     end
 
     let(:value) { nil }
-    let(:parent_value_store) { {} }
 
     it do
-      subject.apply(value, parent_value_store: parent_value_store)
-      expect(parent_value_store).to eq(test: nil)
+      subject.apply(value)
+      expect(subject.value).to eq(nil)
     end
   end
 

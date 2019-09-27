@@ -6,16 +6,17 @@ module NxtSchema
         super
       end
 
-      def apply(value, parent_node: parent_node, parent_schema_errors: {}, parent_value_store: {}, parent_validation_errors: {}, index_or_name: name)
-        self.parent_node = parent_node
-        self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
-        self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
-        self.value_store = parent_value_store[index_or_name] ||= []
-        self.value = value
+      def apply(value, parent_node: self.parent_node)
         register_node
 
-        if maybe_criteria_applies?(value)
-          self.value_store = parent_value_store[index_or_name] = value
+        self.parent_node = parent_node
+        self.schema_errors = { schema_errors_key => [] }
+        self.validation_errors = { schema_errors_key => [] }
+        self.value_store = []
+        self.value = value
+
+        if maybe_criteria_applies?
+          self.value_store = value
         else
           array = type[value]
           self.value = array
@@ -33,14 +34,9 @@ module NxtSchema
                 current_node = node.dup
                 current_node_store[node_name] = current_node
 
-                current_node.apply(
-                  item,
-                  parent_node: self,
-                  parent_schema_errors: { schema_errors_key => [] },
-                  parent_validation_errors: { schema_errors_key => [] },
-                  parent_value_store: value_store,
-                  index_or_name: index
-                )
+                current_node.apply(item, parent_node: self)
+
+                value_store[index] = current_node.value
 
                 unless current_node.schema_errors?
                   current_node_store.each do |node_name, node|
@@ -61,7 +57,9 @@ module NxtSchema
             end
           end
 
-          self.value_store = parent_value_store[index_or_name] = type[value_store]
+          # TODO: Do we need this?
+          self.value_store = type[value_store]
+          self.value = value_store
         end
 
         self_without_empty_schema_errors

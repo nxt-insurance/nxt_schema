@@ -105,14 +105,9 @@ RSpec.describe NxtSchema::Node::Schema do
         end
       end
 
-      let(:parent_value_store) do
-        {}
-      end
-
       it do
-        subject.apply(nil, parent_value_store: parent_value_store)
+        subject.apply(nil)
         expect(subject.value_store).to eq(nil)
-        expect(parent_value_store).to eq(company: nil)
       end
     end
   end

@@ -12,6 +12,7 @@ module NxtSchema
         @level = parent_node ? parent_node.level + 1 : 0
         @all_nodes = parent_node ? (parent_node.all_nodes || []) : []
         @root = parent_node.nil?
+        @root_node = parent_node.nil? ? self : parent_node.root_node
         @errors = {}
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
@@ -31,7 +32,14 @@ module NxtSchema
                     :validation_errors,
                     :all_nodes,
                     :value,
-                    :default_type_system
+                    :default_type_system,
+                    :root_node
+
+      def parent(level = 1)
+        level.times.inject(self) { |acc| acc.parent_node }
+      end
+
+      alias_method :up, :parent
 
       def default(default_value, &block)
         options.merge!(default: default_value)
@@ -91,9 +99,11 @@ module NxtSchema
         # First reject empty schema_errors
 
         schema_errors.reject! { |_, v| v.empty? }
-        build_validations
 
-        unless schema_errors[schema_errors_key] && schema_errors[schema_errors_key].any?
+        # TODO: Is this correct? - Do not apply validations when maybe criteria applies?
+        unless schema_errors[schema_errors_key]&.any? && !maybe_criteria_applies?
+          build_validations
+
           validations.each do |validation|
             validation.call(self, value)
           end
@@ -156,9 +166,10 @@ module NxtSchema
 
       private
 
-      def maybe_criteria_applies?(value)
-        return unless options.key?(:maybe)
-        MaybeEvaluator.new(options.fetch(:maybe), value).call
+      def maybe_criteria_applies?
+        @maybe_criteria_applies ||= begin
+          options.key?(:maybe) && MaybeEvaluator.new(options.fetch(:maybe), value).call
+        end
       end
 
       def self_without_empty_schema_errors
