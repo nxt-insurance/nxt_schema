@@ -17,6 +17,9 @@ Only assign values after subtree has been applied!!!!
     => Implement default for types
 - Implement optional keys for all nodes
 - Implement defaults for all nodes
+- Should there be a `default(:email, :String).default(andreas@robecke.de)` 
+    --> Would mean that the key is always in the schema, also when not provided and defaults to the specified default value.
+    But can be set when provided with another value.  
 - Validator Registry
     => Allow chaining validations?
 - Type Registry
