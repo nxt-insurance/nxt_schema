@@ -77,7 +77,14 @@ RSpec.describe NxtSchema do
           context 'and the array contains items' do
             context 'and the items match the schema' do
               let(:schema) do
-                { company: { employees: [{ first_name: 'Andy', last_name: 'Robecke' }, { first_name: 'Rapha', last_name: 'Kallensee'} ] } }
+                {
+                  company: {
+                    employees: [
+                      { first_name: 'Andy', last_name: 'Robecke' },
+                      { first_name: 'Rapha', last_name: 'Kallensee'}
+                    ]
+                  }
+                }
               end
 
               it do
