@@ -217,7 +217,9 @@ module NxtSchema
       end
 
       def resolve_default_type_system
-        Types::Strict
+        options.fetch(:default_type_system) do
+          parent_node && parent_node.options[:default_type_system] || NxtSchema::Types::Strict
+        end
       end
     end
   end
