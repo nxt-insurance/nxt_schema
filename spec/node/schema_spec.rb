@@ -5,7 +5,7 @@ RSpec.describe NxtSchema::Node::Schema do
         company.requires(:street, :String)
         company.requires(:street_number, :Integer)
         company.requires(:value, :Integer)
-        company.requires(:stocks_available, :Boolean)
+        company.requires(:stocks_available, :Bool)
         company.nodes(:employees) do |employees|
           employees.schema(:employee) do |employee|
             employee.requires(:first_name, :String)
@@ -58,21 +58,31 @@ RSpec.describe NxtSchema::Node::Schema do
 
       it do
         subject.apply(schema)
+
         expect(subject.validation_errors).to eq(
-          :street_number=>{:itself=>["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]},
-          :stocks_available=>{:itself=>["Could not coerce 'nope' into type: NxtSchema::Type::Strict::Boolean"]},
+          :street_number=>{:itself=>["\"6\" violates constraints (type?(Integer, \"6\") failed)"]},
+          :stocks_available=>{:itself=>["\"nope\" violates constraints (type?(FalseClass, \"nope\") failed)"]},
           :employees=>
-            {0=>
-              {:employee=>
-                {:itself=>["Required key :first_name is missing in {:last_name=>\"Sommer\", :skills=>nil}"],
-                :skills=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Array"]}}},
-            1=>
-              {:employee=>
-                {:itself=>["Required key :last_name is missing in {:first_name=>\"Lütfi\", :skills=>[]}"], :skills=>{:itself=>["Array is not allowed to be empty"]}}},
-            2=>
-              {:employee=>
-                {:last_name=>{:itself=>["Could not coerce '3000' into type: NxtSchema::Type::Strict::String"]},
-                :skills=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::Array"]}}}}
+            {
+              0=>{
+                :employee=>{
+                  :itself=>["Required key :first_name is missing in {:last_name=>\"Sommer\", :skills=>nil}"],
+                  :skills=>{:itself=>["nil violates constraints (type?(Array, nil) failed)"]}
+                }
+              },
+              1=>{
+                :employee=>{
+                  :itself=>["Required key :last_name is missing in {:first_name=>\"Lütfi\", :skills=>[]}"],
+                  :skills=>{:itself=>["Array is not allowed to be empty"]}
+                }
+              },
+              2=>{
+                :employee=>{
+                  :last_name=>{:itself=>["3000 violates constraints (type?(String, 3000) failed)"]},
+                  :skills=>{:itself=>["true violates constraints (type?(Array, true) failed)"]}
+                }
+              }
+            }
         )
       end
     end
@@ -85,7 +95,7 @@ RSpec.describe NxtSchema::Node::Schema do
           company.requires(:street, :String)
           company.requires(:street_number, :Integer)
           company.requires(:value, :Integer)
-          company.requires(:stocks_available, :Boolean)
+          company.requires(:stocks_available, :Bool)
         end
       end
 
@@ -101,7 +111,7 @@ RSpec.describe NxtSchema::Node::Schema do
           company.requires(:street, :String)
           company.requires(:street_number, :Integer)
           company.requires(:value, :Integer)
-          company.requires(:stocks_available, :Boolean)
+          company.requires(:stocks_available, :Bool)
         end
       end
 

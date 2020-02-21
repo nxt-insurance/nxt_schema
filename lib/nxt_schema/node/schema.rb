@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Schema < Node::Base
-      def initialize(name:, type: NxtSchema::Type::Strict::Hash, parent_node:, **options, &block)
+      def initialize(name:, type: NxtSchema::Types::Strict::Hash, parent_node:, **options, &block)
         @template_store = TemplateStore.new
         super
       end
@@ -47,7 +47,7 @@ module NxtSchema
         end
 
         self_without_empty_schema_errors
-      rescue NxtSchema::Errors::CoercionError => error
+      rescue Dry::Types::ConstraintError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
       end

@@ -20,7 +20,7 @@ module NxtSchema
         self.value = type[value] unless maybe_criteria_applies?
 
         self_without_empty_schema_errors
-      rescue NxtSchema::Errors::CoercionError => error
+      rescue Dry::Types::ConstraintError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
       end
@@ -28,11 +28,7 @@ module NxtSchema
       private
 
       def resolve_type(name)
-        default_type_system.resolve(name)
-      rescue KeyError
-        NxtSchema::Type.resolve(name)
-      rescue KeyError
-        raise KeyError, "Could not resolve type in neither #{default_type_system} nor in #{NxtSchema::Type}"
+        "NxtSchema::Types::Strict::#{name.to_s.classify}".constantize
       end
     end
   end

@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Collection < Node::Base
-      def initialize(name:, type: NxtSchema::Type::Strict::Array, parent_node:, **options, &block)
+      def initialize(name:, type: NxtSchema::Types::Strict::Array, parent_node:, **options, &block)
         @template_store = TemplateStore.new
         super
       end
@@ -63,7 +63,7 @@ module NxtSchema
         end
 
         self_without_empty_schema_errors
-      rescue NxtSchema::Errors::CoercionError => error
+      rescue Dry::Types::ConstraintError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
       end

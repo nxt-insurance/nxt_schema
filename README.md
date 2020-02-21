@@ -52,7 +52,7 @@ Or install it yourself as:
 schema = NxtSchema.hash(:company) do 
   requires(:name, :String)  
   requires(:value, :Integer).maybe(nil)  
-  requires(:in_insure_tech, :Boolean).default(false)
+  requires(:in_insure_tech, :Bool).default(false)
   
   hash(:address) do
     requires(:street, :String)

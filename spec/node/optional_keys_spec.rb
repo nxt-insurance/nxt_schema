@@ -93,8 +93,8 @@ RSpec.describe NxtSchema do
             "root.employees.0.employee"=>["Required key missing!"],
             "root.employees.1.employee"=>["Required key missing!"],
             "root.employees.3.employee"=>["Required key missing!"],
-            "root.employees.5.employee"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"],
-            "root.employees.6.employee"=>["Could not coerce 'Here' into type: NxtSchema::Type::Strict::Hash"]
+            "root.employees.5.employee"=>["nil violates constraints (type?(Hash, nil) failed)"],
+            "root.employees.6.employee"=>["\"Here\" violates constraints (type?(Hash, \"Here\") failed)"]
           )
         end
       end
@@ -112,7 +112,7 @@ RSpec.describe NxtSchema do
           nodes(:ratings) do
             schema(:rating) do
               optional(:stars, :Integer).validate -> (node, value) { node.add_error('Max 5 stars!') if value > 5 }
-              node(:is_good_rating, :Boolean).optional -> (node) { node[:stars] && node[:stars] < 3 }
+              node(:is_good_rating, :Bool).optional -> (node) { node[:stars] && node[:stars] < 3 }
             end
           end
         end
@@ -149,9 +149,9 @@ RSpec.describe NxtSchema do
       expect(subject.errors).to eq(
         "movies.0.movie.ratings.1.rating"=>["Required key missing!"],
         "movies.1.movie.ratings.0.rating"=>["Required key missing!"],
-        "movies.1.movie.ratings.0.rating.stars"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Integer"],
+        "movies.1.movie.ratings.0.rating.stars"=>["nil violates constraints (type?(Integer, nil) failed)"],
         "movies.1.movie.ratings.1.rating"=>["Required key missing!"],
-        "movies.1.movie.ratings.3.rating"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"],
+        "movies.1.movie.ratings.3.rating"=>["nil violates constraints (type?(Hash, nil) failed)"],
         "movies.1.movie.ratings.4.rating"=>["Required key missing!"]
       )
       expect(subject.value).to eq(schema)

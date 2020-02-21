@@ -26,7 +26,7 @@ RSpec.describe NxtSchema do
       it do
         subject.apply(schema)
         expect(subject.validation_errors).to be_truthy
-        expect(subject.validation_errors).to eq(:last_name=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"]})
+        expect(subject.validation_errors).to eq(:last_name=>{:itself=>["nil violates constraints (type?(String, nil) failed)"]})
       end
     end
   end
@@ -64,7 +64,7 @@ RSpec.describe NxtSchema do
         subject.apply(schema)
         expect(subject.validation_errors).to be_truthy
         expect(subject.validation_errors).to eq(
-          :itself=>["Could not coerce '{:first_name=>\"Lütfi\", :last_name=>nil}' into type: NxtSchema::Type::Strict::Array"]
+          :itself=>["{:first_name=>\"Lütfi\", :last_name=>nil} violates constraints (type?(Array, {:first_name=>\"Lütfi\", :last_name=>nil}) failed)"]
         )
       end
     end
@@ -89,9 +89,10 @@ RSpec.describe NxtSchema do
 
     it 'names the nodes based on their index' do
       subject.apply(schema)
+
       expect(subject.errors).to eq(
-        "roots.0.person.last_name"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"],
-        "roots.1.person.first_name"=>["Could not coerce '[\"Nils\"]' into type: NxtSchema::Type::Strict::String"]
+        "roots.0.person.last_name"=>["nil violates constraints (type?(String, nil) failed)"],
+        "roots.1.person.first_name"=>["[\"Nils\"] violates constraints (type?(String, [\"Nils\"]) failed)"]
       )
     end
   end

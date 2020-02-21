@@ -45,7 +45,7 @@ module NxtSchema
         self.value = type[value_store]
 
         self_without_empty_schema_errors
-      rescue NxtSchema::Errors::CoercionError => error
+      rescue Dry::Types::ConstraintError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
       end

@@ -26,12 +26,12 @@ RSpec.describe NxtSchema::Node::Collection do
       it do
         subject.apply(schema)
         expect(subject.validation_errors).to eq(
-          2=>{:item=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"]}},
-          3=>{:item=>{:itself=>["Could not coerce '1' into type: NxtSchema::Type::Strict::String"]}},
-          4=>{:item=>{:itself=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::String"]}},
-          5=>{:item=>{:itself=>["Could not coerce '{}' into type: NxtSchema::Type::Strict::String"]}},
-          6=>{:item=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]}},
-          7=>{:item=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]}}
+          2=>{:item=>{:itself=>["nil violates constraints (type?(String, nil) failed)"]}},
+          3=>{:item=>{:itself=>["1 violates constraints (type?(String, 1) failed)"]}},
+          4=>{:item=>{:itself=>["[] violates constraints (type?(String, []) failed)"]}},
+          5=>{:item=>{:itself=>["{} violates constraints (type?(String, {}) failed)"]}},
+          6=>{:item=>{:itself=>["false violates constraints (type?(String, false) failed)"]}},
+          7=>{:item=>{:itself=>["true violates constraints (type?(String, true) failed)"]}}
         )
         expect(subject.value_store).to eq(schema)
       end
@@ -56,7 +56,7 @@ RSpec.describe NxtSchema::Node::Collection do
         subject.apply(schema)
         expect(subject.validation_errors).to eq(
           3=>{:children=>{:itself=>["Array is not allowed to be empty"]}},
-          4=>{:children=>{0=>{:child=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]}}}}
+          4=>{:children=>{0=>{:child=>{:itself=>["false violates constraints (type?(String, false) failed)"]}}}}
         )
         expect(subject.value_store).to eq(schema)
       end
@@ -102,22 +102,22 @@ RSpec.describe NxtSchema::Node::Collection do
         expect(subject.validation_errors).to eq(
           0=>
            {:parents=>
-              {1=>{:parent=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"]}},
-               2=>{:parent=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::Hash"]}},
-               3=>{:parent=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::Hash"]}},
-               4=>{:parent=>{:itself=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::Hash"]}},
+             {1=>{:parent=>{:itself=>["nil violates constraints (type?(Hash, nil) failed)"]}},
+               2=>{:parent=>{:itself=>["true violates constraints (type?(Hash, true) failed)"]}},
+               3=>{:parent=>{:itself=>["false violates constraints (type?(Hash, false) failed)"]}},
+               4=>{:parent=>{:itself=>["[] violates constraints (type?(Hash, []) failed)"]}},
                5=>{:parent=>{:itself=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"]}},
                6=>{:parent=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Nils\"}"]}}}},
           1=>
            {:parents=>
-              {0=>{:parent=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"]}},
-               1=>{:parent=>{:itself=>["Could not coerce '1' into type: NxtSchema::Type::Strict::Hash"]}},
-               2=>{:parent=>{:itself=>["Could not coerce '12.34' into type: NxtSchema::Type::Strict::Hash"]}},
-               3=>{:parent=>{:itself=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::Hash"]}},
+             {0=>{:parent=>{:itself=>["nil violates constraints (type?(Hash, nil) failed)"]}},
+               1=>{:parent=>{:itself=>["1 violates constraints (type?(Hash, 1) failed)"]}},
+               2=>{:parent=>{:itself=>["0.1234e2 violates constraints (type?(Hash, 0.1234e2) failed)"]}},
+               3=>{:parent=>{:itself=>["[] violates constraints (type?(Hash, []) failed)"]}},
                4=>{:parent=>{:itself=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"]}},
-               5=>{:parent=>{:last_name=>{:itself=>["Could not coerce '3000' into type: NxtSchema::Type::Strict::String"]}}},
+               5=>{:parent=>{:last_name=>{:itself=>["3000 violates constraints (type?(String, 3000) failed)"]}}},
                6=>{:parent=>{:itself=>["Required key :first_name is missing in {:last_name=>\"Sommer\"}"]}}}}
-          )
+        )
 
         expect(subject.value_store).to eq(schema)
       end
@@ -157,15 +157,14 @@ RSpec.describe NxtSchema::Node::Collection do
 
       it 'contains the custom errors and node errors' do
         subject.apply(schema)
-
         expect(subject.validation_errors).to eq(
           :itself=>["Can only contain two items"],
-          2=>{:item=>{:itself=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"]}},
-          3=>{:item=>{:itself=>["Could not coerce '1' into type: NxtSchema::Type::Strict::String"]}},
-          4=>{:item=>{:itself=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::String"]}},
-          5=>{:item=>{:itself=>["Could not coerce '{}' into type: NxtSchema::Type::Strict::String"]}},
-          6=>{:item=>{:itself=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]}},
-          7=>{:item=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]}}
+          2=>{:item=>{:itself=>["nil violates constraints (type?(String, nil) failed)"]}},
+          3=>{:item=>{:itself=>["1 violates constraints (type?(String, 1) failed)"]}},
+          4=>{:item=>{:itself=>["[] violates constraints (type?(String, []) failed)"]}},
+          5=>{:item=>{:itself=>["{} violates constraints (type?(String, {}) failed)"]}},
+          6=>{:item=>{:itself=>["false violates constraints (type?(String, false) failed)"]}},
+          7=>{:item=>{:itself=>["true violates constraints (type?(String, true) failed)"]}}
         )
       end
     end
@@ -238,20 +237,21 @@ RSpec.describe NxtSchema::Node::Collection do
 
       it 'merges the errors of all nodes' do
         subject.apply(schema)
+
         expect(subject.errors).to eq(
-                                    "furniture.6.table"=>["Required key :height is missing in {:amount=>12}"],
-                                    "furniture.6.cupboard"=>["Required key :doors is missing in {:amount=>12}"],
-                                    "furniture.6.couch"=>["Required key :seats is missing in {:amount=>12}"],
-                                    "furniture.7.table"=>["Required key :height is missing in {:other=>12}"],
-                                    "furniture.7.cupboard"=>["Required key :doors is missing in {:other=>12}"],
-                                    "furniture.7.couch"=>["Required key :seats is missing in {:other=>12}"],
-                                    "furniture.8.table"=>["Required key :height is missing in {}"],
-                                    "furniture.8.cupboard"=>["Required key :doors is missing in {}"],
-                                    "furniture.8.couch"=>["Required key :seats is missing in {}"],
-                                    "furniture.9.table"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"],
-                                    "furniture.9.cupboard"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"],
-                                    "furniture.9.couch"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"]
-                                  )
+          "furniture.6.table"=>["Required key :height is missing in {:amount=>12}"],
+          "furniture.6.cupboard"=>["Required key :doors is missing in {:amount=>12}"],
+          "furniture.6.couch"=>["Required key :seats is missing in {:amount=>12}"],
+          "furniture.7.table"=>["Required key :height is missing in {:other=>12}"],
+          "furniture.7.cupboard"=>["Required key :doors is missing in {:other=>12}"],
+          "furniture.7.couch"=>["Required key :seats is missing in {:other=>12}"],
+          "furniture.8.table"=>["Required key :height is missing in {}"],
+          "furniture.8.cupboard"=>["Required key :doors is missing in {}"],
+          "furniture.8.couch"=>["Required key :seats is missing in {}"],
+          "furniture.9.table"=>["nil violates constraints (type?(Hash, nil) failed)"],
+          "furniture.9.cupboard"=>["nil violates constraints (type?(Hash, nil) failed)"],
+          "furniture.9.couch"=>["nil violates constraints (type?(Hash, nil) failed)"]
+        )
       end
     end
 
@@ -269,15 +269,16 @@ RSpec.describe NxtSchema::Node::Collection do
 
       it do
         subject.apply(schema)
+
         expect(subject.errors).to eq(
-          "diverse.6.name"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"],
-          "diverse.6.age"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Integer"],
-          "diverse.7.name"=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"],
-          "diverse.7.age"=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::Integer"],
-          "diverse.8.name"=>["Could not coerce '{}' into type: NxtSchema::Type::Strict::String"],
-          "diverse.8.age"=>["Could not coerce '{}' into type: NxtSchema::Type::Strict::Integer"],
-          "diverse.9.name"=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::String"],
-          "diverse.9.age"=>["Could not coerce '[]' into type: NxtSchema::Type::Strict::Integer"]
+          "diverse.6.name"=>["nil violates constraints (type?(String, nil) failed)"],
+          "diverse.6.age"=>["nil violates constraints (type?(Integer, nil) failed)"],
+          "diverse.7.name"=>["false violates constraints (type?(String, false) failed)"],
+          "diverse.7.age"=>["false violates constraints (type?(Integer, false) failed)"],
+          "diverse.8.name"=>["{} violates constraints (type?(String, {}) failed)"],
+          "diverse.8.age"=>["{} violates constraints (type?(Integer, {}) failed)"],
+          "diverse.9.name"=>["[] violates constraints (type?(String, []) failed)"],
+          "diverse.9.age"=>["[] violates constraints (type?(Integer, []) failed)"]
         )
       end
     end

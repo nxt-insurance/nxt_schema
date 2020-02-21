@@ -36,8 +36,8 @@ RSpec.describe NxtSchema do
     it 'merges the schemas' do
       subject.apply(schema)
       expect(subject.errors).to eq(
-        "company.people.1.person.last_name"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::String"],
-        "company.people.2.person.last_name"=>["Could not coerce 'false' into type: NxtSchema::Type::Strict::String"]
+        "company.people.1.person.last_name"=>["nil violates constraints (type?(String, nil) failed)"],
+        "company.people.2.person.last_name"=>["false violates constraints (type?(String, false) failed)"]
       )
     end
   end
@@ -106,9 +106,10 @@ RSpec.describe NxtSchema do
 
     it 'merges the schemas' do
       subject.apply(schema)
+
       expect(subject.errors).to eq(
         "roots.4.person"=>["Required key :first_name is missing in {}"],
-        "roots.5.person"=>["Could not coerce 'nil' into type: NxtSchema::Type::Strict::Hash"]
+        "roots.5.person"=>["nil violates constraints (type?(Hash, nil) failed)"]
       )
     end
   end
@@ -152,9 +153,9 @@ RSpec.describe NxtSchema do
       subject.apply(schema)
       expect(subject.errors).to eq(
         "roots.2.categories"=>["Array is not allowed to be empty"],
-        "roots.3.categories.0.category"=>["Could not coerce 'invalid' into type: NxtSchema::Type::Strict::Hash"],
-        "roots.4.categories.0.category"=>["Could not coerce 'invalid' into type: NxtSchema::Type::Strict::Hash"],
-        "roots.4.categories.1.category"=>["Could not coerce 'and broken' into type: NxtSchema::Type::Strict::Hash"]
+        "roots.3.categories.0.category"=>["\"invalid\" violates constraints (type?(Hash, \"invalid\") failed)"],
+        "roots.4.categories.0.category"=>["\"invalid\" violates constraints (type?(Hash, \"invalid\") failed)"],
+        "roots.4.categories.1.category"=>["\"and broken\" violates constraints (type?(Hash, \"and broken\") failed)"]
       )
       expect(subject.value).to eq(schema)
     end

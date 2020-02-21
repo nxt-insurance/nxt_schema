@@ -180,7 +180,7 @@ module NxtSchema
       end
 
       def raise_coercion_error(value, type)
-        raise NxtSchema::Errors::CoercionError.new(value, type)
+        raise Dry::Types::ConstraintError.new(value, type)
       end
 
       def flat_validation_errors(hash, namespace, acc = {})
@@ -217,9 +217,7 @@ module NxtSchema
       end
 
       def resolve_default_type_system
-        options.fetch(:default_type_system) do
-          parent_node && parent_node.options[:default_type_system] || NxtSchema::Type::Strict
-        end
+        Types::Strict
       end
     end
   end

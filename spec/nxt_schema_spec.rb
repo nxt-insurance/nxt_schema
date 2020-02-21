@@ -106,10 +106,11 @@ RSpec.describe NxtSchema do
         it do
           subject.apply(schema)
           expect(subject.validation_errors?).to be_truthy
+
           expect(subject.validation_errors).to eq(
             :headquarter => {
               :street_number => {
-                :itself => ["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"]
+                :itself => ["\"6\" violates constraints (type?(Integer, \"6\") failed)"]
               }
             },
             :employee_names => {
@@ -241,7 +242,7 @@ RSpec.describe NxtSchema do
           expect(subject.validation_errors?).to be_truthy
           expect(subject.validation_errors).to eq(
             :headquarter => {
-              :street_number => { :itself => ["Could not coerce '6' into type: NxtSchema::Type::Strict::Integer"] }
+              :street_number => { :itself => ["\"6\" violates constraints (type?(Integer, \"6\") failed)"] }
             },
             :employee_names => {
               1 => {

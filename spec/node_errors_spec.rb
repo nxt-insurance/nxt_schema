@@ -38,7 +38,8 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject.validation_errors).to eq(:company=>{:industry=>{:itself=>["Could not coerce 'true' into type: NxtSchema::Type::Strict::String"]}})
+
+          expect(subject.validation_errors).to eq(:company=>{:industry=>{:itself=>["true violates constraints (type?(String, true) failed)"]}})
         end
       end
     end
@@ -65,9 +66,10 @@ RSpec.describe NxtSchema do
 
           it do
             subject.apply(schema)
+
             expect(
               subject.validation_errors[:company][:employees][:itself]
-            ).to eq(["Could not coerce 'Andy & Rapha' into type: NxtSchema::Type::Strict::Array"])
+            ).to eq(["\"Andy & Rapha\" violates constraints (type?(Array, \"Andy & Rapha\") failed)"])
           end
         end
 
