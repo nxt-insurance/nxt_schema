@@ -63,7 +63,7 @@ RSpec.describe NxtSchema do
           nodes(:employees) do
             schema(:employee) do
               node(:name, :String).optional ->(node) { node.empty? }
-              node(:email, :String).optional ->(node) { node[:name] == 'Andy' }
+              node(:email, :String).optional ->(node) { node.empty? || node[:name] == 'Andy' }
             end
           end
         end
@@ -90,7 +90,6 @@ RSpec.describe NxtSchema do
         it do
           subject.apply(schema)
           expect(subject.errors).to eq(
-            "root.employees.0.employee"=>["Required key missing!"],
             "root.employees.1.employee"=>["Required key missing!"],
             "root.employees.3.employee"=>["Required key missing!"],
             "root.employees.5.employee"=>["nil violates constraints (type?(Hash, nil) failed)"],
