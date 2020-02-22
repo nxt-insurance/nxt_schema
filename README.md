@@ -7,7 +7,6 @@ TODO:
 Only assign values after subtree has been applied!!!!
 ======================================================
 
-- Can we use dry types for the type system?
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
@@ -22,7 +21,6 @@ Only assign values after subtree has been applied!!!!
     But can be set when provided with another value.  
 - Validator Registry
     => Allow chaining validations?
-- Type Registry
 - Structure Errors 
 - NxtSchema::Params => Use param types
 - NxtSchema::Json => Use json types, maybe even parse Json with Oj
