@@ -2,9 +2,12 @@ require "nxt_schema/version"
 require "pry"
 require "active_support/all"
 require 'dry-types'
+require 'nxt_registry'
 
 require "nxt_schema/types"
 require "nxt_schema/registry"
+require "nxt_schema/validations/registry"
+require "nxt_schema/validations/proxy"
 
 require "nxt_schema/errors"
 require "nxt_schema/errors/error"

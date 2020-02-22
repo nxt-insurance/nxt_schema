@@ -59,8 +59,9 @@ module NxtSchema
         self
       end
 
-      def validate(*validators, &block)
-        add_validators(*validators)
+      def validate(key, *args, &block)
+        validator = validator(key, *args)
+        add_validators(validator)
         evaluate_block(block) if block_given?
         self
       end
@@ -158,10 +159,22 @@ module NxtSchema
         validation_errors.empty?
       end
 
-      def add_validators(*validators)
+      def add_validators(validator)
         options[:validate] ||= []
         options[:validate] = Array(options.fetch(:validate, []))
-        options[:validate] += validators
+        options[:validate] << validator
+      end
+
+      def validator(key, *args)
+        Validations::Registry::VALIDATORS.resolve(key).call(*args)
+      end
+
+      def validate_with(&block)
+        binding.pry
+
+        add_validators(
+          ->(node) { NxtSchema::Validations::Proxy.new(node).validate(&block) }
+        )
       end
 
       private
