@@ -8,6 +8,7 @@ require "nxt_schema/types"
 require "nxt_schema/registry"
 require "nxt_schema/validations/registry"
 require "nxt_schema/validations/proxy"
+require "nxt_schema/validations/validators/optional_node"
 
 require "nxt_schema/errors"
 require "nxt_schema/errors/error"

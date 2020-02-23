@@ -33,7 +33,8 @@ module NxtSchema
             else
               # TODO: Implement proper optional hash nodes
               if node.options[:optional].respond_to?(:call)
-                add_validators(OptionalNodeValidator.new(node.options[:optional]))
+                add_validators NxtSchema::Validations::Validators::GreaterThanOrEqual.call(node.options[:optional])
+                #add_validators(OptionalNodeValidator.new(node.options[:optional]))
                 elsif node.options[:optional]
                 else
                 add_schema_error("Required key :#{key} is missing in #{hash}")

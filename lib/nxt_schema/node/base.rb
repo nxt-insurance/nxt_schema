@@ -60,7 +60,14 @@ module NxtSchema
       end
 
       def validate(key, *args, &block)
-        validator = validator(key, *args)
+        if key.is_a?(Symbol)
+          validator = validator(key, *args)
+        elsif key.respond_to?(:call)
+          validator = key
+        else
+          raise ArgumentError, "Don't know how to resolve validator from: #{key}"
+        end
+
         add_validators(validator)
         evaluate_block(block) if block_given?
         self
@@ -141,7 +148,7 @@ module NxtSchema
         optional_evaluator = options[:optional]
 
         if optional_evaluator.respond_to?(:call)
-          add_validators(OptionalNodeValidator.new(optional_evaluator))
+          evaluate_block(optional_evaluator)
         else
           optional_evaluator
         end
@@ -224,7 +231,8 @@ module NxtSchema
         if block.arity.zero?
           instance_exec(&block)
         else
-          block.call(self)
+          evaluator_args = [self, value]
+          block.call(*evaluator_args.take(block.arity))
         end
       end
 

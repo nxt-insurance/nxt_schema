@@ -17,6 +17,7 @@ module NxtSchema
 
         if maybe_criteria_applies?
           self.value_store = value
+        # elsif is_optional_and_missing?
         else
           array = type[value]
           self.value = array
