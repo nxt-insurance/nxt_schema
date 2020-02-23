@@ -3,7 +3,7 @@ module NxtSchema
     class Registry
       extend NxtRegistry
 
-      VALIDATORS = registry :validators, call: false, memoize: false do
+      VALIDATORS = registry :validators, call: false do
         register(:greater_than, lambda do |threshold|
           lambda do |node, value|
             if value > threshold

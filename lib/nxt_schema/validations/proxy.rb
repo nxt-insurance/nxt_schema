@@ -14,14 +14,14 @@ module NxtSchema
         result = instance_exec(&block)
         return if result
 
-        copy_errors_to_node
+        copy_aggregated_errors_to_node
       end
 
       def add_error(error)
         aggregated_errors << error
       end
 
-      def copy_errors_to_node
+      def copy_aggregated_errors_to_node
         aggregated_errors.each do |error|
           node.add_error(error)
         end
