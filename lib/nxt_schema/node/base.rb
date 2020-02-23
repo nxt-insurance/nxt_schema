@@ -90,15 +90,15 @@ module NxtSchema
       end
 
       def register_node
+        return if in?(all_nodes)
+
         all_nodes << self
       end
 
       def apply_validations
         # We don't run validations in case there are schema errors
         # to avoid weird errors
-
         # First reject empty schema_errors
-
         schema_errors.reject! { |_, v| v.empty? }
 
         # TODO: Is this correct? - Do not apply validations when maybe criteria applies?
@@ -106,7 +106,8 @@ module NxtSchema
           build_validations
 
           validations.each do |validation|
-            validation.call(self, value)
+            args = [self, value]
+            validation.call(*args.take(validation.arity))
           end
         end
 
@@ -170,8 +171,6 @@ module NxtSchema
       end
 
       def validate_with(&block)
-        binding.pry
-
         add_validators(
           ->(node) { NxtSchema::Validations::Proxy.new(node).validate(&block) }
         )
