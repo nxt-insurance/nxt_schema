@@ -144,16 +144,6 @@ module NxtSchema
         validation_errors.any?
       end
 
-      def optional?
-        optional_evaluator = options[:optional]
-
-        if optional_evaluator.respond_to?(:call)
-          evaluate_block(optional_evaluator)
-        else
-          optional_evaluator
-        end
-      end
-
       def root?
         @root
       end

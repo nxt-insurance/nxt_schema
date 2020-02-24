@@ -21,7 +21,8 @@ module NxtSchema
         else
           self.value = type[hash]
 
-          # TODO: Handle additional keys here!
+          # TODO: We should not allow additional keys to be present per default?!
+          # TODO: Handle this here
           template_store.each do |key, node|
             if hash.key?(key)
 
@@ -32,7 +33,6 @@ module NxtSchema
               validation_errors[key] = node.validation_errors
 
             else
-              # TODO: Can we move this to the node?
               optional_option = node.options[:optional]
 
               if optional_option.respond_to?(:call)
