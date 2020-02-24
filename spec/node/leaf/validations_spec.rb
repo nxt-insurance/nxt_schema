@@ -17,17 +17,17 @@ RSpec.describe NxtSchema::Node::Leaf do
         context 'when the node is invalid' do
           it do
             subject.apply(4)
-            expect(subject.errors).to eq("leaf"=>["4 should be greater 5"])
+            expect(subject.errors).to eq("leaf"=>["4 should be greater than 5"])
           end
 
           it do
             subject.apply(6)
-            expect(subject.errors).to eq("leaf"=>["6 should be greater 6"])
+            expect(subject.errors).to eq("leaf"=>["6 should be greater than 6"])
           end
 
           it do
             subject.apply(7)
-            expect(subject.errors).to eq("leaf"=>["7 should be greater 7"])
+            expect(subject.errors).to eq("leaf"=>["7 should be greater than 7"])
           end
         end
 
@@ -106,7 +106,7 @@ RSpec.describe NxtSchema::Node::Leaf do
       context 'when the node is invalid' do
         it do
           subject.apply(7)
-          expect(subject.errors).to eq("leaf"=>["7 should be greater 7"])
+          expect(subject.errors).to eq("leaf"=>["7 should be greater than 7"])
         end
       end
     end

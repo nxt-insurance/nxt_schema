@@ -8,11 +8,17 @@ require "nxt_schema/types"
 require "nxt_schema/registry"
 require "nxt_schema/validations/registry"
 require "nxt_schema/validations/proxy"
+
 require "nxt_schema/validations/validators/validator"
 require "nxt_schema/validations/validators/optional_node"
 require "nxt_schema/validations/validators/greater_than"
 require "nxt_schema/validations/validators/greater_than_or_equal"
+require "nxt_schema/validations/validators/less_than"
+require "nxt_schema/validations/validators/less_than_or_equal"
 require "nxt_schema/validations/validators/format"
+require "nxt_schema/validations/validators/inclusion"
+require "nxt_schema/validations/validators/exclusion"
+
 
 require "nxt_schema/errors"
 require "nxt_schema/errors/error"

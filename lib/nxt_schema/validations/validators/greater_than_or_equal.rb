@@ -14,7 +14,7 @@ module NxtSchema
             if value >= threshold
               true
             else
-              node.add_error("#{value} should be greater #{threshold}")
+              node.add_error("#{value} should be greater than or equal to #{threshold}")
               false
             end
           end
