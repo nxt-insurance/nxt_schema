@@ -62,8 +62,8 @@ RSpec.describe NxtSchema do
         NxtSchema.root do
           nodes(:employees) do
             schema(:employee) do
-              node(:name, :String).optional ->(node) { node.empty? }
-              node(:email, :String).optional ->(node) { node.empty? || node[:name] == 'Andy' }
+              node(:name, :String).optional ->(employee) { employee.empty? }
+              node(:email, :String).optional ->(employee) { employee.empty? || employee[:name] == 'Andy' }
             end
           end
         end
@@ -89,9 +89,10 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
+
           expect(subject.errors).to eq(
-            "root.employees.1.employee"=>["Required key missing!"],
-            "root.employees.3.employee"=>["Required key missing!"],
+            "root.employees.1.employee"=>["Required key :name is missing in {:email=>\"andy@awesome.com\"}"],
+            "root.employees.3.employee"=>["Required key :email is missing in {:name=>\"Nils\"}"],
             "root.employees.5.employee"=>["nil violates constraints (type?(Hash, nil) failed)"],
             "root.employees.6.employee"=>["\"Here\" violates constraints (type?(Hash, \"Here\") failed)"]
           )
@@ -145,13 +146,14 @@ RSpec.describe NxtSchema do
 
     it 'works' do
       subject.apply(schema)
+
       expect(subject.errors).to eq(
-        "movies.0.movie.ratings.1.rating"=>["Required key missing!"],
-        "movies.1.movie.ratings.0.rating"=>["Required key missing!"],
+        "movies.0.movie.ratings.1.rating"=>["Required key :is_good_rating is missing in {:stars=>4}"],
+        "movies.1.movie.ratings.0.rating"=>["Required key :is_good_rating is missing in {:stars=>nil}"],
         "movies.1.movie.ratings.0.rating.stars"=>["nil violates constraints (type?(Integer, nil) failed)"],
-        "movies.1.movie.ratings.1.rating"=>["Required key missing!"],
+        "movies.1.movie.ratings.1.rating"=>["Required key :is_good_rating is missing in {:stars=>4}"],
         "movies.1.movie.ratings.3.rating"=>["nil violates constraints (type?(Hash, nil) failed)"],
-        "movies.1.movie.ratings.4.rating"=>["Required key missing!"]
+        "movies.1.movie.ratings.4.rating"=>["Required key :is_good_rating is missing in {}"]
       )
       expect(subject.value).to eq(schema)
     end

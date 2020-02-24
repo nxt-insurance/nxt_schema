@@ -32,11 +32,13 @@ module NxtSchema
               validation_errors[key] = node.validation_errors
 
             else
-              # TODO: Implement proper optional hash nodes
-              if node.options[:optional].respond_to?(:call)
-                add_validators(OptionalNodeValidator.new(node.options[:optional]))
-              elsif node.options[:optional]
-              else
+              # TODO: Can we move this to the node?
+              optional_option = node.options[:optional]
+
+              if optional_option.respond_to?(:call)
+                # Validator is added to the schema node!
+                add_validators(validator(:optional_node, optional_option, key))
+              elsif !optional_option
                 add_schema_error("Required key :#{key} is missing in #{hash}")
               end
             end

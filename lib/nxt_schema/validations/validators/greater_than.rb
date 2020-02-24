@@ -1,17 +1,17 @@
 module NxtSchema
   module Validations
     module Validators
-      class GreaterThanOrEqual < Validator
+      class GreaterThan < Validator
         def initialize(threshold)
           @threshold = threshold
         end
 
-        register_as :greater_than_or_equal
+        register_as :greater_than
         attr_reader :threshold
 
         def build
           lambda do |node, value|
-            if value >= threshold
+            if value > threshold
               true
             else
               node.add_error("#{value} should be greater #{threshold}")

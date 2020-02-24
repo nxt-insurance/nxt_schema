@@ -174,7 +174,7 @@ module NxtSchema
       end
 
       def validator(key, *args)
-        Validations::Registry::VALIDATORS.resolve(key).call(*args)
+        Validations::Registry::VALIDATORS.resolve(key).new(*args).build
       end
 
       def validate_with(&block)

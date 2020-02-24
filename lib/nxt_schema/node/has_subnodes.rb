@@ -42,6 +42,7 @@ module NxtSchema
 
       alias_method :requires, :required
 
+      # TODO: This does only belong in schema nodes (maybe there should be a module for that)
       def optional(name, type, **options, &block)
         node(name, type, options.merge(optional: true), &block)
       end
