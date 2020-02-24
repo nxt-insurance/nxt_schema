@@ -19,13 +19,8 @@ require "nxt_schema/validations/validators/format"
 require "nxt_schema/validations/validators/inclusion"
 require "nxt_schema/validations/validators/exclusion"
 
-
 require "nxt_schema/errors"
 require "nxt_schema/errors/error"
-require "nxt_schema/errors/required_key_missing_error"
-require "nxt_schema/errors/coercion_error"
-
-
 
 require "nxt_schema/node"
 require "nxt_schema/node/maybe_evaluator"
