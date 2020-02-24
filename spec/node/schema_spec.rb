@@ -120,6 +120,22 @@ RSpec.describe NxtSchema::Node::Schema do
         expect(subject.value_store).to eq(nil)
       end
     end
+
+    context 'when the value maybe is a proc' do
+      subject do
+        described_class.new(name: :company, parent_node: nil, maybe: ->(value) { value == {} }) do |company|
+          company.requires(:street, :String)
+          company.requires(:street_number, :Integer)
+          company.requires(:value, :Integer)
+          company.requires(:stocks_available, :Bool)
+        end
+      end
+
+      it do
+        subject.apply({})
+        expect(subject.value_store).to eq({})
+      end
+    end
   end
 
   describe '#default' do
