@@ -28,7 +28,7 @@ module NxtSchema
       private
 
       def resolve_type(name)
-        "NxtSchema::Types::Strict::#{name.to_s.classify}".constantize
+        default_type_system.const_get(name.to_s.classify)
       end
     end
   end

@@ -49,6 +49,10 @@ module NxtSchema
         self
       end
 
+      def value_or_default_value
+        NxtSchema::Node::DefaultValueEvaluator.new(self, options[:default_value], value).call
+      end
+
       def maybe(maybe_value, &block)
         options.merge!(maybe: maybe_value)
         evaluate_block(block) if block_given?
