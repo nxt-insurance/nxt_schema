@@ -54,6 +54,8 @@ module NxtSchema
       end
 
       def optional(optional_value, &block)
+        raise ArgumentError, "Optional nodes can only exist within schemas" unless parent.is_a?(NxtSchema::Node::Schema)
+
         options.merge!(optional: optional_value)
         evaluate_block(block) if block_given?
         self
