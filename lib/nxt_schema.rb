@@ -18,6 +18,7 @@ require "nxt_schema/validations/validators/less_than_or_equal"
 require "nxt_schema/validations/validators/format"
 require "nxt_schema/validations/validators/inclusion"
 require "nxt_schema/validations/validators/exclusion"
+require "nxt_schema/validations/validators/query"
 
 require "nxt_schema/errors"
 require "nxt_schema/errors/error"
