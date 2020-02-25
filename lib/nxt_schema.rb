@@ -6,6 +6,7 @@ require 'nxt_registry'
 
 require "nxt_schema/types"
 require "nxt_schema/registry"
+require "nxt_schema/callable"
 require "nxt_schema/validations/registry"
 require "nxt_schema/validations/proxy"
 
