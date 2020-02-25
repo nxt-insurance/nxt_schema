@@ -188,10 +188,6 @@ module NxtSchema
         self
       end
 
-      def raise_coercion_error(value, type)
-        raise Dry::Types::ConstraintError.new(value, type)
-      end
-
       def flat_validation_errors(hash, namespace, acc = {})
         hash.each_with_object(acc) do |(key, val), acc|
           current_namespace = [namespace, key].reject { |namespace| namespace == schema_errors_key }.compact.join('.')
@@ -227,8 +223,16 @@ module NxtSchema
       end
 
       def resolve_default_type_system
-        options.fetch(:default_type_system) do
-          parent_node && parent_node.options[:default_type_system] || NxtSchema::Types::Strict
+        type_system = options.fetch(:default_type_system) do
+          parent_node && parent_node.options[:default_type_system]
+        end
+
+        if type_system.is_a?(Module)
+          type_system
+        elsif type_system.is_a?(Symbol)
+          "NxtSchema::Types::#{type_system.classify}".constantize
+        else
+          NxtSchema::Types::Strict
         end
       end
     end

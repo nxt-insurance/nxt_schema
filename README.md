@@ -4,17 +4,24 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 
 TODO:    
 ======================================================
-Only assign values after subtree has been applied!!!!
+Only assign values after subtree has been applied!!!! <- Check whether this was done?!
 ======================================================
 
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
 
+- Allow to inject context on apply time
+- Spec the different type systems
+
 - Types
     => Implement maybe for types
     => Implement default for types
-- Implement optional keys for all nodes
+    
+- Implement optional keys for all nodes 
+    => Not sure it makes sense for nodes where the parent is not a schema
+    => We might actually want to prevent optional nodes in non schema situations?
+    
 - Implement defaults for all nodes
 - Should there be a `default(:email, :String).default(andreas@robecke.de)` 
     --> Would mean that the key is always in the schema, also when not provided and defaults to the specified default value.
