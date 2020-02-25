@@ -6,8 +6,8 @@ module NxtSchema
         super
       end
 
-      def apply(hash, parent_node: self.parent_node)
-        register_node
+      def apply(hash, parent_node: self.parent_node, context: nil)
+        register_node(context)
 
         self.parent_node = parent_node
         self.schema_errors = { schema_errors_key => [] }
@@ -26,7 +26,7 @@ module NxtSchema
           template_store.each do |key, node|
             if hash.key?(key)
 
-              node.apply(hash[key], parent_node: self).schema_errors?
+              node.apply(hash[key], parent_node: self, context: context).schema_errors?
 
               value_store[key] = node.value
               schema_errors[key] = node.schema_errors

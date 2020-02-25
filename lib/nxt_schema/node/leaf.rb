@@ -10,8 +10,8 @@ module NxtSchema
         true
       end
 
-      def apply(value, parent_node: self.parent_node)
-        register_node
+      def apply(value, parent_node: self.parent_node, context: nil)
+        register_node(context)
 
         self.parent_node = parent_node
         self.schema_errors = { schema_errors_key => [] }

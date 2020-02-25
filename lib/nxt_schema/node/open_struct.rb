@@ -6,13 +6,16 @@ module NxtSchema
         super
       end
 
-      def apply(hash, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, index_or_name: name)
+      def apply(hash, parent_node: parent_node, parent_schema_errors: {}, parent_validation_errors: {}, index_or_name: name, context: nil)
+        register_node(context)
+
+
         self.parent_node = parent_node
         self.schema_errors = parent_schema_errors[index_or_name] ||= { schema_errors_key => [] }
         self.validation_errors = parent_validation_errors[index_or_name] ||= { schema_errors_key => [] }
         self.value_store = {}
         self.value = hash
-        register_node
+
 
         if maybe_criteria_applies?
           self.value_store = hash
@@ -27,7 +30,8 @@ module NxtSchema
                 hash[key],
                 parent_node: self,
                 parent_schema_errors: schema_errors,
-                parent_validation_errors: validation_errors
+                parent_validation_errors: validation_errors,
+                context: context
               ).schema_errors?
 
             else

@@ -158,7 +158,39 @@ RSpec.describe NxtSchema do
       end
     end
 
+    context 'when a context is provided' do
+      subject do
+        NxtSchema.roots(:movies) do
+          schema(:movie) do
+            requires(:title, :String)
+            requires(:length, :Integer)
+            requires(:rating, :Integer).optional ->(node) { node.context == 'new' }
+          end
+        end
+      end
 
+      let(:schema) do
+        [
+          {
+            title: 'Forest Gump',
+            length: 120,
+            rating: 1
+          },
+          {
+            title: 'Blow',
+            length: 130
+          }
+        ]
+      end
+
+      it do
+        subject.apply(schema, context: 'new')
+        expect(subject).to be_valid
+
+        subject.apply(schema, context: 'update')
+        expect(subject).to_not be_valid
+        expect(subject.errors).to eq("movies.1.movie"=>["Required key :rating is missing in {:title=>\"Blow\", :length=>130}"])
+      end
+    end
   end
-
 end

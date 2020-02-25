@@ -11,12 +11,12 @@ Only assign values after subtree has been applied!!!! <- Check whether this was 
 - Test all methods of all nodes
     => Structure tests by nodes and method
 
-- Allow to inject context on apply time
+- Test if context is passed down to all nodes
 - Spec the different type systems
 
 - Types
     => Implement maybe for types
-    => Implement default for types
+    => Implement default for types => When value is not present return default
     
 - Implement optional keys for all nodes 
     => Not sure it makes sense for nodes where the parent is not a schema

@@ -6,8 +6,8 @@ module NxtSchema
         super
       end
 
-      def apply(value, parent_node: self.parent_node)
-        register_node
+      def apply(value, parent_node: self.parent_node, context: nil)
+        register_node(context)
 
         self.parent_node = parent_node
         self.schema_errors = { schema_errors_key => [] }
@@ -17,7 +17,6 @@ module NxtSchema
 
         if maybe_criteria_applies?
           self.value_store = value
-        # elsif is_optional_and_missing?
         else
           array = type[value]
           self.value = array
@@ -35,7 +34,7 @@ module NxtSchema
                 current_node = node.dup
                 current_node_store[node_name] = current_node
 
-                current_node.apply(item, parent_node: self)
+                current_node.apply(item, parent_node: self, context: context)
 
                 value_store[index] = current_node.value
 

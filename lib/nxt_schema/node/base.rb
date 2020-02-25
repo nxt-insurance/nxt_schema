@@ -14,6 +14,7 @@ module NxtSchema
         @root = parent_node.nil?
         @root_node = parent_node.nil? ? self : parent_node.root_node
         @errors = {}
+        @context = nil
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
         evaluate_block(block) if block_given?
@@ -33,7 +34,8 @@ module NxtSchema
                     :all_nodes,
                     :value,
                     :default_type_system,
-                    :root_node
+                    :root_node,
+                    :context
 
       def parent(level = 1)
         level.times.inject(self) { |acc| acc.parent_node }
@@ -98,9 +100,10 @@ module NxtSchema
         sorted_nodes.reverse_each(&:apply_validations)
       end
 
-      def register_node
+      def register_node(context)
         return if in?(all_nodes)
 
+        self.context = context
         all_nodes << self
       end
 
