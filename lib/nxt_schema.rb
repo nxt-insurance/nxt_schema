@@ -5,6 +5,7 @@ require 'dry-types'
 require 'nxt_registry'
 
 require "nxt_schema/types"
+require "nxt_schema/undefined"
 require "nxt_schema/registry"
 require "nxt_schema/callable"
 require "nxt_schema/callable_or_value"
@@ -27,6 +28,7 @@ require "nxt_schema/errors/error"
 
 require "nxt_schema/node"
 require "nxt_schema/node/maybe_evaluator"
+require "nxt_schema/node/default_value_evaluator"
 require "nxt_schema/node/base"
 require "nxt_schema/node/error"
 require "nxt_schema/node/has_subnodes"

@@ -34,5 +34,77 @@ RSpec.describe NxtSchema::Node::Leaf do
         end
       end
     end
+
+    context 'default value' do
+      context 'when no value was given' do
+        context 'but a default value was given' do
+          context 'and the maybe criteria applies' do
+            subject do
+              described_class.new(name: :leaf, type: :String, parent_node: nil).maybe(84).default(84)
+            end
+
+            it do
+              subject.apply(nil)
+              expect(subject).to be_valid
+              expect(subject.value).to eq(84)
+            end
+          end
+
+          context 'and the maybe criteria does not apply' do
+            context 'but the default value is of the correct type' do
+              subject do
+                described_class.new(name: :leaf, type: :String, parent_node: nil).maybe(84).default('test')
+              end
+
+              it do
+                subject.apply(nil)
+                expect(subject).to be_valid
+                expect(subject.value).to eq('test')
+              end
+            end
+
+            context 'and the default value is of the wrong type' do
+              subject do
+                described_class.new(name: :leaf, type: :String, parent_node: nil).maybe(19).default(84)
+              end
+
+              it do
+                subject.apply(nil)
+                expect(subject).not_to be_valid
+                expect(subject.errors).to eq("leaf"=>["84 violates constraints (type?(String, 84) failed)"])
+              end
+            end
+          end
+        end
+      end
+
+      context 'when a value was given' do
+        context 'and a default value was given' do
+          context 'and the maybe criteria applies' do
+            subject do
+              described_class.new(name: :leaf, type: :String, parent_node: nil).maybe(nil).default(84)
+            end
+
+            it do
+              subject.apply(nil)
+              expect(subject).to be_valid
+              expect(subject.value).to eq(nil)
+            end
+          end
+
+          context 'and the maybe criteria does not apply' do
+            subject do
+              described_class.new(name: :leaf, type: :String, parent_node: nil).maybe('').default(84)
+            end
+
+            it do
+              subject.apply('test')
+              expect(subject).to be_valid
+              expect(subject.value).to eq('test')
+            end
+          end
+        end
+      end
+    end
   end
 end

@@ -17,7 +17,11 @@ module NxtSchema
         self.schema_errors = { schema_errors_key => [] }
         self.validation_errors = { schema_errors_key => [] }
         self.value = value
-        self.value = type[value] unless maybe_criteria_applies?
+
+        unless maybe_criteria_applies?
+          self.value = value_or_default_value
+          self.value = type[value_or_default_value] unless maybe_criteria_applies?
+        end
 
         self_without_empty_schema_errors
       rescue Dry::Types::ConstraintError => error

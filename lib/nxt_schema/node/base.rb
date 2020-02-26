@@ -15,6 +15,7 @@ module NxtSchema
         @root_node = parent_node.nil? ? self : parent_node.root_node
         @errors = {}
         @context = nil
+        @value = NxtSchema::Undefined.new
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
         evaluate_block(block) if block_given?
@@ -49,9 +50,11 @@ module NxtSchema
         self
       end
 
-      def resolve_value
-        if options[:default_value]
-
+      def value_or_default_value
+        if !value && options.key?(:default)
+          DefaultValueEvaluator.new(self, options.fetch(:default)).call
+        else
+          value
         end
       end
 
