@@ -1,18 +1,19 @@
 module NxtSchema
   module Node
     class MaybeEvaluator
-      def initialize(evaluator, value)
+      def initialize(node, evaluator, value)
+        @node = node
         @evaluator = evaluator
         @value = value
       end
 
-      attr_reader :evaluator, :value
+      attr_reader :node, :evaluator, :value
 
       def call
         if evaluator.respond_to?(:call)
-          evaluator.call(value)
+          Callable.new(evaluator).call(node, value)
         elsif value.is_a?(Symbol) && value.respond_to?(evaluator)
-          value.send(evaluator)
+          Callable.new(evaluator).bind(value).call(node, value)
         else
           value == evaluator
         end

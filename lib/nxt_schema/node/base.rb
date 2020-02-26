@@ -49,8 +49,10 @@ module NxtSchema
         self
       end
 
-      def value_or_default_value
-        NxtSchema::Node::DefaultValueEvaluator.new(self, options[:default_value], value).call
+      def resolve_value
+        if options[:default_value]
+
+        end
       end
 
       def maybe(maybe_value, &block)
@@ -186,7 +188,7 @@ module NxtSchema
 
       def maybe_criteria_applies?
         @maybe_criteria_applies ||= begin
-          options.key?(:maybe) && MaybeEvaluator.new(options.fetch(:maybe), value).call
+          options.key?(:maybe) && MaybeEvaluator.new(self, options.fetch(:maybe), value).call
         end
       end
 
