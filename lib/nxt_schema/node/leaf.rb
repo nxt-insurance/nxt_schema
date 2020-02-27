@@ -31,8 +31,10 @@ module NxtSchema
 
       private
 
-      def resolve_type(name)
-        default_type_system.const_get(name.to_s.classify)
+      def resolve_type(name_or_type)
+        return name_or_type if name_or_type.is_a?(Dry::Types::Type)
+
+        default_type_system.const_get(name_or_type.to_s.classify)
       end
     end
   end
