@@ -27,22 +27,12 @@ module NxtSchema
             # TODO: Handle this here
             template_store.each do |key, node|
               if hash.key?(key)
-
                 node.apply(hash[key], parent_node: self, context: context).schema_errors?
-
                 value_store[key] = node.value
                 schema_errors[key] = node.schema_errors
                 validation_errors[key] = node.validation_errors
               else
-                # TODO: Extract this optional stuff into a method
-                optional_option = node.options[:optional]
-
-                if optional_option.respond_to?(:call)
-                  # Validator is added to the schema node!
-                  add_validators(validator(:optional_node, optional_option, key))
-                elsif !optional_option
-                  add_schema_error("Required key :#{key} is missing in #{hash}")
-                end
+                evaluate_optional_option(node, hash, key)
               end
             end
 
@@ -55,6 +45,19 @@ module NxtSchema
       rescue Dry::Types::ConstraintError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
+      end
+
+      private
+
+      def evaluate_optional_option(node, hash, key)
+        optional_option = node.options[:optional]
+
+        if optional_option.respond_to?(:call)
+          # Validator is added to the schema node!
+          add_validators(validator(:optional_node, optional_option, key))
+        elsif !optional_option
+          add_schema_error("Required key :#{key} is missing in #{hash}")
+        end
       end
     end
   end
