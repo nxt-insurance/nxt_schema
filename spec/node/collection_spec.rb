@@ -54,8 +54,8 @@ RSpec.describe NxtSchema::Node::Collection do
 
       it do
         subject.apply(schema)
+
         expect(subject.validation_errors).to eq(
-          3=>{:children=>{:itself=>["Array is not allowed to be empty"]}},
           4=>{:children=>{0=>{:child=>{:itself=>["false violates constraints (type?(String, false) failed)"]}}}}
         )
         expect(subject.value_store).to eq(schema)

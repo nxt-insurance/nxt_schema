@@ -71,6 +71,8 @@ module NxtSchema
       private
 
       def value_violates_emptiness?(value)
+        return true unless value.respond_to?(:empty?)
+
         value.empty?
       end
     end

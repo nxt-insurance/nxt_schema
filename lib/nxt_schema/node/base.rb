@@ -15,6 +15,7 @@ module NxtSchema
         @root_node = parent_node.nil? ? self : parent_node.root_node
         @errors = {}
         @context = nil
+        @applied = false
         @value = NxtSchema::Undefined.new
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
@@ -36,7 +37,8 @@ module NxtSchema
                     :value,
                     :default_type_system,
                     :root_node,
-                    :context
+                    :context,
+                    :applied
 
       def parent(level = 1)
         level.times.inject(self) { |acc| acc.parent_node }
@@ -112,6 +114,7 @@ module NxtSchema
       def register_node(context)
         return if in?(all_nodes)
 
+        self.applied = true
         self.context = context
         all_nodes << self
       end
@@ -166,8 +169,13 @@ module NxtSchema
         false
       end
 
+      def applied?
+        @applied
+      end
+
       def valid?
-        # TODO: We should probably check if we applied and validation errors ran.
+        # TODO: Make this a proper error
+        raise ArgumentError, "You did not run apply yet!" unless applied?
         validation_errors.empty?
       end
 

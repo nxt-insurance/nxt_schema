@@ -107,19 +107,6 @@ RSpec.describe NxtSchema do
               end
             end
           end
-
-          context 'but the array is empty' do
-            let(:schema) do
-              { company: { employees: [] } }
-            end
-
-            # TODO: This would also work with validations instead?
-            it 'adds an error' do
-              subject.apply(schema)
-              expect(subject.validation_errors).to be_truthy
-              expect(subject.validation_errors).to eq(:company=>{:employees=>{:itself=>["Array is not allowed to be empty"]}})
-            end
-          end
         end
       end
 

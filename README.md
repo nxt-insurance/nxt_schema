@@ -32,6 +32,7 @@ Only assign values after subtree has been applied!!!! <- Check whether this was 
 - NxtSchema::Params => Use param types
 - NxtSchema::Json => Use json types, maybe even parse Json with Oj
 - Default options for schemas?
+- What about transforming keys?
  
 
 ## Installation

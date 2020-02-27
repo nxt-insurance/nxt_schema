@@ -18,48 +18,53 @@ module NxtSchema
         if maybe_criteria_applies?
           self.value_store = value
         else
-          array = type[value]
-          self.value = array
+          self.value = value_or_default_value
 
-          if value_violates_emptiness?(array)
-            add_schema_error("Array is not allowed to be empty")
-          else
-            current_node_store = {}
+          unless maybe_criteria_applies?
+            self.value = type[value_or_default_value]
 
-            array.each_with_index do |item, index|
-              item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
-              validation_errors[index] ||= { schema_errors_key => [] }
+            # TODO: We should probably name differentiate between given value and self.value
 
-              template_store.each do |node_name, node|
-                current_node = node.dup
-                current_node_store[node_name] = current_node
+            # if value_violates_emptiness?(value)
+            #   add_schema_error("Array is not allowed to be empty")
+            # else
+              current_node_store = {}
 
-                current_node.apply(item, parent_node: self, context: context)
+            self.value.each_with_index do |item, index|
+                item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
+                validation_errors[index] ||= { schema_errors_key => [] }
 
-                value_store[index] = current_node.value
+                template_store.each do |node_name, node|
+                  current_node = node.dup
+                  current_node_store[node_name] = current_node
 
-                unless current_node.schema_errors?
-                  current_node_store.each do |node_name, node|
-                    node.schema_errors = { }
-                    node.validation_errors = { }
-                    item_schema_errors = schema_errors[index][node_name] = node.schema_errors
-                    validation_errors[index][node_name] = node.validation_errors
+                  current_node.apply(item, parent_node: self, context: context)
+
+                  value_store[index] = current_node.value
+
+                  unless current_node.schema_errors?
+                    current_node_store.each do |node_name, node|
+                      node.schema_errors = { }
+                      node.validation_errors = { }
+                      item_schema_errors = schema_errors[index][node_name] = node.schema_errors
+                      validation_errors[index][node_name] = node.validation_errors
+                    end
+
+                    break
+                  else
+                    schema_errors[index][node_name] = current_node.schema_errors
+                    validation_errors[index][node_name] = current_node.validation_errors
                   end
-
-                  break
-                else
-                  schema_errors[index][node_name] = current_node.schema_errors
-                  validation_errors[index][node_name] = current_node.validation_errors
                 end
+
+                item_schema_errors.reject! { |_, v| v.empty? }
               end
+            # end
 
-              item_schema_errors.reject! { |_, v| v.empty? }
-            end
+            # TODO: Do we need this?
+            self.value_store = type[value_store]
+            self.value = value_store
           end
-
-          # TODO: Do we need this?
-          self.value_store = type[value_store]
-          self.value = value_store
         end
 
         self_without_empty_schema_errors

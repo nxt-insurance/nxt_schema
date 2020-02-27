@@ -72,8 +72,7 @@ RSpec.describe NxtSchema::Node::Schema do
               },
               1=>{
                 :employee=>{
-                  :itself=>["Required key :last_name is missing in {:first_name=>\"Lütfi\", :skills=>[]}"],
-                  :skills=>{:itself=>["Array is not allowed to be empty"]}
+                  :itself=>["Required key :last_name is missing in {:first_name=>\"Lütfi\", :skills=>[]}"]
                 }
               },
               2=>{

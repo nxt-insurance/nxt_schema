@@ -152,7 +152,6 @@ RSpec.describe NxtSchema do
     it 'merges the schemas' do
       subject.apply(schema)
       expect(subject.errors).to eq(
-        "roots.2.categories"=>["Array is not allowed to be empty"],
         "roots.3.categories.0.category"=>["\"invalid\" violates constraints (type?(Hash, \"invalid\") failed)"],
         "roots.4.categories.0.category"=>["\"invalid\" violates constraints (type?(Hash, \"invalid\") failed)"],
         "roots.4.categories.1.category"=>["\"and broken\" violates constraints (type?(Hash, \"and broken\") failed)"]
