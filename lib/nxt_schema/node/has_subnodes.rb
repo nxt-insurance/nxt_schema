@@ -44,7 +44,16 @@ module NxtSchema
 
       # TODO: This does only belong in schema nodes (maybe there should be a module for that)
       def optional(name, type, **options, &block)
+        raise ArgumentError, "Options ubiquitous <=> optional exclude each other!" if options[:ubiquitous]
+
         node(name, type, options.merge(optional: true), &block)
+      end
+
+      # TODO: This does only belong in schema nodes (maybe there should be a module for that)
+      def ubiquitous(name, type, **options, &block)
+        raise ArgumentError, "Options ubiquitous <=> optional exclude each other!" if options[:optional]
+
+        node(name, type, options.merge(ubiquitous: true), &block)
       end
 
       def nodes(name, **options, &block)
