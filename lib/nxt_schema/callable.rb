@@ -13,7 +13,15 @@ module NxtSchema
       end
     end
 
+    def bind!(execution_context)
+      self.context = execution_context
+      ensure_context_not_missing
+      self
+    end
+
     def bind(execution_context = nil)
+      return self if context
+
       self.context = execution_context
       ensure_context_not_missing
       self

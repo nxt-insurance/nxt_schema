@@ -1,10 +1,10 @@
 module NxtSchema
-  def schema(name = :root, &block)
-    Node::Schema.new(name: name, parent_node: nil, &block)
+  def schema(name = :root, **options, &block)
+    Node::Schema.new(name: name, parent_node: nil, **options, &block)
   end
 
-  def collection(name = :roots, &block)
-    Node::Collection.new(name: name, parent_node: nil, &block)
+  def collection(name = :roots, **options, &block)
+    Node::Collection.new(name: name, parent_node: nil, **options, &block)
   end
 
   alias_method :new, :schema

@@ -11,8 +11,8 @@ module NxtSchema
         @validations = []
         @level = parent_node ? parent_node.level + 1 : 0
         @all_nodes = parent_node ? (parent_node.all_nodes || []) : []
-        @root = parent_node.nil?
-        @root_node = parent_node.nil? ? self : parent_node.root_node
+        @is_root = parent_node.nil?
+        @root = parent_node.nil? ? self : parent_node.root
         @errors = {}
         @context = nil
         @applied = false
@@ -36,7 +36,7 @@ module NxtSchema
                     :all_nodes,
                     :value,
                     :default_type_system,
-                    :root_node,
+                    :root,
                     :context,
                     :applied
 
@@ -162,7 +162,7 @@ module NxtSchema
       end
 
       def root?
-        @root
+        @is_root
       end
 
       def leaf?

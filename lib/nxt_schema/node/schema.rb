@@ -13,7 +13,7 @@ module NxtSchema
         self.schema_errors = { schema_errors_key => [] }
         self.validation_errors = { schema_errors_key => [] }
         self.value_store = {}
-        self.value = hash
+        self.value = transform_keys(hash)
 
         if maybe_criteria_applies?
           self.value_store = hash
@@ -58,6 +58,16 @@ module NxtSchema
         elsif !optional_option
           add_schema_error("Required key :#{key} is missing in #{hash}")
         end
+      end
+
+      def transform_keys(hash)
+        return hash unless hash.respond_to?(:transform_keys!)
+
+        hash.transform_keys! { |key| Callable.new(key_transformer).bind(key).call(key) }
+      end
+
+      def key_transformer
+        @key_transformer ||= root.options.fetch(:transform_keys) { ->(key) { key } }
       end
     end
   end

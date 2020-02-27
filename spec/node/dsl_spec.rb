@@ -72,7 +72,7 @@ RSpec.describe NxtSchema do
 
   context 'anonymous nodes' do
     subject do
-      NxtSchema.roots do
+      NxtSchema.roots(transform_keys: :to_sym) do
         schema(:person) do
           requires(:first_name, :String)
           requires(:last_name, :String)
@@ -83,7 +83,8 @@ RSpec.describe NxtSchema do
     let(:schema) do
       [
         { first_name: 'Lütfi', last_name: nil },
-        { first_name: ['Nils'], last_name: 'Sommer' }
+        { first_name: ['Nils'], last_name: 'Sommer' },
+        { 'first_name' => 'Andreas', 'last_name' => 'Kallensee' }
       ]
     end
 
