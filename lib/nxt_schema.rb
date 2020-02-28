@@ -14,6 +14,7 @@ require "nxt_schema/validations/validate_with_proxy"
 
 require "nxt_schema/validations/validators/validator"
 require "nxt_schema/validations/validators/attribute"
+require "nxt_schema/validations/validators/equality"
 require "nxt_schema/validations/validators/optional_node"
 require "nxt_schema/validations/validators/greater_than"
 require "nxt_schema/validations/validators/greater_than_or_equal"
