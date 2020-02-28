@@ -12,6 +12,11 @@ Only assign values after subtree has been applied!!!! <- Check whether this was 
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
+    
+- Think about how we want to handle additional keys in schemas
+    - slice additional values away
+    - tolerate extra values and do not type cast 
+    - raise an error if there are keys not from the schema
 
 - Test if context is passed down to all nodes
 - Spec the different type systems
