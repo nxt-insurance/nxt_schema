@@ -1,6 +1,6 @@
 module NxtSchema
   module Node
-    class Struct < Node::Base
+    class Constructor < Node::Base
       def initialize(name:, type: NxtSchema::Types::Constructor(::OpenStruct), parent_node:, **options, &block)
         @template_store = TemplateStore.new
         super

@@ -93,7 +93,7 @@ RSpec.describe NxtSchema do
 
     it 'names the nodes based on their index' do
       subject.apply(schema)
-      binding.pry
+
       expect(subject.errors).to eq(
         "roots.0.person.last_name"=>["nil violates constraints (type?(String, nil) failed)"],
         "roots.1.person.first_name"=>["[\"Nils\"] violates constraints (type?(String, [\"Nils\"]) failed)"],

@@ -1,6 +1,6 @@
 require_relative 'schema'
 require_relative 'collection'
-require_relative 'struct'
+require_relative 'constructor'
 require_relative 'leaf'
 
 module NxtSchema
@@ -12,19 +12,17 @@ module NxtSchema
         child_node = case type_or_node.to_s.to_sym
         when :Hash
           NxtSchema::Node::Schema.new(name: name, type: NxtSchema::Types::Strict::Hash, parent_node: self, **options, &block)
-        when :Struct
-          # TODO: This should not be limited to OpenStruct
-          NxtSchema::Node::Struct.new(name: name, type: NxtSchema::Types::Constructor(::OpenStruct), parent_node: self, **options, &block)
         when :Array
           NxtSchema::Node::Collection.new(name: name, type: NxtSchema::Types::Strict::Array, parent_node: self, **options, &block)
         else
-          # TODO: Probably not possible since we cast to string above?
           if type_or_node.is_a?(NxtSchema::Node::Base)
             node = type_or_node.clone
             node.options.merge!(options)
             node.name = name
             node.parent_node = self
             node
+          elsif type_or_node.is_a?(Dry::Types::Constructor)
+            NxtSchema::Node::Constructor.new(name: name, type: type_or_node, parent_node: self, **options, &block)
           else
             NxtSchema::Node::Leaf.new(name: name, type: type_or_node, parent_node: self, **options)
           end
@@ -70,7 +68,7 @@ module NxtSchema
       alias_method :hash, :schema
 
       def struct(name, **options, &block)
-        node(name, :Struct, options, &block)
+        node(name, NxtSchema::Types::Constructor(::OpenStruct), options, &block)
       end
 
       def dup
@@ -95,4 +93,4 @@ end
 
 NxtSchema::Node::Schema.include(::NxtSchema::Node::HasSubNodes)
 NxtSchema::Node::Collection.include(::NxtSchema::Node::HasSubNodes)
-NxtSchema::Node::Struct.include(::NxtSchema::Node::HasSubNodes)
+NxtSchema::Node::Constructor.include(::NxtSchema::Node::HasSubNodes)
