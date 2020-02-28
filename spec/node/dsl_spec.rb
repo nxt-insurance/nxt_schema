@@ -77,7 +77,7 @@ RSpec.describe NxtSchema do
 
         struct(:person) do
           requires(:first_name, :String)
-          requires(:last_name, :String)
+          requires(:last_name, NxtSchema::Types::StrippedNonBlankString)
           requires(:role, Roles)
         end
       end

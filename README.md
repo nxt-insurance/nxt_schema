@@ -7,6 +7,8 @@ TODO:
 Only assign values after subtree has been applied!!!! <- Check whether this was done?!
 ======================================================
 
+- Implement proper schema and validation error system that would be capable of I18n and custom error messages
+- Resolve custom types from type namespace and fallback to default type system
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
