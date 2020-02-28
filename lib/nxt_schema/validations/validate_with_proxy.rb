@@ -1,6 +1,6 @@
 module NxtSchema
   module Validations
-    class Proxy
+    class ValidateWithProxy
       def initialize(node)
         @node = node
         @aggregated_errors = []

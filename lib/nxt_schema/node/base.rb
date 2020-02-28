@@ -193,7 +193,7 @@ module NxtSchema
 
       def validate_with(&block)
         add_validators(
-          ->(node) { NxtSchema::Validations::Proxy.new(node).validate(&block) }
+          ->(node) { NxtSchema::Validations::ValidateWithProxy.new(node).validate(&block) }
         )
       end
 
