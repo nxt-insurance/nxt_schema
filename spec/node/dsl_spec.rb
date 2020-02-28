@@ -75,7 +75,7 @@ RSpec.describe NxtSchema do
       NxtSchema.roots(transform_keys: :to_sym) do
         Roles = types::String.enum('senior', 'junior', 'intern')
 
-        struct(:person) do
+        required(:person, NxtSchema::Types::Struct) do
           requires(:first_name, :String)
           requires(:last_name, NxtSchema::Types::StrippedNonBlankString)
           requires(:role, Roles)
