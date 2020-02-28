@@ -63,7 +63,7 @@ module NxtSchema
         end
 
         self_without_empty_schema_errors
-      rescue Dry::Types::ConstraintError => error
+      rescue Dry::Types::ConstraintError, Dry::Types::CoercionError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
       end
