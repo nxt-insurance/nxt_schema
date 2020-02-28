@@ -35,6 +35,9 @@ Only assign values after subtree has been applied!!!! <- Check whether this was 
 - NxtSchema::Json => Use json types, maybe even parse Json with Oj
 - Default options for schemas?
 - What about transforming keys?
+- Should we allow to pass in meta data to any node - would be kind of nice to be able to access it
+    required(:name, :String).meta(internal: true, required_for_pricing: true) 
+    required(:tariff, Enum()).meta(internal: true, required_for_pricing: true) 
  
 
 ## Installation

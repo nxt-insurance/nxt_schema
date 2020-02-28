@@ -73,20 +73,20 @@ RSpec.describe NxtSchema do
   context 'anonymous nodes' do
     subject do
       NxtSchema.roots(transform_keys: :to_sym) do
-        Roles = types::String.enum('senior', 'junior', 'intern')
+        ROLES = %i[senior junior intern]
 
         required(:person, NxtSchema::Types::Struct) do
           requires(:first_name, :String)
           requires(:last_name, NxtSchema::Types::StrippedNonBlankString)
-          requires(:role, Roles)
+          requires(:role, NxtSchema::Types::SymbolizedEnums[*ROLES])
         end
       end
     end
 
     let(:schema) do
       [
-        { first_name: 'Lütfi', last_name: nil, role: 'senior' },
-        { first_name: ['Nils'], last_name: 'Sommer', role: 'senior' },
+        { first_name: 'Lütfi', last_name: nil, role: :senior },
+        { first_name: ['Nils'], last_name: 'Sommer', role: :senior },
         { 'first_name' => 'Andreas', 'last_name' => 'Kallensee', 'role' => 'too old' }
       ]
     end
@@ -97,7 +97,7 @@ RSpec.describe NxtSchema do
       expect(subject.errors).to eq(
         "roots.0.person.last_name"=>["nil violates constraints (type?(String, nil) failed)"],
         "roots.1.person.first_name"=>["[\"Nils\"] violates constraints (type?(String, [\"Nils\"]) failed)"],
-        "roots.2.person.role" => ["\"too old\" violates constraints (included_in?([\"senior\", \"junior\", \"intern\"], \"too old\") failed)"]
+        "roots.2.person.role" => ["\"too old\" violates constraints (included_in?([:senior, :junior, :intern], :\"too old\") failed)"]
       )
     end
   end
