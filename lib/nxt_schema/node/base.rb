@@ -40,6 +40,8 @@ module NxtSchema
                     :context,
                     :applied
 
+      alias_method :types, :default_type_system
+
       def parent(level = 1)
         level.times.inject(self) { |acc| acc.parent_node }
       end

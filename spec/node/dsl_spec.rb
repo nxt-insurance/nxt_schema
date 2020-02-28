@@ -73,7 +73,7 @@ RSpec.describe NxtSchema do
   context 'anonymous nodes' do
     subject do
       NxtSchema.roots(transform_keys: :to_sym) do
-        Roles = NxtSchema::Types::Strict::String.enum('senior', 'junior', 'intern')
+        Roles = types::String.enum('senior', 'junior', 'intern')
 
         schema(:person) do
           requires(:first_name, :String)
