@@ -19,7 +19,7 @@ module NxtSchema
             if expectation.call(value.send(method))
               true
             else
-              node.add_error("#{value}.#{method} returned #{value.send(method)}")
+              node.add_error("#{value} has invalid #{method} attribute of #{value.send(method)}")
               false
             end
           end

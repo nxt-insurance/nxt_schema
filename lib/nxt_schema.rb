@@ -27,6 +27,7 @@ require "nxt_schema/validations/validators/query"
 
 require "nxt_schema/errors"
 require "nxt_schema/errors/error"
+require "nxt_schema/errors/schema_not_applied_error"
 
 require "nxt_schema/node"
 require "nxt_schema/node/maybe_evaluator"

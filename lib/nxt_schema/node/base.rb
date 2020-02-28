@@ -69,7 +69,7 @@ module NxtSchema
       end
 
       def optional(optional_value, &block)
-        raise ArgumentError, "Optional nodes can only exist within schemas" unless parent.is_a?(NxtSchema::Node::Schema)
+        raise ArgumentError, 'Optional nodes can only exist within schemas' unless parent.is_a?(NxtSchema::Node::Schema)
 
         options.merge!(optional: optional_value)
         evaluate_block(block) if block_given?
@@ -90,15 +90,6 @@ module NxtSchema
         self
       end
 
-      # TODO: Make private what should be private
-      def add_schema_error(error, index = schema_errors_key)
-        schema_errors[index] ||= []
-        schema_errors[index] << error
-
-        validation_errors[index] ||= []
-        validation_errors[index] << error
-      end
-
       def add_error(error, index = schema_errors_key)
         validation_errors[index] ||= []
         validation_errors[index] << error
@@ -111,14 +102,6 @@ module NxtSchema
 
         # we have to start from the bottom, leafs before others on the same level
         sorted_nodes.reverse_each(&:apply_validations)
-      end
-
-      def register_node(context)
-        return if in?(all_nodes)
-
-        self.applied = true
-        self.context = context
-        all_nodes << self
       end
 
       def apply_validations
@@ -171,13 +154,9 @@ module NxtSchema
         false
       end
 
-      def applied?
-        @applied
-      end
-
       def valid?
-        # TODO: Make this a proper error
-        raise ArgumentError, "You did not run apply yet!" unless applied?
+        raise SchemaNotAppliedError, 'Schema was not applied yet' unless applied?
+
         validation_errors.empty?
       end
 
@@ -198,6 +177,26 @@ module NxtSchema
       end
 
       private
+
+      def register_node(context)
+        return if in?(all_nodes)
+
+        self.applied = true
+        self.context = context
+        all_nodes << self
+      end
+
+      def applied?
+        @applied
+      end
+
+      def add_schema_error(error, index = schema_errors_key)
+        schema_errors[index] ||= []
+        schema_errors[index] << error
+
+        validation_errors[index] ||= []
+        validation_errors[index] << error
+      end
 
       def maybe_criteria_applies?
         @maybe_criteria_applies ||= begin
@@ -253,7 +252,7 @@ module NxtSchema
 
         if type_system.is_a?(Module)
           type_system
-        elsif type_system.is_a?(Symbol)
+        elsif type_system.is_a?(Symbol) || type_system.is_a?(String)
           "NxtSchema::Types::#{type_system.classify}".constantize
         else
           NxtSchema::Types::Strict

@@ -128,7 +128,7 @@ RSpec.describe NxtSchema::Node::Collection do
     let(:validate_max_2_items) do
       Proc.new do |node, array|
         if array.size > 2
-          node.add_schema_error('Can only contain two items')
+          node.add_error('Can only contain two items')
         end
       end
     end
