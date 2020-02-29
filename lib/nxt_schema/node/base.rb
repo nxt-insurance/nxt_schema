@@ -16,6 +16,7 @@ module NxtSchema
         @errors = {}
         @context = nil
         @applied = false
+        @input = nil
         @value = NxtSchema::Undefined.new
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
@@ -38,7 +39,8 @@ module NxtSchema
                     :default_type_system,
                     :root,
                     :context,
-                    :applied
+                    :applied,
+                    :input
 
       alias_method :types, :default_type_system
 
@@ -54,7 +56,7 @@ module NxtSchema
         self
       end
 
-      def value_or_default_value
+      def value_or_default_value(value)
         if !value && options.key?(:default)
           DefaultValueEvaluator.new(self, options.fetch(:default)).call
         else
@@ -131,7 +133,7 @@ module NxtSchema
         schema_errors.reject! { |_, v| v.empty? }
 
         # TODO: Is this correct? - Do not apply validations when maybe criteria applies?
-        unless schema_errors[schema_errors_key]&.any? && !maybe_criteria_applies?
+        unless schema_errors[schema_errors_key]&.any? && !maybe_criteria_applies?(value)
           build_validations
 
           validations.each do |validation|
@@ -218,7 +220,7 @@ module NxtSchema
         validation_errors[index] << error
       end
 
-      def maybe_criteria_applies?
+      def maybe_criteria_applies?(value)
         @maybe_criteria_applies ||= begin
           options.key?(:maybe) && MaybeEvaluator.new(self, options.fetch(:maybe), value).call
         end

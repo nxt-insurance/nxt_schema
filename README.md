@@ -6,7 +6,7 @@ TODO:
 
 - Refactor value assignment
     => Might be better not to assign any value unless subnodes are applied
-    => Probably a good idea to be able to access the input during apply time
+    => Return either nil for value (output) or even raise when accessed during apply time 
     
 - Implement proper schema and validation error system that would be capable of I18n and custom error messages
 - Resolve custom types from type namespace and fallback to default type system

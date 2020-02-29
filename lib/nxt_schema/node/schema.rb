@@ -7,6 +7,7 @@ module NxtSchema
       end
 
       def apply(input, parent_node: self.parent_node, context: nil)
+        self.input = input
         register_node(context)
 
         self.parent_node = parent_node
@@ -15,12 +16,12 @@ module NxtSchema
         self.value_store = {}
         self.value = transform_keys(input)
 
-        if maybe_criteria_applies?
-          self.value_store = input
+        if maybe_criteria_applies?(value)
+          self.value_store = value
         else
-          self.value = value_or_default_value
+          self.value = value_or_default_value(value)
 
-          unless maybe_criteria_applies?
+          unless maybe_criteria_applies?(value)
             self.value = type[value]
 
             # TODO: We should not allow additional keys to be present per default?!
@@ -61,13 +62,13 @@ module NxtSchema
       end
 
       def transform_keys(hash)
-        return hash unless hash.respond_to?(:transform_keys!)
+        return hash unless key_transformer && hash.respond_to?(:transform_keys!)
 
         hash.transform_keys! { |key| Callable.new(key_transformer).bind(key).call(key) }
       end
 
       def key_transformer
-        @key_transformer ||= root.options.fetch(:transform_keys) { ->(key) { key } }
+        @key_transformer ||= root.options.fetch(:transform_keys) { false }
       end
     end
   end
