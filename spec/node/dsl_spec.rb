@@ -1,7 +1,7 @@
 RSpec.describe NxtSchema do
   describe '.root' do
     subject do
-      NxtSchema.root do |person|
+      NxtSchema.root(type_system: NxtSchema::Types::Strict) do |person|
         person.requires(:first_name, :String)
         person.requires(:last_name, :String)
       end
@@ -35,8 +35,8 @@ RSpec.describe NxtSchema do
     subject do
       NxtSchema.roots do |people|
         people.schema(:person) do |person|
-          person.requires(:first_name, :String)
-          person.requires(:last_name, :String)
+          person.requires(:first_name, 'Strict::String')
+          person.requires(:last_name, 'Nominal::String')
         end
       end
     end

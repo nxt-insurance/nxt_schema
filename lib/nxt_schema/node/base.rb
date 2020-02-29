@@ -5,7 +5,7 @@ module NxtSchema
         @name = name
         @parent_node = parent_node
         @options = options
-        @default_type_system = resolve_default_type_system
+        @type_system = resolve_type_system
         @type = type
         @schema_errors_key = options.fetch(:schema_errors_key, :itself)
         @validations = []
@@ -36,13 +36,13 @@ module NxtSchema
                     :validation_errors,
                     :all_nodes,
                     :value,
-                    :default_type_system,
+                    :type_system,
                     :root,
                     :context,
                     :applied,
                     :input
 
-      alias_method :types, :default_type_system
+      alias_method :types, :type_system
 
       def parent(level = 1)
         level.times.inject(self) { |acc| acc.parent_node }
@@ -270,9 +270,9 @@ module NxtSchema
         end
       end
 
-      def resolve_default_type_system
-        type_system = options.fetch(:default_type_system) do
-          parent_node && parent_node.options[:default_type_system]
+      def resolve_type_system
+        type_system = options.fetch(:type_system) do
+          parent_node && parent_node.options[:type_system]
         end
 
         if type_system.is_a?(Module)
@@ -280,7 +280,7 @@ module NxtSchema
         elsif type_system.is_a?(Symbol) || type_system.is_a?(String)
           "NxtSchema::Types::#{type_system.classify}".constantize
         else
-          NxtSchema::Types::Strict
+          NxtSchema::Types
         end
       end
     end

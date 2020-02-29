@@ -5,7 +5,6 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 TODO:    
 
 - Implement proper schema and validation error system that would be capable of I18n and custom error messages
-- Resolve custom types from type namespace and fallback to default type system
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
@@ -17,12 +16,10 @@ TODO:
 
 - Test if context is passed down to all nodes
 - Spec the different type systems
-
-    
 - Implement optional keys for schemas only
 - Implement present keys for schemas only
-    
 - Implement defaults for all nodes
+- Interface to register custom types / custom validators
   
 - Validator Registry
     => Allow chaining validations?
