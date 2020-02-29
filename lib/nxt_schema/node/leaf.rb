@@ -17,9 +17,10 @@ module NxtSchema
         self.parent_node = parent_node
         self.schema_errors = { schema_errors_key => [] }
         self.validation_errors = { schema_errors_key => [] }
-        self.value = input
 
-        unless maybe_criteria_applies?(value)
+        if maybe_criteria_applies?(input)
+          self.value = input
+        else
           self.value = value_or_default_value(input)
           self.value = type[value] unless maybe_criteria_applies?(value)
         end
