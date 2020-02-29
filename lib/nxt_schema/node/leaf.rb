@@ -29,6 +29,8 @@ module NxtSchema
       rescue Dry::Types::ConstraintError => error
         add_schema_error(error.message)
         self_without_empty_schema_errors
+      ensure
+        applied!
       end
 
       private

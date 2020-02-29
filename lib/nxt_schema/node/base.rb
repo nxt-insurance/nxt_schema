@@ -203,13 +203,16 @@ module NxtSchema
       def register_node(context)
         return if in?(all_nodes)
 
-        self.applied = true
         self.context = context
         all_nodes << self
       end
 
       def applied?
         @applied
+      end
+
+      def applied!
+        self.applied = true
       end
 
       def add_schema_error(error, index = schema_errors_key)
