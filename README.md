@@ -3,11 +3,11 @@
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nxt_schema`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO:    
-======================================================
-Only assign values after subtree has been applied!!!! <- Check whether this was done?!
-======================================================
 
-- Find a sane way to differentiate between input and output value 
+- Refactor value assignment
+    => Might be better not to assign any value unless subnodes are applied
+    => Probably a good idea to be able to access the input during apply time
+    
 - Implement proper schema and validation error system that would be capable of I18n and custom error messages
 - Resolve custom types from type namespace and fallback to default type system
 - Test the different scenarios of merging schemas array, hash, ...
@@ -22,24 +22,17 @@ Only assign values after subtree has been applied!!!! <- Check whether this was 
 - Test if context is passed down to all nodes
 - Spec the different type systems
 
-- Types
-    => Implement maybe for types
-    => Implement default for types => When value is not present return default
     
-- Implement optional keys for all nodes 
-    => Not sure it makes sense for nodes where the parent is not a schema
-    => We might actually want to prevent optional nodes in non schema situations?
+- Implement optional keys for schemas only
+- Implement present keys for schemas only
     
 - Implement defaults for all nodes
-- Should there be a `default(:email, :String).default(andreas@robecke.de)` 
-    --> Would mean that the key is always in the schema, also when not provided and defaults to the specified default value.
-    But can be set when provided with another value.  
+  
 - Validator Registry
     => Allow chaining validations?
 - Structure Errors 
 - NxtSchema::Params => Use param types
 - NxtSchema::Json => Use json types, maybe even parse Json with Oj
-- Default options for schemas?
 - What about transforming keys?
 - Should we allow to pass in meta data to any node - would be kind of nice to be able to access it
     required(:name, :String).meta(internal: true, required_for_pricing: true) 
@@ -66,27 +59,24 @@ Or install it yourself as:
 
 ```ruby
 # Schema with hash root
-schema = NxtSchema.schema(:company) do 
+schema = NxtSchema.root(:company) do 
   requires(:name, :String)  
   requires(:value, :Integer).maybe(nil)  
-  requires(:in_insure_tech, :Bool).default(false)
+  present(:stock_options, :Bool).default(false)
   
-  hash(:address) do
+  schema(:address) do
     requires(:street, :String)
     requires(:street_number, :Integer)
   end
     
-  array(:employees) do
+  nodes(:employees) do
     hash(:employee) do
+      POSITIONS = %w[senior junior intern]
+
       requires(:first_name, :String)
       requires(:last_name, :String)
-      optional(:email, :String).validate(
-        lambda do |node|
-          if node[:email] && !node[:email].include?('@')
-            node.add_error("Email not valid: #{node[:email]}")  
-          end
-        end
-      )
+      optional(:email, :String).validate(:format, /\A.*@.*\z/)
+      requires(:position, NxtSchema::Types::Enums[*POSITIONS])
     end
   end
 end
