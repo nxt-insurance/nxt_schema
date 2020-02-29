@@ -11,7 +11,7 @@ module NxtSchema
         attr_reader :method, :expectation
 
         # Query for equality validator(:equality, :size, 3)
-        # Query for equality validator(:equality, :size, -> { 3 * 3 * 60 })
+        # Query for equality validator(:eql, :size, -> { 3 * 3 * 60 })
 
         def build
           lambda do |node, value|

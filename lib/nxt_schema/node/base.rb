@@ -211,7 +211,7 @@ module NxtSchema
         @applied
       end
 
-      def applied!
+      def mark_as_applied
         self.applied = true
       end
 
@@ -251,7 +251,7 @@ module NxtSchema
 
       def name_from_index
         if parent_node
-          if parent_node.is_a?(NxtSchema::Node::Array)
+          if parent_node.is_a?(NxtSchema::Node::Collection)
             size + 1
           else
             raise ArgumentError, "Nodes with parent_node: #{parent_node} cannot be anonymous"

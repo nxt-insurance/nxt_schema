@@ -79,8 +79,8 @@ RSpec.describe NxtSchema::Node::Leaf do
               expect(subject.errors).to eq(
                 'leaf'=>
                   [
-                    '1-2-3 does not match format (?-mix:\\A\\d+\\z)',
-                    '1-2-3 does not match format (?-mix:\\A[-]+\\z)'
+                    '1-2-3 does not match (?-mix:\\A\\d+\\z)',
+                    '1-2-3 does not match (?-mix:\\A[-]+\\z)'
                   ]
               )
             end

@@ -47,7 +47,7 @@ module NxtSchema
         add_schema_error(error.message)
         self_without_empty_schema_errors
       ensure
-        applied!
+        mark_as_applied
       end
 
       private

@@ -6,7 +6,7 @@ module NxtSchema
           @threshold = threshold
         end
 
-        register_as :less_than_or_equal
+        register_as :less_than_or_equal, :lt_or_eql
         attr_reader :threshold
 
         def build
