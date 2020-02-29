@@ -22,7 +22,6 @@ module NxtSchema
           self.value = value_or_default_value(value)
 
           unless maybe_criteria_applies?(value)
-            # TODO: Instead of assigning the value here we should probably only do that after all subnodes have been evaluated
             self.value = type[value]
 
             current_node_store = {}
