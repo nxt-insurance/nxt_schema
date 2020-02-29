@@ -76,6 +76,26 @@ module NxtSchema
         self
       end
 
+      def presence(presence_value, &block)
+        raise ArgumentError, 'Present nodes can only exist within schemas' unless parent.is_a?(NxtSchema::Node::Schema)
+
+        options.merge!(presence: presence_value)
+        evaluate_block(block) if block_given?
+        self
+      end
+
+      def presence?
+        @presence ||= begin
+          presence_option = options[:presence]
+
+          options[:presence] = if presence_option.respond_to?(:call)
+            Callable.new(presence_option).call(self, value)
+          else
+            presence_option
+          end
+        end
+      end
+
       def validate(key, *args, &block)
         if key.is_a?(Symbol)
           validator = validator(key, *args)

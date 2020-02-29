@@ -6,28 +6,27 @@ module NxtSchema
         super
       end
 
-      def apply(value, parent_node: self.parent_node, context: nil)
+      def apply(input, parent_node: self.parent_node, context: nil)
         register_node(context)
 
         self.parent_node = parent_node
         self.schema_errors = { schema_errors_key => [] }
         self.validation_errors = { schema_errors_key => [] }
         self.value_store = []
-        self.value = value
+        self.value = input
 
         if maybe_criteria_applies?
-          self.value_store = value
+          self.value_store = input
         else
           self.value = value_or_default_value
 
           unless maybe_criteria_applies?
+            # TODO: Instead of assigning the value here we should probably only do that after all subnodes have been evaluated
             self.value = type[value_or_default_value]
-
-            # TODO: We should probably name differentiate between given value and self.value
 
             current_node_store = {}
 
-            self.value.each_with_index do |item, index|
+            value.each_with_index do |item, index|
               item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
               validation_errors[index] ||= { schema_errors_key => [] }
 
@@ -56,7 +55,7 @@ module NxtSchema
               item_schema_errors.reject! { |_, v| v.empty? }
             end
 
-            # TODO: Do we need this?
+            # Once we collected all values ensure type by casting again
             self.value_store = type[value_store]
             self.value = value_store
           end

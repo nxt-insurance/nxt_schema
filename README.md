@@ -7,6 +7,7 @@ TODO:
 Only assign values after subtree has been applied!!!! <- Check whether this was done?!
 ======================================================
 
+- Find a sane way to differentiate between input and output value 
 - Implement proper schema and validation error system that would be capable of I18n and custom error messages
 - Resolve custom types from type namespace and fallback to default type system
 - Test the different scenarios of merging schemas array, hash, ...
@@ -65,7 +66,7 @@ Or install it yourself as:
 
 ```ruby
 # Schema with hash root
-schema = NxtSchema.hash(:company) do 
+schema = NxtSchema.schema(:company) do 
   requires(:name, :String)  
   requires(:value, :Integer).maybe(nil)  
   requires(:in_insure_tech, :Bool).default(false)

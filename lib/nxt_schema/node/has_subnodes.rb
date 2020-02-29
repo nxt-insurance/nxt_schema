@@ -36,23 +36,23 @@ module NxtSchema
       end
 
       def required(name, type, **options, &block)
-        node(name, type, options.merge(optional: false), &block)
+        node(name, type, options, &block)
       end
 
       alias_method :requires, :required
 
       # TODO: This does only belong in schema nodes (maybe there should be a module for that)
       def optional(name, type, **options, &block)
-        raise ArgumentError, "Options ubiquitous <=> optional exclude each other!" if options[:ubiquitous]
+        raise ArgumentError, "Options present <=> optional exclude each other!" if options[:presence]
 
         node(name, type, options.merge(optional: true), &block)
       end
 
       # TODO: This does only belong in schema nodes (maybe there should be a module for that)
-      def ubiquitous(name, type, **options, &block)
-        raise ArgumentError, "Options ubiquitous <=> optional exclude each other!" if options[:optional]
+      def present(name, type, **options, &block)
+        raise ArgumentError, "Options presence <=> optional exclude each other!" if options[:optional]
 
-        node(name, type, options.merge(ubiquitous: true), &block)
+        node(name, type, options.merge(presence: true), &block)
       end
 
       def nodes(name, **options, &block)
