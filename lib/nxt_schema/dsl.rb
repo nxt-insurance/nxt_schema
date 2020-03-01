@@ -14,6 +14,17 @@ module NxtSchema
     )
   end
 
+  def json(name = :root, **options, &block)
+    Node::Schema.new(
+      name: name,
+      parent_node: nil,
+      **options.merge(
+        type_system: NxtSchema::Types::JSON,
+      ).reverse_merge(transform_keys: :to_sym),
+      &block
+    )
+  end
+
   def collection(name = :roots, **options, &block)
     Node::Collection.new(name: name, parent_node: nil, **options, &block)
   end

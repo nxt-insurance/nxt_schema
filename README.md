@@ -14,19 +14,12 @@ TODO:
     - tolerate extra values and do not type cast 
     - raise an error if there are keys not from the schema
 
-- Test if context is passed down to all nodes
-- Spec the different type systems
 - Implement optional keys for schemas only
 - Implement present keys for schemas only
 - Implement defaults for all nodes
 - Interface to register custom types / custom validators
-  
-- Validator Registry
-    => Allow chaining validations?
 - Structure Errors 
-- NxtSchema::Params => Use param types
 - NxtSchema::Json => Use json types, maybe even parse Json with Oj
-- What about transforming keys?
 - Should we allow to pass in meta data to any node - would be kind of nice to be able to access it
     required(:name, :String).meta(internal: true, required_for_pricing: true) 
     required(:tariff, Enum()).meta(internal: true, required_for_pricing: true) 
