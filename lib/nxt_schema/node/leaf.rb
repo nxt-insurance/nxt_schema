@@ -36,9 +36,22 @@ module NxtSchema
       private
 
       def resolve_type(name_or_type)
-        return name_or_type if name_or_type.is_a?(Dry::Types::Type)
+        @resolve_type ||= {}
+        @resolve_type[name_or_type] ||= begin
+          if name_or_type.is_a?(Dry::Types::Type)
+            name_or_type
+          else
+            # Try to resolve in type system
+            type = type_system.const_get(name_or_type.to_s.classify)
 
-        type_system.const_get(name_or_type.to_s.classify)
+            if type.is_a?(Dry::Types::Type)
+              type
+            else
+              # in case it does not exist fallback to Types::Nominal
+              "NxtSchema::Types::Nominal::#{name_or_type.to_s.classify}".constantize
+            end
+          end
+        end
       end
     end
   end

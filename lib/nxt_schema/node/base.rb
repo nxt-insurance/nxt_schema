@@ -271,14 +271,12 @@ module NxtSchema
       end
 
       def resolve_type_system
-        type_system = options.fetch(:type_system) do
-          parent_node && parent_node.options[:type_system]
-        end
+        type_system = options.fetch(:type_system) { parent_node&.type_system }
 
-        if type_system.is_a?(Module)
+        self.type_system = if type_system.is_a?(Module)
           type_system
         elsif type_system.is_a?(Symbol) || type_system.is_a?(String)
-          "NxtSchema::Types::#{type_system.classify}".constantize
+          "NxtSchema::Types::#{type_system.to_s.classify}".constantize
         else
           NxtSchema::Types
         end

@@ -101,4 +101,46 @@ RSpec.describe NxtSchema do
       )
     end
   end
+
+  describe '.params' do
+    subject do
+      described_class.params do
+        required(:action, :String).default('new')
+
+        schema(:user) do
+          required(:first_name, :String)
+          required(:last_name, :String)
+          node(:password, :String).optional -> (node) { node.up.input[:action] != 'new' }
+          required(:admin, :Bool)
+        end
+      end
+    end
+
+    let(:values) do
+      {
+        'action' => 'new',
+        'user' => {
+          'first_name' => 'Nils',
+          'last_name' => 'Winter',
+          'password' => 'Darmstadt',
+          'admin' => '1'
+        }
+      }
+    end
+
+    it do
+      subject.apply(values)
+      expect(subject.all_nodes.map(&:type_system)).to all(eq(NxtSchema::Types::Params))
+      expect(subject).to be_valid
+      expect(subject.value).to eq(
+        action: 'new',
+        user: {
+          admin: true,
+          first_name: 'Nils',
+          last_name: 'Winter',
+          password: 'Darmstadt'
+        }
+      )
+    end
+  end
 end
