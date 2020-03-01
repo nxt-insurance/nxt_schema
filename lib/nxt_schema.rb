@@ -30,6 +30,7 @@ require "nxt_schema/errors/error"
 require "nxt_schema/errors/schema_not_applied_error"
 
 require "nxt_schema/node"
+require "nxt_schema/node/type_resolver"
 require "nxt_schema/node/maybe_evaluator"
 require "nxt_schema/node/default_value_evaluator"
 require "nxt_schema/node/base"

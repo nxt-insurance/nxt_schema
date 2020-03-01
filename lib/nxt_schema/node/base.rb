@@ -281,6 +281,16 @@ module NxtSchema
           NxtSchema::Types
         end
       end
+
+      def type_resolver
+        @type_resolver ||= begin
+          if root?
+            TypeResolver.new
+          else
+            raise NoMethodError, 'type_resolver is only available on root node'
+          end
+        end
+      end
     end
   end
 end
