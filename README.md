@@ -70,6 +70,38 @@ schema.apply(your: 'values here')
 schema.errors # { 'name.spaced.key': ['all the errors'] }
 ```
 
+### DSL
+
+Create a new schema with `NxtSchema.root { ... }` or  in case you have an array node as root, 
+use `NxtSchema.roots { ... }`. Within the schema you can create node simply with the `node(name, type_or_node, **options)` 
+method. Each node requires a name and a type and accepts additional options. Node are required per default. 
+But you can make them optional by providing the optional option.  
+
+```ruby
+NxtSchema.root do
+  node(:first_name, :String)
+  node(:last_name, :String, optional: true)
+  node(:email, :String, presence: true)
+end
+```
+
+In order to make the schema more readable you can make use of several aliases to create required, optional or 
+(omni)present nodes.  
+
+```ruby
+NxtSchema.root do
+  required(:first_name, :String)
+  optional(:last_name, :String)
+  present(:email, :String)
+end
+```
+
+### Nodes
+#### Schema
+#### Array
+#### Leaf
+#### Constructor
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
