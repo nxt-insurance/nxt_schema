@@ -2,17 +2,13 @@
 
 TODO:    
 
+- Add Options class that knows what kind of options are allowed and exclude each other
 - Interface to register custom types / custom validators
 - Implement proper schema and validation error system that would be capable of I18n and custom error messages
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
     => Structure tests by nodes and method
     
-- Think about how we want to handle additional keys in schemas
-    - slice additional values away
-    - tolerate extra values and do not type cast 
-    - raise an error if there are keys not from the schema
-
 - Structure Errors 
 - NxtSchema::Json => Use json types, maybe even parse Json with Oj
 - Should we allow to pass in meta data to any node - would be kind of nice to be able to access it

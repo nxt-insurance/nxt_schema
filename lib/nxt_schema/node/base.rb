@@ -6,6 +6,7 @@ module NxtSchema
         @parent_node = parent_node
         @options = options
         @type_system = resolve_type_system
+        @additional_keys_strategy = resolve_additional_keys_strategy
         @type = type
         @schema_errors_key = options.fetch(:schema_errors_key, :itself)
         @validations = []
@@ -40,7 +41,8 @@ module NxtSchema
                     :root,
                     :context,
                     :applied,
-                    :input
+                    :input,
+                    :additional_keys_strategy
 
       alias_method :types, :type_system
 
@@ -280,6 +282,10 @@ module NxtSchema
         else
           NxtSchema::Types
         end
+      end
+
+      def resolve_additional_keys_strategy
+        options.fetch(:additional_keys) { parent_node&.send(:resolve_additional_keys_strategy) || :ignore }
       end
 
       def type_resolver
