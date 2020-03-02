@@ -41,8 +41,6 @@ module NxtSchema
 
       alias_method :requires, :required
 
-
-
       def nodes(name, **options, &block)
         node(name, :Array, options, &block)
       end

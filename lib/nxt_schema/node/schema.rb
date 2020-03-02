@@ -26,8 +26,15 @@ module NxtSchema
 
             # TODO: We should not allow additional keys to be present per default?!
             # TODO: Handle this here
-            template_store.each do |key, node|
-              if node.presence? || input.key?(key)
+
+
+
+            sanitized_keys.each do |key|
+              node = template_store[key]
+
+              if allowed_additional_key?(key)
+                value_store[key] = input[key]
+              elsif node.presence? || input.key?(key)
                 node.apply(input[key], parent_node: self, context: context).schema_errors?
                 value_store[key] = node.value
                 schema_errors[key] = node.schema_errors
@@ -83,6 +90,39 @@ module NxtSchema
 
       def key_transformer
         @key_transformer ||= root.options.fetch(:transform_keys) { false }
+      end
+
+      def sanitized_keys
+        return template_store.keys if additional_keys.empty? || ignore_additional_keys?
+        return template_store.keys + additional_keys if additional_keys_allowed?
+
+        add_schema_error("Keys: #{additional_keys} not allowed!")
+
+        template_store.keys
+      end
+
+      def allowed_additional_key?(key)
+        additional_keys.include?(key)
+      end
+
+      def additional_keys
+        @additional_keys ||= (input&.keys || [])  - template_store.keys
+      end
+
+      def additional_keys_allowed?
+        additional_keys_strategy.to_s == 'allow'
+      end
+
+      def ignore_additional_keys?
+        additional_keys_strategy.to_s == 'ignore'
+      end
+
+      def validate_additional_keys?
+        additional_keys_strategy.to_s == 'validate'
+      end
+
+      def additional_keys_strategy
+        @additional_keys_strategy ||= root.options.fetch(:additional_keys_strategy) { :ignore }
       end
 
       def raise_invalid_options_error
