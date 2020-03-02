@@ -93,20 +93,23 @@ module NxtSchema
       end
 
       def sanitized_keys
-        return template_store.keys if additional_keys.empty? || ignore_additional_keys?
-        return template_store.keys + additional_keys if additional_keys_allowed?
+        return template_store.keys if additional_keys_from_input.empty? || ignore_additional_keys?
+        return template_store.keys + additional_keys_from_input if additional_keys_allowed?
 
-        add_schema_error("Keys: #{additional_keys} not allowed!")
-
-        template_store.keys
+        if restrict_additional_keys?
+          add_schema_error("Additional keys: #{additional_keys_from_input} not allowed!")
+          template_store.keys
+        else
+          raise Errors::InvalidOptionsError, "Invalid option for additional keys: #{additional_keys_strategy}"
+        end
       end
 
       def allowed_additional_key?(key)
-        additional_keys.include?(key)
+        additional_keys_from_input.include?(key)
       end
 
-      def additional_keys
-        @additional_keys ||= (input&.keys || [])  - template_store.keys
+      def additional_keys_from_input
+        (input&.keys || [])  - template_store.keys
       end
 
       def additional_keys_allowed?
@@ -117,12 +120,8 @@ module NxtSchema
         additional_keys_strategy.to_s == 'ignore'
       end
 
-      def validate_additional_keys?
-        additional_keys_strategy.to_s == 'validate'
-      end
-
-      def additional_keys_strategy
-        @additional_keys_strategy ||= root.options.fetch(:additional_keys_strategy) { :ignore }
+      def restrict_additional_keys?
+        additional_keys_strategy.to_s == 'restrict'
       end
 
       def raise_invalid_options_error
