@@ -2,7 +2,7 @@ RSpec.describe NxtSchema do
   describe '#apply' do
     context 'array with leaf nodes' do
       subject do
-        NxtSchema.new do |root|
+        NxtSchema.root do |root|
           root.nodes(:company) do |company|
             company
           end
@@ -12,7 +12,7 @@ RSpec.describe NxtSchema do
 
     context 'hash with leaf nodes' do
       subject do
-        NxtSchema.new do |root|
+        NxtSchema.root do |root|
           root.schema(:company) do |company|
             company.requires(:name, :String)
             company.requires(:industry, :String)
@@ -46,7 +46,7 @@ RSpec.describe NxtSchema do
 
     context 'hash with array node' do
       subject do
-        NxtSchema.new do |root|
+        NxtSchema.root do |root|
           root.schema(:company) do |company|
             company.nodes(:employees) do |employees|
               employees.schema(:employee) do |employee|
@@ -112,7 +112,7 @@ RSpec.describe NxtSchema do
 
       context 'when the array node allows multiple schemas for items' do
         subject do
-          NxtSchema.new do |root|
+          NxtSchema.root do |root|
             root.schema(:company) do |company|
               company.nodes(:workers) do |workers|
                 workers.schema(:employee) do |employee|

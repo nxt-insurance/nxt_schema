@@ -12,7 +12,7 @@ RSpec.describe NxtSchema do
     # end
 
     subject do
-      NxtSchema.new(:company) do |company|
+      NxtSchema.root(:company) do |company|
         company.requires(:name, :String)
         company.requires(:industry, :String)
 
@@ -163,7 +163,7 @@ RSpec.describe NxtSchema do
 
   context 'when an anonymous schema is nested' do
     subject do
-      NxtSchema.new(:company) do
+      NxtSchema.root(:company) do
         requires(:name, :String)
         requires(:industry, :String)
 

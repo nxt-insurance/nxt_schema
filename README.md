@@ -1,9 +1,8 @@
 # NxtSchema
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nxt_schema`. To experiment with that code, run `bin/console` for an interactive prompt.
-
 TODO:    
 
+- Interface to register custom types / custom validators
 - Implement proper schema and validation error system that would be capable of I18n and custom error messages
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
@@ -14,10 +13,6 @@ TODO:
     - tolerate extra values and do not type cast 
     - raise an error if there are keys not from the schema
 
-- Implement optional keys for schemas only
-- Implement present keys for schemas only
-- Implement defaults for all nodes
-- Interface to register custom types / custom validators
 - Structure Errors 
 - NxtSchema::Json => Use json types, maybe even parse Json with Oj
 - Should we allow to pass in meta data to any node - would be kind of nice to be able to access it
