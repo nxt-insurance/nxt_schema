@@ -41,19 +41,7 @@ module NxtSchema
 
       alias_method :requires, :required
 
-      # TODO: This does only belong in schema nodes (maybe there should be a module for that)
-      def optional(name, type, **options, &block)
-        raise ArgumentError, "Options present <=> optional exclude each other!" if options[:presence]
 
-        node(name, type, options.merge(optional: true), &block)
-      end
-
-      # TODO: This does only belong in schema nodes (maybe there should be a module for that)
-      def present(name, type, **options, &block)
-        raise ArgumentError, "Options presence <=> optional exclude each other!" if options[:optional]
-
-        node(name, type, options.merge(presence: true), &block)
-      end
 
       def nodes(name, **options, &block)
         node(name, :Array, options, &block)

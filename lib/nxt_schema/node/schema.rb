@@ -50,6 +50,18 @@ module NxtSchema
         mark_as_applied
       end
 
+      def optional(name, type, **options, &block)
+        raise_invalid_options_error if options[:presence]
+
+        node(name, type, options.merge(optional: true), &block)
+      end
+
+      def present(name, type, **options, &block)
+        raise_invalid_options_error if options[:optional]
+
+        node(name, type, options.merge(presence: true), &block)
+      end
+
       private
 
       def evaluate_optional_option(node, hash, key)
@@ -71,6 +83,10 @@ module NxtSchema
 
       def key_transformer
         @key_transformer ||= root.options.fetch(:transform_keys) { false }
+      end
+
+      def raise_invalid_options_error
+        raise InvalidOptionsError, 'Options :presence and :optional exclude each other'
       end
     end
   end
