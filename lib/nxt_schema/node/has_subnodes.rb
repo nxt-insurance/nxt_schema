@@ -10,9 +10,9 @@ module NxtSchema
 
       def node(name, type_or_node, **options, &block)
         child_node = case type_or_node.to_s.to_sym
-        when :Hash
+        when :Schema
           NxtSchema::Node::Schema.new(name: name, type: NxtSchema::Types::Strict::Hash, parent_node: self, **options, &block)
-        when :Array
+        when :Collection
           NxtSchema::Node::Collection.new(name: name, type: NxtSchema::Types::Strict::Array, parent_node: self, **options, &block)
         else
           if type_or_node.is_a?(NxtSchema::Node::Base)
@@ -42,13 +42,13 @@ module NxtSchema
       alias_method :requires, :required
 
       def nodes(name, **options, &block)
-        node(name, :Array, options, &block)
+        node(name, :Collection, options, &block)
       end
 
       alias_method :array, :nodes
 
       def schema(name, **options, &block)
-        node(name, :Hash, options, &block)
+        node(name, :Schema, options, &block)
       end
 
       alias_method :hash, :schema

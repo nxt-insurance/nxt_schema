@@ -77,6 +77,8 @@ use `NxtSchema.roots { ... }`. Within the schema you can create node simply with
 method. Each node requires a name and a type and accepts additional options. Node are required per default. 
 But you can make them optional by providing the optional option.  
 
+#### Nodes
+
 ```ruby
 NxtSchema.root do
   node(:first_name, :String)
@@ -85,8 +87,10 @@ NxtSchema.root do
 end
 ```
 
-In order to make the schema more readable you can make use of several aliases to create required, optional or 
+In order to make the schema more readable you can make use of several predicate aliases to create required, optional or 
 (omni)present nodes.  
+
+#### Predicate aliases
 
 ```ruby
 NxtSchema.root do
@@ -97,10 +101,70 @@ end
 ```
 
 ### Nodes
-#### Schema
-#### Array
-#### Leaf
-#### Constructor
+
+The following types of nodes exist
+
+#### Schema Nodes
+
+```ruby
+# Create schema nodes with:
+node(:test, :Schema) do ... end
+schema(:test) do ... end
+hash(:test) do ... end
+```
+
+#### Collection Nodes
+
+```ruby
+# Create collection (array) nodes with:
+node(:test, :Collection) do ... end
+nodes(:test) do ... end
+array(:test) do ... end
+```
+
+#### Leaf Nodes
+
+```ruby
+# Create leaf nodes with, or with one of the predicat aliases above
+node(:test, :String) do ... end
+```
+
+#### Struct Nodes
+
+```ruby
+# Create structs from hash nodes 
+struct(:test) do ... end  
+```
+
+### Types
+
+The type system is built with dry-types from the amazing https://dry-rb.org/ eco system. Even though dry-types also
+offers features such as default values for types as well as maybe types, these features are built directly into 
+NxtSchema.
+
+#### Default values
+
+```ruby
+# Define default values as options or with the default method
+node(:test, :String).default(value_or_proc)
+node(:test, :String, default: value_or_proc) do ... end
+```
+
+#### Maybe values
+
+```ruby
+# Define maybe values (values that do not match the type)
+node(:test, :String).maybe(value_or_proc)
+node(:test, :String, maybe: value_or_proc) do ... end
+```  
+
+### Schema options
+
+#### Default type system
+ 
+#### Optional keys strategies
+
+#### Transform keys
 
 ## Development
 
