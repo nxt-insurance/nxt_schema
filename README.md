@@ -177,10 +177,10 @@ based on some condition.
   required(:test, :String).validate(:equality, :size, 3) 
   required(:test, :String).validate(:exclusion, %w[not_allowed]) 
   required(:test, :String).validate(:inclusion, %w[allowed]) 
-  required(:test, :String).validate(:greater_than, 1) 
-  required(:test, :String).validate(:greater_than_or_equal, 1) 
-  required(:test, :String).validate(:less_than, 1) 
-  required(:test, :String).validate(:less_than_or_equal, 1) 
+  required(:test, :Integer).validate(:greater_than, 1) 
+  required(:test, :Integer).validate(:greater_than_or_equal, 1) 
+  required(:test, :Integer).validate(:less_than, 1) 
+  required(:test, :Integer).validate(:less_than_or_equal, 1) 
   required(:test, :String).validate(:pattern, /\A.*@.*\z/) 
   required(:test, :String).validate(:query, :present?) 
 ```
@@ -188,6 +188,12 @@ based on some condition.
 #### Custom validators
 
 TODO: Register custom validators
+
+#### Validation messages
+
+- Allow to specify a path to translations
+- Add translated errors
+- Interpolate with actual vs. expected 
 
 #### Combining validators with custom logic
 

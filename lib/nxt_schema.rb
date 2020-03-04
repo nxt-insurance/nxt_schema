@@ -3,6 +3,7 @@ require "pry"
 require "active_support/all"
 require 'dry-types'
 require 'nxt_registry'
+require 'nxt_config'
 
 require "nxt_schema/types"
 require "nxt_schema/undefined"
