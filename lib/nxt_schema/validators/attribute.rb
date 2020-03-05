@@ -1,6 +1,5 @@
 module NxtSchema
-  module Validations
-    module Validators
+  module Validators
       class Attribute < Validator
         def initialize(method, expectation)
           @method = method
@@ -26,5 +25,4 @@ module NxtSchema
         end
       end
     end
-  end
 end

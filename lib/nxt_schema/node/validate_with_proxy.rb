@@ -1,5 +1,5 @@
 module NxtSchema
-  module Validations
+  module Node
     class ValidateWithProxy
       def initialize(node)
         @node = node

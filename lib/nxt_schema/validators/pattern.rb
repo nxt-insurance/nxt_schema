@@ -1,6 +1,5 @@
 module NxtSchema
-  module Validations
-    module Validators
+  module Validators
       class Pattern < Validator
           def initialize(pattern)
           @pattern = pattern
@@ -21,5 +20,4 @@ module NxtSchema
         end
       end
     end
-  end
 end

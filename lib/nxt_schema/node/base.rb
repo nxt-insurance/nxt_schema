@@ -191,12 +191,12 @@ module NxtSchema
       end
 
       def validator(key, *args)
-        Validations::Registry::VALIDATORS.resolve(key).new(*args).build
+        Validators::Registry::VALIDATORS.resolve(key).new(*args).build
       end
 
       def validate_with(&block)
         add_validators(
-          ->(node) { NxtSchema::Validations::ValidateWithProxy.new(node).validate(&block) }
+          ->(node) { NxtSchema::Node::ValidateWithProxy.new(node).validate(&block) }
         )
       end
 

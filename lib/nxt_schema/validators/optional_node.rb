@@ -1,6 +1,5 @@
 module NxtSchema
-  module Validations
-    module Validators
+  module Validators
       class OptionalNode < Validator
         def initialize(conditional, missing_key)
           @conditional = conditional
@@ -24,5 +23,4 @@ module NxtSchema
         end
       end
     end
-  end
 end

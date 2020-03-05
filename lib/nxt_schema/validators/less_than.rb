@@ -1,6 +1,5 @@
 module NxtSchema
-  module Validations
-    module Validators
+  module Validators
       class LessThan < Validator
         def initialize(threshold)
           @threshold = threshold
@@ -21,5 +20,4 @@ module NxtSchema
         end
       end
     end
-  end
 end

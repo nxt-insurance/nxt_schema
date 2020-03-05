@@ -1,6 +1,5 @@
 module NxtSchema
-  module Validations
-    module Validators
+  module Validators
       class Query < Validator
         def initialize(method)
           @method = method
@@ -26,5 +25,4 @@ module NxtSchema
         end
       end
     end
-  end
 end

@@ -1,6 +1,5 @@
 module NxtSchema
-  module Validations
-    module Validators
+  module Validators
       class Inclusion < Validator
         def initialize(target)
           @target = target
@@ -21,5 +20,4 @@ module NxtSchema
         end
       end
     end
-  end
 end

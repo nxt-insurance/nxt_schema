@@ -1,5 +1,5 @@
 module NxtSchema
-  module Validations
+  module Validators
     class Registry
       extend NxtRegistry
 

@@ -9,26 +9,26 @@ require "nxt_schema/undefined"
 require "nxt_schema/registry"
 require "nxt_schema/callable"
 require "nxt_schema/callable_or_value"
-require "nxt_schema/validations/registry"
-require "nxt_schema/validations/validate_with_proxy"
+require "nxt_schema/validators/registry"
+require "nxt_schema/node/validate_with_proxy"
 
 require "nxt_schema/errors"
 require "nxt_schema/errors/error"
 require "nxt_schema/errors/schema_not_applied_error"
 require "nxt_schema/errors/invalid_options_error"
 
-require "nxt_schema/validations/validators/validator"
-require "nxt_schema/validations/validators/attribute"
-require "nxt_schema/validations/validators/equality"
-require "nxt_schema/validations/validators/optional_node"
-require "nxt_schema/validations/validators/greater_than"
-require "nxt_schema/validations/validators/greater_than_or_equal"
-require "nxt_schema/validations/validators/less_than"
-require "nxt_schema/validations/validators/less_than_or_equal"
-require "nxt_schema/validations/validators/pattern"
-require "nxt_schema/validations/validators/inclusion"
-require "nxt_schema/validations/validators/exclusion"
-require "nxt_schema/validations/validators/query"
+require "nxt_schema/validators/validator"
+require "nxt_schema/validators/attribute"
+require "nxt_schema/validators/equality"
+require "nxt_schema/validators/optional_node"
+require "nxt_schema/validators/greater_than"
+require "nxt_schema/validators/greater_than_or_equal"
+require "nxt_schema/validators/less_than"
+require "nxt_schema/validators/less_than_or_equal"
+require "nxt_schema/validators/pattern"
+require "nxt_schema/validators/inclusion"
+require "nxt_schema/validators/exclusion"
+require "nxt_schema/validators/query"
 
 require "nxt_schema/node"
 require "nxt_schema/node/type_resolver"
@@ -45,5 +45,11 @@ require "nxt_schema/node/leaf"
 require "nxt_schema/dsl"
 
 module NxtSchema
+  def register_validator(validator, *keys)
+    keys.each do |key|
+      NxtSchema::Validators::Registry::VALIDATORS.register(key, validator)
+    end
+  end
 
+  module_function :register_validator
 end

@@ -208,7 +208,7 @@ based on some condition.
   required(:test, :String).validate -> (node, value) { node.add_error("#{value} is not valid") if value == 'not allowed' }
   # Built in validations
   required(:test, :String).validate(:attribute, :size, ->(s) { s < 7 }) 
-  required(:test, :String).validate(:equality, :size, 3) 
+  required(:test, :String).validate(:equality, 'same') 
   required(:test, :String).validate(:exclusion, %w[not_allowed]) 
   required(:test, :String).validate(:inclusion, %w[allowed]) 
   required(:test, :Integer).validate(:greater_than, 1) 
