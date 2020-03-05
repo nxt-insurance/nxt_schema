@@ -72,7 +72,7 @@ schema.errors # { 'name.spaced.key': ['all the errors'] }
 
 ### DSL
 
-Create a new schema with `NxtSchema.root { ... }` or  in case you have an array node as root, 
+Create a new schema with `NxtSchema.root { ... }` or in case you have an array node as root, 
 use `NxtSchema.roots { ... }`. Within the schema you can create node simply with the `node(name, type_or_node, **options)` 
 method. Each node requires a name and a type and accepts additional options. Node are required per default. 
 But you can make them optional by providing the optional option.  
@@ -140,8 +140,42 @@ struct(:test) do ... end
 
 The type system is built with dry-types from the amazing https://dry-rb.org/ eco system. Even though dry-types also
 offers features such as default values for types as well as maybe types, these features are built directly into 
-NxtSchema. Dry.rb also has a gem for schemas and another one dedicated to validations explicitly. You should probably
-check those out!  
+NxtSchema. Dry.rb also has a gem for schemas and another one dedicated to validations. You should probably
+check those out! However, in NxtSchema every node has a type and you can either provide a symbol that will be resolved 
+through the type system of the schema. But you can also directly provide an instance of dry type and thus use your 
+custom types.    
+
+#### Default type system
+
+You can tell your schema which default type system it should use. Dry-Types comes with a few built in type systems.
+Per default NxtSchema will use nominal types if not specified otherwise. If the type cannot be resolved from the default
+type system that was specified, NxtSchema will again try to fallback to nominal types. In theory you can provide
+a separate type system per node if that's what you want :-D
+                               
+```ruby
+NxtSchema.root do
+  required(:test, :String) # The :String will resolve to NxtSchema::Types::Nominal::String
+end
+
+NxtSchema.root(type_system: NxtSchema::Types::JSON) do
+  required(:test, :Date) # The :Date will resolve to NxtSchema::Types::JSON::Date
+  # When the type does not exist in the default type system (there is non JSON::String) we fallback to nominal types
+  required(:test, :String) 
+end
+```
+
+#### NxtSchema.params
+
+NxtSchema.params will give you a schema as root node with NxtSchema::Types::Params as default type system.
+This is suitable to validate and coerce your query params. 
+
+```ruby
+NxtSchema.params do
+  required(:effective_at, :DateTime) # would resolve to Types::Params::DateTime 
+  required(:test, :String) # The :String will resolve to NxtSchema::Types::Nominal::String
+  required(:advanced, NxtSchema::Types::Params::Bool) # long version of required(:advanced, :Bool)
+end
+```
 
 ### Values
 
@@ -217,25 +251,6 @@ means that you might not have the full validation errors when running validation
 
 
 ### Schema options
-
-#### Default type system
-
-You can tell your schema which default type system it should use. Dry-Types comes with a few built in type systems.
-Per default NxtSchema will use nominal types if not specified otherwise. If the type cannot be resolved from the default
-type system that was specified, NxtSchema will again try to fallback to nominal types. In theory you can provide
-a separate type system per node if that's what you want :-D
-                               
-```ruby
-NxtSchema.root do
-  required(:test, :String) # The :String will resolve to NxtSchema::Types::Nominal::String
-end
-
-NxtSchema.root(type_system: NxtSchema::Types::JSON) do
-  required(:test, :Date) # The :Date will resolve to NxtSchema::Types::JSON::Date
-  # When the type does not exist in the default type system (there is non JSON::String) we fallback to nominal types
-  required(:test, :String) 
-end
-```
  
 #### Optional keys strategies
 
