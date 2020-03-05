@@ -39,7 +39,6 @@ require "nxt_schema/node/error"
 require "nxt_schema/node/has_subnodes"
 require "nxt_schema/node/template_store"
 require "nxt_schema/node/schema"
-require "nxt_schema/node/constructor"
 require "nxt_schema/node/collection"
 require "nxt_schema/node/leaf"
 require "nxt_schema/dsl"
@@ -51,5 +50,9 @@ module NxtSchema
     end
   end
 
-  module_function :register_validator
+  def register_type(key, type)
+    NxtSchema::Types.const_set(key.to_s, type)
+  end
+
+  module_function :register_validator, :register_type
 end

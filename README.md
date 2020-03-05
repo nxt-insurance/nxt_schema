@@ -3,7 +3,6 @@
 TODO:    
 
 - Add Options class that knows what kind of options are allowed and exclude each other
-- Interface to register custom types / custom validators
 - Implement proper schema and validation error system that would be capable of I18n and custom error messages
 - Test the different scenarios of merging schemas array, hash, ...
 - Test all methods of all nodes
@@ -179,7 +178,21 @@ end
 
 #### Custom types
 
-TODO!!
+You can also register custom types. In order to check out all the cool things you can do with dry types you should 
+check out dry-types on https://dry-rb.org. But here is how you can add a type to the `NxtSchema::Types` module. 
+
+```ruby
+NxtSchema.register_type(
+  :MyCustomStrippedString,
+  NxtSchema::Types::Strict::String.constructor(->(string) { string&.strip })
+)
+
+# once registered you can use the type in your schema
+
+NxtSchema.root(:company) do
+  required(:name, NxtSchema::Types::MyCustomStrippedString)
+end
+```
 
 ### Values
 

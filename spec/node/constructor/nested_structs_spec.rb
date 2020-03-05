@@ -1,16 +1,16 @@
-RSpec.describe NxtSchema::Node::Constructor do
+RSpec.describe NxtSchema::Node::Schema do
   context 'with nested structs' do
     subject do
       NxtSchema.roots do
-        required(:level_1, NxtSchema::Types::Struct) do
+        required(:level_1, :Struct) do
           required(:name, :String)
           present(:alias, :String).default('level_1')
-          required(:level_2, NxtSchema::Types::Struct) do
+          required(:level_2, :Struct) do
             required(:name, :String)
-            required(:level_3, NxtSchema::Types::Struct) do
+            required(:level_3, :Struct) do
               required(:name, :String)
               nodes(:attributes) do
-                required(:attribute, NxtSchema::Types::Struct) do
+                required(:attribute, :Struct) do
                   required(:name, :String)
                 end
               end

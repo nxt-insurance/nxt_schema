@@ -8,12 +8,29 @@ module NxtSchema
     module HasSubNodes
       attr_accessor :template_store, :value_store
 
+      # TODO: Would be cool if we could register custom node types!
       def node(name, type_or_node, **options, &block)
         child_node = case type_or_node.to_s.to_sym
         when :Schema
           NxtSchema::Node::Schema.new(name: name, type: NxtSchema::Types::Strict::Hash, parent_node: self, **options, &block)
         when :Collection
           NxtSchema::Node::Collection.new(name: name, type: NxtSchema::Types::Strict::Array, parent_node: self, **options, &block)
+        when :Struct
+          NxtSchema::Node::Constructor.new(
+            name: name,
+            type: NxtSchema::Types::Constructor(::Struct) { |hash| ::Struct.new(*hash.keys).new(*hash.values) },
+            parent_node: self,
+            **options,
+            &block
+          )
+        when :OpenStruct
+          NxtSchema::Node::Constructor.new(
+            name: name,
+            type: NxtSchema::Types::Constructor(::OpenStruct),
+            parent_node: self,
+            **options,
+            &block
+          )
         else
           if type_or_node.is_a?(NxtSchema::Node::Base)
             node = type_or_node.clone
@@ -21,8 +38,6 @@ module NxtSchema
             node.name = name
             node.parent_node = self
             node
-          elsif type_or_node.is_a?(Dry::Types::Constructor)
-            NxtSchema::Node::Constructor.new(name: name, type: type_or_node, parent_node: self, **options, &block)
           else
             NxtSchema::Node::Leaf.new(name: name, type: type_or_node, parent_node: self, **options)
           end
