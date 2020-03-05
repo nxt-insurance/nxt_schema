@@ -177,6 +177,10 @@ NxtSchema.params do
 end
 ```
 
+#### Custom types
+
+TODO!!
+
 ### Values
 
 #### Default values
@@ -221,7 +225,40 @@ based on some condition.
 
 #### Custom validators
 
-TODO: Register custom validators
+You can also register your custom validators. Therefore you can simply implement a class that returns a lambda on build.
+This lambda will be called with the node the validations runs on and it's input value. Except this, you are free in 
+how your validator can be used. Check out the specs for some examples. 
+
+```ruby
+class MyCustomExclusionValidator
+  def initialize(target)
+    @target = target
+  end
+
+  attr_reader :target
+
+  def build
+    lambda do |node, value|
+      if target.exclude?(value)
+        true
+      else
+        node.add_error("#{target} should not contain #{value}")
+        false
+      end
+    end
+  end
+end
+
+# Register your validators  
+NxtSchema.register_validator(MyCustomExclusionValidator, :my_custom_exclusion_validator)
+
+# and then simply reference it with the key you've registered it
+schema = NxtSchema.root(:company) do
+  requires(:name, :String).validate(:my_custom_exclusion_validator, %w[lemonade])
+end
+
+schema.apply(name: 'lemonade').valid? # => false
+```
 
 #### Validation messages
 

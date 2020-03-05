@@ -1,19 +1,19 @@
 module NxtSchema
   module Validators
-      class Attribute < Validator
-        def initialize(method, expectation)
-          @method = method
-          @expectation = expectation
-        end
+    class Attribute < Validator
+      def initialize(method, expectation)
+        @method = method
+        @expectation = expectation
+      end
 
-        register_as :attribute, :attr
-        attr_reader :method, :expectation
+      register_as :attribute, :attr
+      attr_reader :method, :expectation
 
-        # Query any attribute on a value with validator(:attribute, :size, ->(s) { s < 7 })
+      # Query any attribute on a value with validator(:attribute, :size, ->(s) { s < 7 })
 
-        def build
-          lambda do |node, value|
-            raise ArgumentError, "#{value} does not respond to query: #{method}" unless value.respond_to?(method)
+      def build
+        lambda do |node, value|
+          raise ArgumentError, "#{value} does not respond to query: #{method}" unless value.respond_to?(method)
 
             if expectation.call(value.send(method))
               true

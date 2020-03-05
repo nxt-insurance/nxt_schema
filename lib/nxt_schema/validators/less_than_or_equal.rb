@@ -1,23 +1,23 @@
 module NxtSchema
   module Validators
-      class LessThanOrEqual < Validator
-        def initialize(threshold)
-          @threshold = threshold
-        end
+    class LessThanOrEqual < Validator
+      def initialize(threshold)
+        @threshold = threshold
+      end
 
-        register_as :less_than_or_equal, :lt_or_eql
-        attr_reader :threshold
+      register_as :less_than_or_equal, :lt_or_eql
+      attr_reader :threshold
 
-        def build
-          lambda do |node, value|
-            if value <= threshold
-              true
-            else
-              node.add_error("#{value} should be less than or equal to #{threshold}")
-              false
-            end
+      def build
+        lambda do |node, value|
+          if value <= threshold
+            true
+          else
+            node.add_error("#{value} should be less than or equal to #{threshold}")
+            false
           end
         end
       end
     end
+  end
 end
