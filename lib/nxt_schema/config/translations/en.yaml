@@ -1,0 +1,3 @@
+en:
+  equality: "%{actual} must be equal to %{expected}"
+  greater_than: "%{actual} must be greater then %{expected}"

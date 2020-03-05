@@ -1,0 +1,3 @@
+de:
+  equality: "%{actual} muss gleich sein wie %{expected}"
+  greater_than: "%{actual} muss größer sein als %{expected}"

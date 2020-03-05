@@ -39,6 +39,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dry-types"
   spec.add_dependency "nxt_registry"
   spec.add_dependency "nxt_config"
+  spec.add_dependency "nxt_init"
+
   spec.add_development_dependency "bundler", "~> 1.17"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"

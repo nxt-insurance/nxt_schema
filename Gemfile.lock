@@ -5,6 +5,7 @@ PATH
       activesupport
       dry-types
       nxt_config
+      nxt_init
       nxt_registry
 
 GEM
@@ -46,6 +47,8 @@ GEM
     method_source (0.9.2)
     minitest (5.14.0)
     nxt_config (0.2.1)
+    nxt_init (0.1.5)
+      activesupport
     nxt_registry (0.1.5)
       activesupport
     pry (0.12.2)

@@ -46,5 +46,6 @@ require "nxt_schema/node/leaf"
 require "nxt_schema/dsl"
 
 module NxtSchema
-
+  # TRANSLATIONS = NxtConfig.load(File.expand_path('../nxt_schema/config/translations/en.yaml', __FILE__))
+  TRANSLATIONS = YAML.load_file(File.expand_path('../nxt_schema/config/translations/en.yaml', __FILE__))
 end
