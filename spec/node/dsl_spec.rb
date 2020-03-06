@@ -130,7 +130,7 @@ RSpec.describe NxtSchema do
 
     it do
       subject.apply(values)
-      expect(subject.all_nodes.map(&:type_system)).to all(eq(NxtSchema::Types::Params))
+      expect(subject.all_nodes.values.map(&:type_system)).to all(eq(NxtSchema::Types::Params))
       expect(subject).to be_valid
       expect(subject.value).to eq(
         action: 'new',

@@ -22,7 +22,7 @@ module NxtSchema
           self.value = input
         else
           self.value = value_or_default_value(input)
-          self.value = type[value] unless maybe_criteria_applies?(value)
+          self.value = coerce_value(value) unless maybe_criteria_applies?(value)
         end
 
         self_without_empty_schema_errors

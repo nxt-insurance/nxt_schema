@@ -22,7 +22,7 @@ module NxtSchema
           self.value = value_or_default_value(value)
 
           unless maybe_criteria_applies?(value)
-            self.value = type[value]
+            self.value = coerce_value(value)
 
             # TODO: We should not allow additional keys to be present per default?!
             # TODO: Handle this here
@@ -44,7 +44,7 @@ module NxtSchema
               end
             end
 
-            self.value_store = type[value_store]
+            self.value_store = coerce_value(value_store)
             self.value = value_store
           end
         end

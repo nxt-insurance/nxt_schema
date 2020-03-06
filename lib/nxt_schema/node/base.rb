@@ -11,7 +11,7 @@ module NxtSchema
         @schema_errors_key = options.fetch(:schema_errors_key, :itself)
         @validations = []
         @level = parent_node ? parent_node.level + 1 : 0
-        @all_nodes = parent_node ? (parent_node.all_nodes || []) : []
+        @all_nodes = parent_node ? (parent_node.all_nodes || {}) : {}
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
         @errors = {}
@@ -120,7 +120,7 @@ module NxtSchema
       end
 
       def validate_all_nodes
-        sorted_nodes = all_nodes.sort do |node, other_node|
+        sorted_nodes = all_nodes.values.sort do |node, other_node|
           [node.level, (!node.leaf?).to_s] <=> [other_node.level, (!other_node.leaf?).to_s]
         end
 
@@ -203,10 +203,10 @@ module NxtSchema
       private
 
       def register_node(context)
-        return if in?(all_nodes)
+        return if all_nodes.key?(object_id)
 
         self.context = context
-        all_nodes << self
+        all_nodes[object_id] = self
       end
 
       def applied?
@@ -295,6 +295,10 @@ module NxtSchema
             raise NoMethodError, 'type_resolver is only available on root node'
           end
         end
+      end
+
+      def coerce_value(value)
+        type[value]
       end
     end
   end

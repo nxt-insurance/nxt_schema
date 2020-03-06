@@ -28,7 +28,7 @@ RSpec.describe NxtSchema do
   end
 
   let!(:values) do
-    employee_names = 10.times.map do |index|
+    employee_names = 20.times.map do |index|
       { firstname: "first_name_#{index}", lastname: "last_name_#{index}" }
     end
 
@@ -45,7 +45,8 @@ RSpec.describe NxtSchema do
     end
   end
 
-  let!(:profiler) { MethodProfiler.observe(NxtSchema::Node::Base) }
+  # make this bang to profile
+  let(:profiler) { MethodProfiler.observe(NxtSchema::Node::Base) }
 
   subject do
     Benchmark.measure { schema.apply(values) }.real

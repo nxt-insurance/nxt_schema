@@ -27,7 +27,7 @@ RSpec.describe NxtSchema do
 
     it 'assigns the context to all nodes' do
       subject.apply(values, context: 'new')
-      expect(subject.all_nodes.map(&:context)).to all(eq('new'))
+      expect(subject.all_nodes.values.map(&:context)).to all(eq('new'))
       expect(subject).to be_valid
       expect(subject.value).to eq(
         user: {

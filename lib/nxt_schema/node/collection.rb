@@ -22,7 +22,7 @@ module NxtSchema
           self.value = value_or_default_value(value)
 
           unless maybe_criteria_applies?(value)
-            self.value = type[value]
+            self.value = coerce_value(value)
 
             current_node_store = {}
 
@@ -56,7 +56,7 @@ module NxtSchema
             end
 
             # Once we collected all values ensure type by casting again
-            self.value_store = type[value_store]
+            self.value_store = coerce_value(value_store)
             self.value = value_store
           end
         end
