@@ -221,8 +221,7 @@ module NxtSchema
         schema_errors[index] ||= []
         schema_errors[index] << error
 
-        validation_errors[index] ||= []
-        validation_errors[index] << error
+        add_error(error, index)
       end
 
       def maybe_criteria_applies?(value)
@@ -238,8 +237,8 @@ module NxtSchema
         self
       end
 
-      def flat_validation_errors(hash, namespace, acc = {})
-        hash.each_with_object(acc) do |(key, val), acc|
+      def flat_validation_errors(errors, namespace, acc = {})
+        errors.each_with_object(acc) do |(key, val), acc|
           current_namespace = [namespace, key].reject { |namespace| namespace == schema_errors_key }.compact.join('.')
 
           if val.is_a?(::Hash)

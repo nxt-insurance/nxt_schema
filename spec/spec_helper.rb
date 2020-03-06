@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "nxt_schema"
+require "method_profiler"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

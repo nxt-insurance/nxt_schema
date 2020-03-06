@@ -45,11 +45,14 @@ RSpec.describe NxtSchema do
     end
   end
 
+  let!(:profiler) { MethodProfiler.observe(NxtSchema::Node::Base) }
+
   subject do
     Benchmark.measure { schema.apply(values) }.real
   end
 
   it do
     puts " Benchmark =====> #{subject}"
+    puts profiler.report
   end
 end
