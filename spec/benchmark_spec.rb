@@ -87,7 +87,7 @@ RSpec.describe NxtSchema do
       end
     end
 
-    let(:count) { 1000 }
+    let(:count) { 1_000 }
 
     let!(:values) do
       count.times.map do |index|
