@@ -29,7 +29,6 @@ module NxtSchema
                     :options,
                     :type,
                     :schema_errors,
-                    :namespace,
                     :errors,
                     :validations,
                     :schema_errors_key,
