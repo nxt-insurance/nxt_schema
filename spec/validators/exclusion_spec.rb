@@ -3,7 +3,7 @@ RSpec.describe NxtSchema::Validators::Exclusion do
   let(:validation_errors) { node.validation_errors = {} }
 
   subject do
-    NxtSchema::Validators::Registry::VALIDATORS.resolve(:exclusion).new([1,2,3]).build.call(node, value)
+    NxtSchema::Validators::Registry::VALIDATORS.resolve(:exclusion).new([1,2,3], language: :en).build.call(node, value)
   end
 
   context 'when it is valid' do

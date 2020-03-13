@@ -1,12 +1,13 @@
 module NxtSchema
   module Validators
     class GreaterThanOrEqual < Validator
-      def initialize(threshold)
+      def initialize(threshold, language:)
         @threshold = threshold
+        @language = language
       end
 
       register_as :greater_than_or_equal, :gt_or_eql
-      attr_reader :threshold
+      attr_reader :threshold, :language
 
       def build
         lambda do |node, value|

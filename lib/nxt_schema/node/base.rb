@@ -19,6 +19,7 @@ module NxtSchema
         @applied = false
         @input = nil
         @value = NxtSchema::Undefined.new
+        @language = :en
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
         evaluate_block(block) if block_given?
@@ -41,7 +42,8 @@ module NxtSchema
                     :context,
                     :applied,
                     :input,
-                    :additional_keys_strategy
+                    :additional_keys_strategy,
+                    :language
 
       alias_method :types, :type_system
 
@@ -190,7 +192,7 @@ module NxtSchema
       end
 
       def validator(key, *args)
-        Validators::Registry::VALIDATORS.resolve(key).new(*args).build
+        Validators::Registry::VALIDATORS.resolve(key).new(*args, language: language).build
       end
 
       def validate_with(&block)

@@ -1,12 +1,13 @@
 module NxtSchema
   module Validators
     class Query < Validator
-      def initialize(method)
+      def initialize(method, language:)
         @method = method
+        @language = language
       end
 
       register_as :query
-      attr_reader :method
+      attr_reader :method, :language
 
       # Query a boolean method on you value => node(:test, :String).validate(:query, :good_enough?)
       # => Would be valid if value.good_enough? is truthy

@@ -1,13 +1,14 @@
 module NxtSchema
   module Validators
     class OptionalNode < Validator
-      def initialize(conditional, missing_key)
+      def initialize(conditional, missing_key, language:)
         @conditional = conditional
         @missing_key = missing_key
+        @language = language
       end
 
       register_as :optional_node
-      attr_reader :conditional, :missing_key
+      attr_reader :conditional, :missing_key, :language
 
       def build
         lambda do |node, value|

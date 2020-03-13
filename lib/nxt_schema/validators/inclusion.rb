@@ -1,12 +1,13 @@
 module NxtSchema
   module Validators
     class Inclusion < Validator
-      def initialize(target)
+      def initialize(target, language:)
         @target = target
+        @language = language
       end
 
       register_as :inclusion
-      attr_reader :target
+      attr_reader :target, :language
 
       def build
         lambda do |node, value|

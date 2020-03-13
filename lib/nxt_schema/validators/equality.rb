@@ -1,12 +1,13 @@
 module NxtSchema
   module Validators
     class Equality < Validator
-      def initialize(expectation)
+      def initialize(expectation, language:)
         @expectation = expectation
+        @language = language
       end
 
       register_as :equality, :eql
-      attr_reader :expectation
+      attr_reader :expectation, :language
 
       # Query for equality validator(:equality, 3)
       # Query for equality validator(:eql, -> { 3 * 3 * 60 })

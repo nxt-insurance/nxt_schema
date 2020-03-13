@@ -1,13 +1,14 @@
 module NxtSchema
   module Validators
     class Attribute < Validator
-      def initialize(method, expectation)
+      def initialize(method, expectation, language:)
         @method = method
         @expectation = expectation
+        @language = language
       end
 
       register_as :attribute, :attr
-      attr_reader :method, :expectation
+      attr_reader :method, :expectation, :language
 
       # Query any attribute on a value with validator(:attribute, :size, ->(s) { s < 7 })
 
