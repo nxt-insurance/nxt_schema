@@ -342,6 +342,24 @@ schema.apply('test' => 'getsafe') # => {:test=>"getsafe"}
 schema.apply(test: 'getsafe') # => {:test=>"getsafe"}
 ``` 
 
+#### Adding meta data to nodes
+
+You want to give nodes an ID or some other meta data? You can use the meta method on nodes for adding additional 
+information onto any node.  
+
+```ruby
+schema = NxtSchema.root do
+  ERROR_MESSAGES = {
+    test: 'This is always broken'
+  }
+
+  required(:test, :String).meta(ERROR_MESSAGES).validate ->(node) { node.add_error(node.meta.fetch(node.name)) }
+end
+
+schema.apply(test: 'getsafe') 
+schema.error #  {"root.test"=>["This is always broken"]}
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

@@ -44,6 +44,7 @@ module NxtSchema
                     :input,
                     :additional_keys_strategy
 
+
       alias_method :types, :type_system
 
       def parent(level = 1)
@@ -56,6 +57,15 @@ module NxtSchema
         options.merge!(default: default_value)
         evaluate_block(block) if block_given?
         self
+      end
+
+      def meta(value = NxtSchema::Undefined.new)
+        if value.is_a?(NxtSchema::Undefined)
+          @meta
+        else
+          @meta = value
+          self
+        end
       end
 
       def value_or_default_value(value)
