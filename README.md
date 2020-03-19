@@ -2,6 +2,8 @@
 
 TODO:    
 
+- Explain the difference between array nodes and typed array nodes
+- Should we translate coercion errors as well?
 - Add Options class that knows what kind of options are allowed and exclude each other
 - Implement proper schema and validation error system that would be capable of I18n and custom error messages
 - Test the different scenarios of merging schemas array, hash, ...
@@ -226,8 +228,10 @@ based on some condition.
   # Built in validations
   required(:test, :String).validate(:attribute, :size, ->(s) { s < 7 }) 
   required(:test, :String).validate(:equality, 'same') 
-  required(:test, :String).validate(:exclusion, %w[not_allowed]) 
-  required(:test, :String).validate(:inclusion, %w[allowed]) 
+  required(:test, :String).validate(:excluded, %w[not_allowed]) 
+  required(:test, :String).validate(:included, %w[allowed])
+  required(:test, :Array).validate(:excludes, 'excluded') 
+  required(:test, :Array).validate(:includes, 'included') 
   required(:test, :Integer).validate(:greater_than, 1) 
   required(:test, :Integer).validate(:greater_than_or_equal, 1) 
   required(:test, :Integer).validate(:less_than, 1) 

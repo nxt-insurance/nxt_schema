@@ -78,7 +78,14 @@ module NxtSchema
           # Validator is added to the schema node!
           add_validators(validator(:optional_node, optional_option, key))
         elsif !optional_option
-          add_schema_error("Required key :#{key} is missing in #{hash}")
+          error_message = Validators::ErrorMessages.resolve(
+            locale,
+            :required_key_missing,
+            key: key,
+            target: hash
+          )
+
+          add_schema_error(error_message)
         end
       end
 
@@ -97,7 +104,15 @@ module NxtSchema
         return template_store.keys + additional_keys_from_input if additional_keys_allowed?
 
         if restrict_additional_keys?
-          add_schema_error("Additional keys: #{additional_keys_from_input} not allowed!")
+          error_message = Validators::ErrorMessages.resolve(
+            locale,
+            :additional_keys_detected,
+            keys: additional_keys_from_input,
+            target: input
+          )
+
+          add_schema_error(error_message)
+
           template_store.keys
         else
           raise Errors::InvalidOptionsError, "Invalid option for additional keys: #{additional_keys_strategy}"

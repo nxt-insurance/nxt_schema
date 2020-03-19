@@ -28,8 +28,10 @@ require "nxt_schema/validators/greater_than_or_equal"
 require "nxt_schema/validators/less_than"
 require "nxt_schema/validators/less_than_or_equal"
 require "nxt_schema/validators/pattern"
-require "nxt_schema/validators/inclusion"
-require "nxt_schema/validators/exclusion"
+require "nxt_schema/validators/included"
+require "nxt_schema/validators/includes"
+require "nxt_schema/validators/excluded"
+require "nxt_schema/validators/excludes"
 require "nxt_schema/validators/query"
 
 require "nxt_schema/node"
@@ -55,6 +57,8 @@ module NxtSchema
   def register_type(key, type)
     NxtSchema::Types.const_set(key.to_s, type)
   end
+
+  Validators::ErrorMessages.load
 
   module_function :register_validator, :register_type
 end

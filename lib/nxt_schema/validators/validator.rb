@@ -9,8 +9,8 @@ module NxtSchema
         define_method('key') { @key ||= keys.first }
       end
 
-      def translate_error(**options)
-        ErrorMessages.resolve(key, **options)
+      def translate_error(locale, **options)
+        ErrorMessages.resolve(locale, key, **options)
       end
     end
   end

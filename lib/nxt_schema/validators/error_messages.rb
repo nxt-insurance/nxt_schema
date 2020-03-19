@@ -3,14 +3,21 @@ module NxtSchema
     class ErrorMessages
       DEFAULT_PATH = File.expand_path("../error_messages/en.yaml", __FILE__)
 
-      VALUES = { }
+      VALUES = { }.with_indifferent_access
 
       def self.load(path = DEFAULT_PATH)
-        VALUES.deep_merge!(YAML.load(ERB.new(File.read(path)).result))
+        values = YAML.load(ERB.new(File.read(path)).result).with_indifferent_access
+        VALUES.deep_merge!(values)
       end
 
-      def self.resolve(key, **options)
-        # We resolve an interpolate
+      def self.resolve(locale, key, **options)
+        message = begin
+          VALUES.fetch(locale).fetch(key)
+        rescue KeyError
+          raise "Could not resolve error message for #{locale}->#{key}"
+        end
+
+        message % options
       end
     end
   end
