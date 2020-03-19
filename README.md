@@ -256,7 +256,7 @@ class MyCustomExclusionValidator
         true
       else
         node.add_error("#{target} should not contain #{value}")
-        false
+        false # validators must return false in the bad case 
       end
     end
   end

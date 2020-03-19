@@ -127,6 +127,7 @@ module NxtSchema
       def add_error(error, index = schema_errors_key)
         validation_errors[index] ||= []
         validation_errors[index] << error
+        false
       end
 
       def validate_all_nodes

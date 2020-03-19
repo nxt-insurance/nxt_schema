@@ -1,0 +1,4 @@
+en:
+  attribute: '%{value} has invalid %{attribute} attribute of %{actual}'
+  equality: '%{actual} does not equal %{expected}'
+

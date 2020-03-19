@@ -3,6 +3,7 @@ require "pry"
 require "active_support/all"
 require 'dry-types'
 require 'nxt_registry'
+require 'yaml'
 
 require "nxt_schema/types"
 require "nxt_schema/undefined"
@@ -17,6 +18,7 @@ require "nxt_schema/errors/error"
 require "nxt_schema/errors/schema_not_applied_error"
 require "nxt_schema/errors/invalid_options_error"
 
+require "nxt_schema/validators/error_messages"
 require "nxt_schema/validators/validator"
 require "nxt_schema/validators/attribute"
 require "nxt_schema/validators/equality"
