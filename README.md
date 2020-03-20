@@ -4,17 +4,9 @@ TODO:
 
 - Explain the difference between array nodes and typed array nodes
 - Should we translate coercion errors as well?
-- Add Options class that knows what kind of options are allowed and exclude each other
-- Implement proper schema and validation error system that would be capable of I18n and custom error messages
 - Test the different scenarios of merging schemas array, hash, ...
-- Test all methods of all nodes
-    => Structure tests by nodes and method
-    
 - Structure Errors 
 - NxtSchema::Json => Use json types, maybe even parse Json with Oj
-- Should we allow to pass in meta data to any node - would be kind of nice to be able to access it
-    required(:name, :String).meta(internal: true, required_for_pricing: true) 
-    required(:tariff, Enum()).meta(internal: true, required_for_pricing: true) 
  
 
 ## Installation

@@ -58,7 +58,12 @@ module NxtSchema
     NxtSchema::Types.const_set(key.to_s, type)
   end
 
+  def register_error_messages(*paths)
+    ErrorMessages.load(paths)
+  end
+
+  # Load default messages
   ErrorMessages.load
 
-  module_function :register_validator, :register_type
+  module_function :register_validator, :register_type, :register_error_messages
 end
