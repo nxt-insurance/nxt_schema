@@ -46,7 +46,7 @@ RSpec.describe NxtSchema do
 
       it 'translates the error messages' do
         expect(subject).to eq(
-          "validators.attribute"=>["small has invalid size of 5"],
+          "validators.attribute"=>["small has invalid size attribute of 5"],
           "validators.equality" => ["lemonade does not equal getsafe"],
           "validators.excludes" => ["[\"andy\", \"lütfi\", \"nils\", \"rapha\"] cannot contain andy"],
           "validators.includes" => ["[\"lütfi\", \"nils\", \"rapha\"] must include andy"],

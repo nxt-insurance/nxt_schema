@@ -58,13 +58,13 @@ module NxtSchema
       end
 
       def optional(name, type, **options, &block)
-        raise_invalid_options_error if options[:presence]
+        raise_invalid_options_presence_options if options[:presence]
 
         node(name, type, options.merge(optional: true), &block)
       end
 
       def present(name, type, **options, &block)
-        raise_invalid_options_error if options[:optional]
+        raise_invalid_options_presence_options if options[:optional]
 
         node(name, type, options.merge(presence: true), &block)
       end
@@ -139,7 +139,7 @@ module NxtSchema
         additional_keys_strategy.to_s == 'restrict'
       end
 
-      def raise_invalid_options_error
+      def raise_invalid_options_presence_options
         raise InvalidOptionsError, 'Options :presence and :optional exclude each other'
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe NxtSchema::Node::Leaf do
   context 'validations' do
     describe '#validate_with' do
@@ -17,17 +19,17 @@ RSpec.describe NxtSchema::Node::Leaf do
         context 'when the node is invalid' do
           it do
             subject.apply(4)
-            expect(subject.errors).to eq("leaf"=>["4 should be greater than 5"])
+            expect(subject.errors).to eq('leaf' => ['4 must be greater than 5'])
           end
 
           it do
             subject.apply(6)
-            expect(subject.errors).to eq("leaf"=>["6 should be greater than 6"])
+            expect(subject.errors).to eq('leaf' => ['6 must be greater than 6'])
           end
 
           it do
             subject.apply(7)
-            expect(subject.errors).to eq("leaf"=>["7 should be greater than 7"])
+            expect(subject.errors).to eq('leaf' => ['7 must be greater than 7'])
           end
         end
 
@@ -77,10 +79,10 @@ RSpec.describe NxtSchema::Node::Leaf do
             it do
               subject.apply('1-2-3')
               expect(subject.errors).to eq(
-                'leaf'=>
+                'leaf' =>
                   [
-                    '1-2-3 does not match (?-mix:\\A\\d+\\z)',
-                    '1-2-3 does not match (?-mix:\\A[-]+\\z)'
+                    '1-2-3 must match pattern (?-mix:\\A\\d+\\z)',
+                    '1-2-3 must match pattern (?-mix:\\A[-]+\\z)'
                   ]
               )
             end
@@ -106,7 +108,7 @@ RSpec.describe NxtSchema::Node::Leaf do
       context 'when the node is invalid' do
         it do
           subject.apply(7)
-          expect(subject.errors).to eq("leaf"=>["7 should be greater than 7"])
+          expect(subject.errors).to eq('leaf' => ['7 must be greater than 7'])
         end
       end
     end

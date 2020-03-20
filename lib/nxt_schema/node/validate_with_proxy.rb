@@ -19,6 +19,7 @@ module NxtSchema
 
       def add_error(error)
         aggregated_errors << error
+        false
       end
 
       def copy_aggregated_errors_to_node
