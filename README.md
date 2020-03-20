@@ -1,14 +1,5 @@
 # NxtSchema
 
-TODO:    
-
-- Explain the difference between array nodes and typed array nodes
-- Should we translate coercion errors as well?
-- Test the different scenarios of merging schemas array, hash, ...
-- Structure Errors 
-- NxtSchema::Json => Use json types, maybe even parse Json with Oj
- 
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -369,3 +360,11 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+# TODO:    
+
+- Explain the difference between array nodes and typed array nodes
+- Should we translate coercion errors as well?
+- Test the different scenarios of merging schemas array, hash, ...
+- Structure Errors 
+- NxtSchema::Json => Use json types, maybe even parse Json with Oj
