@@ -1,11 +1,11 @@
 module NxtSchema
   module Validators
-    class Inclusion < Validator
+    class Included < Validator
       def initialize(target)
         @target = target
       end
 
-      register_as :inclusion
+      register_as :included
       attr_reader :target
 
       def build
@@ -13,8 +13,8 @@ module NxtSchema
           if target.include?(value)
             true
           else
-            node.add_error("#{value} not included in #{target}")
-            false
+            message = translate_error(node.locale, value: value, target: target)
+            node.add_error(message)
           end
         end
       end

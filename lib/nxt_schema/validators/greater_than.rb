@@ -13,8 +13,8 @@ module NxtSchema
           if value > threshold
             true
           else
-            node.add_error("#{value} should be greater than #{threshold}")
-            false
+            message = translate_error(node.locale, value: value, threshold: threshold)
+            node.add_error(message)
           end
         end
       end

@@ -5,7 +5,7 @@ module NxtSchema
         @pattern = pattern
       end
 
-      register_as :format, :pattern
+      register_as :pattern, :format
       attr_reader :pattern
 
       def build
@@ -13,7 +13,8 @@ module NxtSchema
           if value.match(pattern)
             true
           else
-            node.add_error("#{value} does not match #{pattern}")
+            message = translate_error(node.locale, value: value, pattern: pattern)
+            node.add_error(message)
             false
           end
         end

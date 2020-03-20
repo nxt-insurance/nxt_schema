@@ -3,6 +3,7 @@ require "pry"
 require "active_support/all"
 require 'dry-types'
 require 'nxt_registry'
+require 'yaml'
 
 require "nxt_schema/types"
 require "nxt_schema/undefined"
@@ -17,6 +18,7 @@ require "nxt_schema/errors/error"
 require "nxt_schema/errors/schema_not_applied_error"
 require "nxt_schema/errors/invalid_options_error"
 
+require "nxt_schema/error_messages"
 require "nxt_schema/validators/validator"
 require "nxt_schema/validators/attribute"
 require "nxt_schema/validators/equality"
@@ -26,8 +28,10 @@ require "nxt_schema/validators/greater_than_or_equal"
 require "nxt_schema/validators/less_than"
 require "nxt_schema/validators/less_than_or_equal"
 require "nxt_schema/validators/pattern"
-require "nxt_schema/validators/inclusion"
-require "nxt_schema/validators/exclusion"
+require "nxt_schema/validators/included"
+require "nxt_schema/validators/includes"
+require "nxt_schema/validators/excluded"
+require "nxt_schema/validators/excludes"
 require "nxt_schema/validators/query"
 
 require "nxt_schema/node"
@@ -54,5 +58,12 @@ module NxtSchema
     NxtSchema::Types.const_set(key.to_s, type)
   end
 
-  module_function :register_validator, :register_type
+  def register_error_messages(*paths)
+    ErrorMessages.load(paths)
+  end
+
+  # Load default messages
+  ErrorMessages.load
+
+  module_function :register_validator, :register_type, :register_error_messages
 end

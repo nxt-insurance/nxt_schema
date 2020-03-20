@@ -18,8 +18,13 @@ module NxtSchema
           if value == expected_value
             true
           else
-            node.add_error("#{value} does not equal #{expected_value}")
-            false
+            node.add_error(
+              translate_error(
+                node.locale,
+                actual: value,
+                expected: expected_value
+              )
+            )
           end
         end
       end

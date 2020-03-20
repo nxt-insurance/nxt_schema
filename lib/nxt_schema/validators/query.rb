@@ -18,8 +18,8 @@ module NxtSchema
           if value.send(method)
             true
           else
-            node.add_error("#{value}.#{method} returned #{value.send(method)}")
-            false
+            message = translate_error(node.locale, value: value, actual: value.send(method), query: method)
+            node.add_error(message)
           end
         end
       end

@@ -58,13 +58,13 @@ module NxtSchema
       end
 
       def optional(name, type, **options, &block)
-        raise_invalid_options_error if options[:presence]
+        raise_invalid_options_presence_options if options[:presence]
 
         node(name, type, options.merge(optional: true), &block)
       end
 
       def present(name, type, **options, &block)
-        raise_invalid_options_error if options[:optional]
+        raise_invalid_options_presence_options if options[:optional]
 
         node(name, type, options.merge(presence: true), &block)
       end
@@ -78,7 +78,14 @@ module NxtSchema
           # Validator is added to the schema node!
           add_validators(validator(:optional_node, optional_option, key))
         elsif !optional_option
-          add_schema_error("Required key :#{key} is missing in #{hash}")
+          error_message = ErrorMessages.resolve(
+            locale,
+            :required_key_missing,
+            key: key,
+            target: hash
+          )
+
+          add_schema_error(error_message)
         end
       end
 
@@ -97,7 +104,15 @@ module NxtSchema
         return template_store.keys + additional_keys_from_input if additional_keys_allowed?
 
         if restrict_additional_keys?
-          add_schema_error("Additional keys: #{additional_keys_from_input} not allowed!")
+          error_message = ErrorMessages.resolve(
+            locale,
+            :additional_keys_detected,
+            keys: additional_keys_from_input,
+            target: input
+          )
+
+          add_schema_error(error_message)
+
           template_store.keys
         else
           raise Errors::InvalidOptionsError, "Invalid option for additional keys: #{additional_keys_strategy}"
@@ -124,7 +139,7 @@ module NxtSchema
         additional_keys_strategy.to_s == 'restrict'
       end
 
-      def raise_invalid_options_error
+      def raise_invalid_options_presence_options
         raise InvalidOptionsError, 'Options :presence and :optional exclude each other'
       end
     end

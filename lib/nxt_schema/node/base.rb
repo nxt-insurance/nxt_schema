@@ -19,6 +19,7 @@ module NxtSchema
         @applied = false
         @input = nil
         @value = NxtSchema::Undefined.new
+        @locale = options.fetch(:locale) { parent_node&.locale || 'en' }
 
         # Note that it is not possible to use present? on an instance of NxtSchema::Schema since it inherits from Hash
         evaluate_block(block) if block_given?
@@ -42,7 +43,8 @@ module NxtSchema
                     :context,
                     :applied,
                     :input,
-                    :additional_keys_strategy
+                    :additional_keys_strategy,
+                    :locale
 
 
       alias_method :types, :type_system
@@ -127,6 +129,7 @@ module NxtSchema
       def add_error(error, index = schema_errors_key)
         validation_errors[index] ||= []
         validation_errors[index] << error
+        false
       end
 
       def validate_all_nodes

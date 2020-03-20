@@ -16,8 +16,8 @@ module NxtSchema
           if conditional.call(*args.take(conditional.arity))
             true
           else
-            node.add_error("Required key :#{missing_key} is missing in #{node.value}")
-            false
+            message = ErrorMessages.resolve(node.locale, :required_key_missing, key: missing_key, target: node.value)
+            node.add_error(message)
           end
         end
       end

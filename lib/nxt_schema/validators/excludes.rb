@@ -1,20 +1,20 @@
 module NxtSchema
   module Validators
-    class Exclusion < Validator
+    class Excludes < Validator
       def initialize(target)
         @target = target
       end
 
-      register_as :exclusion, :exclude
+      register_as :excludes
       attr_reader :target
 
       def build
         lambda do |node, value|
-          if target.exclude?(value)
+          if value.exclude?(target)
             true
           else
-            node.add_error("#{target} should not contain #{value}")
-            false
+            message = translate_error(node.locale, target: target, value: value)
+            node.add_error(message)
           end
         end
       end
