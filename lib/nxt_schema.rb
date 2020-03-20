@@ -18,7 +18,7 @@ require "nxt_schema/errors/error"
 require "nxt_schema/errors/schema_not_applied_error"
 require "nxt_schema/errors/invalid_options_error"
 
-require "nxt_schema/validators/error_messages"
+require "nxt_schema/error_messages"
 require "nxt_schema/validators/validator"
 require "nxt_schema/validators/attribute"
 require "nxt_schema/validators/equality"
@@ -58,7 +58,7 @@ module NxtSchema
     NxtSchema::Types.const_set(key.to_s, type)
   end
 
-  Validators::ErrorMessages.load
+  ErrorMessages.load
 
   module_function :register_validator, :register_type
 end
