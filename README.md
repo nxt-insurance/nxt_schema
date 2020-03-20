@@ -102,7 +102,13 @@ hash(:test) do ... end
 ```ruby
 # Create collection (array) nodes with:
 required(:test, :Collection) do ... end
-nodes(:test) do ... end
+
+nodes(:test) do
+  # For type checking of array items you can simply add a node with the expected type. 
+  # As always you need to give it a name. This would result in an array of string items  
+  required(:item, :String) 
+end
+
 array(:test) do ... end
 ```
 
@@ -211,10 +217,10 @@ based on some condition.
   # Built in validations
   required(:test, :String).validate(:attribute, :size, ->(s) { s < 7 }) 
   required(:test, :String).validate(:equality, 'same') 
-  required(:test, :String).validate(:excluded, %w[not_allowed]) 
-  required(:test, :String).validate(:included, %w[allowed])
-  required(:test, :Array).validate(:excludes, 'excluded') 
-  required(:test, :Array).validate(:includes, 'included') 
+  required(:test, :String).validate(:excluded, %w[not_allowed]) # excluded in the target: %w[not_allowed]
+  required(:test, :String).validate(:included, %w[allowed]) # included in the target: %w[allowed]
+  required(:test, :Array).validate(:excludes, 'excluded') # array value itself must exclude 'excluded' 
+  required(:test, :Array).validate(:includes, 'included') # array value itself must include 'included'
   required(:test, :Integer).validate(:greater_than, 1) 
   required(:test, :Integer).validate(:greater_than_or_equal, 1) 
   required(:test, :Integer).validate(:less_than, 1) 
@@ -243,7 +249,7 @@ class MyCustomExclusionValidator
         true
       else
         node.add_error("#{target} should not contain #{value}")
-        false # validators must return false in the bad case 
+        false # validators must return false in the bad case (add_error already does this as per default)
       end
     end
   end
@@ -284,7 +290,7 @@ end
 
 This has one drawback however. Let's say your test value is 4. This would only run your first validator and then exit 
 from the logic since validators are combined with &&. In this example it might not make much sense, but it basically 
-means that you might not have the full validation errors when running validations with `:validate_with` 
+means that you might not have the full validation errors when combining validations with `:validate_with` 
 
 
 ### Schema options
