@@ -1,7 +1,7 @@
 en:
   required_key_missing: "Required key :%{key} is missing in %{target}"
   additional_keys_detected: "Additional keys %{keys} not allowed in %{target}"
-  attribute: "'%{attribute}' has invalid %{attribute_name} of %{value}"
+  attribute: "%{attribute} has invalid %{attribute_name} attribute of %{value}"
   equality: "%{actual} does not equal %{expected}"
   excludes: "%{value} cannot contain %{target}"
   includes: "%{value} must include %{target}"

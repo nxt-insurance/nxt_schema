@@ -78,7 +78,7 @@ module NxtSchema
           # Validator is added to the schema node!
           add_validators(validator(:optional_node, optional_option, key))
         elsif !optional_option
-          error_message = Validators::ErrorMessages.resolve(
+          error_message = ErrorMessages.resolve(
             locale,
             :required_key_missing,
             key: key,
@@ -104,7 +104,7 @@ module NxtSchema
         return template_store.keys + additional_keys_from_input if additional_keys_allowed?
 
         if restrict_additional_keys?
-          error_message = Validators::ErrorMessages.resolve(
+          error_message = ErrorMessages.resolve(
             locale,
             :additional_keys_detected,
             keys: additional_keys_from_input,
