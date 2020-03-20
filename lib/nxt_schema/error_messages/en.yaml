@@ -13,3 +13,4 @@ en:
   less_than_or_equal: "%{value} must be less than or equal to %{threshold}"
   pattern: "%{value} must match pattern %{pattern}"
   query: "%{value}.%{query} was %{actual} and must be true"
+  emptiness: "%{value} cannot not be empty"

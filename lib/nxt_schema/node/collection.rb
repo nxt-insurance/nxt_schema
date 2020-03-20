@@ -26,6 +26,11 @@ module NxtSchema
 
             current_node_store = {}
 
+            # if value.empty?
+            #   message = ErrorMessages.resolve(locale, :emptiness, value: value)
+            #   add_error(message)
+            # end
+
             value.each_with_index do |item, index|
               item_schema_errors = schema_errors[index] ||= { schema_errors_key => [] }
               validation_errors[index] ||= { schema_errors_key => [] }
@@ -36,7 +41,6 @@ module NxtSchema
                 current_node.apply(item, parent_node: self, context: context)
                 value_store[index] = current_node.value
 
-                # TODO: Extract method here
                 unless current_node.schema_errors?
                   current_node_store.each do |node_name, node|
                     node.schema_errors = { }

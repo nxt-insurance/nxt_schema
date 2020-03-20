@@ -29,6 +29,13 @@ schema = NxtSchema.root(:company) do
     requires(:street, :String)
     requires(:street_number, :Integer)
   end
+
+  # Use nodes to create an array of typed nodes
+  # The following simple means an array of strings 
+  nodes(:products) do
+    node(:product, :String)
+  end
+
     
   nodes(:employees) do
     hash(:employee) do
@@ -367,7 +374,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
-# TODO:    
+### TODO:    
 
 - Explain the difference between array nodes and typed array nodes
 - Should we translate coercion errors as well?
