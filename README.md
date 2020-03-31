@@ -376,6 +376,8 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ### TODO:    
 
+- Conditionally required keys would be nice
+- Do not include input in error messages as that makes it harder to read.
 - Explain the difference between array nodes and typed array nodes
 - Should we translate coercion errors as well?
 - Test the different scenarios of merging schemas array, hash, ...
