@@ -376,8 +376,11 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ### TODO:    
 
-- Conditionally required keys would be nice
-- Do not include input in error messages as that makes it harder to read.
+- Conditionally required keys:
+    required bool => required
+    required conditionally => condition applies => required
+    required conditionally => condition does not apply => not allowed 
+    
 - Explain the difference between array nodes and typed array nodes
 - Should we translate coercion errors as well?
 - Test the different scenarios of merging schemas array, hash, ...

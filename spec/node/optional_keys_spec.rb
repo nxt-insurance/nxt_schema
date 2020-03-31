@@ -91,8 +91,8 @@ RSpec.describe NxtSchema do
           subject.apply(schema)
 
           expect(subject.errors).to eq(
-            "root.employees.1.employee"=>["Required key :name is missing in {:email=>\"andy@awesome.com\"}"],
-            "root.employees.3.employee"=>["Required key :email is missing in {:name=>\"Nils\"}"],
+            "root.employees.1.employee"=>["Required key :name is missing"],
+            "root.employees.3.employee"=>["Required key :email is missing"],
             "root.employees.5.employee"=>["nil violates constraints (type?(Hash, nil) failed)"],
             "root.employees.6.employee"=>["\"Here\" violates constraints (type?(Hash, \"Here\") failed)"]
           )
@@ -147,12 +147,12 @@ RSpec.describe NxtSchema do
         subject.apply(schema)
 
         expect(subject.errors).to eq(
-          "movies.0.movie.ratings.1.rating"=>["Required key :is_good_rating is missing in {:stars=>4}"],
-          "movies.1.movie.ratings.0.rating"=>["Required key :is_good_rating is missing in {:stars=>nil}"],
+          "movies.0.movie.ratings.1.rating"=>["Required key :is_good_rating is missing"],
+          "movies.1.movie.ratings.0.rating"=>["Required key :is_good_rating is missing"],
           "movies.1.movie.ratings.0.rating.stars"=>["nil violates constraints (type?(Integer, nil) failed)"],
-          "movies.1.movie.ratings.1.rating"=>["Required key :is_good_rating is missing in {:stars=>4}"],
+          "movies.1.movie.ratings.1.rating"=>["Required key :is_good_rating is missing"],
           "movies.1.movie.ratings.3.rating"=>["nil violates constraints (type?(Hash, nil) failed)"],
-          "movies.1.movie.ratings.4.rating"=>["Required key :is_good_rating is missing in {}"]
+          "movies.1.movie.ratings.4.rating"=>["Required key :is_good_rating is missing"]
         )
         expect(subject.value).to eq(schema)
       end
@@ -189,7 +189,7 @@ RSpec.describe NxtSchema do
 
         subject.apply(schema, context: 'update')
         expect(subject).to_not be_valid
-        expect(subject.errors).to eq("movies.1.movie"=>["Required key :rating is missing in {:title=>\"Blow\", :length=>130}"])
+        expect(subject.errors).to eq("movies.1.movie"=>["Required key :rating is missing"])
       end
     end
   end

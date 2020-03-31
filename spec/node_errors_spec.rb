@@ -27,7 +27,7 @@ RSpec.describe NxtSchema do
 
         it do
           subject.apply(schema)
-          expect(subject.validation_errors).to eq(:company=>{:itself=>["Required key :industry is missing in {:name=>\"getsafe\"}"]})
+          expect(subject.validation_errors).to eq(:company=>{:itself=>["Required key :industry is missing"]})
         end
       end
 
@@ -102,7 +102,7 @@ RSpec.describe NxtSchema do
               it do
                 subject.apply(schema)
                 expect(subject.validation_errors).to eq(
-                  :company=>{:employees=>{0=>{:employee=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Andy\"}"]}}}}
+                  :company=>{:employees=>{0=>{:employee=>{:itself=>["Required key :last_name is missing"]}}}}
                 )
               end
             end
@@ -150,11 +150,11 @@ RSpec.describe NxtSchema do
             subject.apply(schema)
 
             expect(subject.errors).to eq(
-              "root.company.workers.4.employee"=>["Required key :first_name is missing in {:title=>nil}", "Required key :last_name is missing in {:title=>nil}"],
-              "root.company.workers.4.boss"=>["Required key :last_name is missing in {:title=>nil}"],
+              "root.company.workers.4.employee"=>["Required key :first_name is missing", "Required key :last_name is missing"],
+              "root.company.workers.4.boss"=>["Required key :last_name is missing"],
               "root.company.workers.4.boss.title"=>["nil violates constraints (type?(String, nil) failed)"],
-              "root.company.workers.5.employee"=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"],
-              "root.company.workers.5.boss"=>["Required key :title is missing in {}", "Required key :last_name is missing in {}"],
+              "root.company.workers.5.employee"=>["Required key :first_name is missing", "Required key :last_name is missing"],
+              "root.company.workers.5.boss"=>["Required key :title is missing", "Required key :last_name is missing"],
               "root.company.workers.6.employee"=>["\"Lütfi\" violates constraints (type?(Hash, \"Lütfi\") failed)"],
               "root.company.workers.6.boss"=>["\"Lütfi\" violates constraints (type?(Hash, \"Lütfi\") failed)"]
             )

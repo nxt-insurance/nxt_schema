@@ -106,17 +106,17 @@ RSpec.describe NxtSchema::Node::Collection do
                2=>{:parent=>{:itself=>["true violates constraints (type?(Hash, true) failed)"]}},
                3=>{:parent=>{:itself=>["false violates constraints (type?(Hash, false) failed)"]}},
                4=>{:parent=>{:itself=>["[] violates constraints (type?(Hash, []) failed)"]}},
-               5=>{:parent=>{:itself=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"]}},
-               6=>{:parent=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Nils\"}"]}}}},
+               5=>{:parent=>{:itself=>["Required key :first_name is missing", "Required key :last_name is missing"]}},
+               6=>{:parent=>{:itself=>["Required key :last_name is missing"]}}}},
           1=>
            {:parents=>
              {0=>{:parent=>{:itself=>["nil violates constraints (type?(Hash, nil) failed)"]}},
                1=>{:parent=>{:itself=>["1 violates constraints (type?(Hash, 1) failed)"]}},
                2=>{:parent=>{:itself=>["0.1234e2 violates constraints (type?(Hash, 0.1234e2) failed)"]}},
                3=>{:parent=>{:itself=>["[] violates constraints (type?(Hash, []) failed)"]}},
-               4=>{:parent=>{:itself=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"]}},
+               4=>{:parent=>{:itself=>["Required key :first_name is missing", "Required key :last_name is missing"]}},
                5=>{:parent=>{:last_name=>{:itself=>["3000 violates constraints (type?(String, 3000) failed)"]}}},
-               6=>{:parent=>{:itself=>["Required key :first_name is missing in {:last_name=>\"Sommer\"}"]}}}}
+               6=>{:parent=>{:itself=>["Required key :first_name is missing"]}}}}
         )
 
         expect(subject.value_store).to eq(schema)
@@ -237,17 +237,16 @@ RSpec.describe NxtSchema::Node::Collection do
 
       it 'merges the errors of all nodes' do
         subject.apply(schema)
-
         expect(subject.errors).to eq(
-          "furniture.6.table"=>["Required key :height is missing in {:amount=>12}"],
-          "furniture.6.cupboard"=>["Required key :doors is missing in {:amount=>12}"],
-          "furniture.6.couch"=>["Required key :seats is missing in {:amount=>12}"],
-          "furniture.7.table"=>["Required key :height is missing in {:other=>12}"],
-          "furniture.7.cupboard"=>["Required key :doors is missing in {:other=>12}"],
-          "furniture.7.couch"=>["Required key :seats is missing in {:other=>12}"],
-          "furniture.8.table"=>["Required key :height is missing in {}"],
-          "furniture.8.cupboard"=>["Required key :doors is missing in {}"],
-          "furniture.8.couch"=>["Required key :seats is missing in {}"],
+          "furniture.6.table"=>["Required key :height is missing"],
+          "furniture.6.cupboard"=>["Required key :doors is missing"],
+          "furniture.6.couch"=>["Required key :seats is missing"],
+          "furniture.7.table"=>["Required key :height is missing"],
+          "furniture.7.cupboard"=>["Required key :doors is missing"],
+          "furniture.7.couch"=>["Required key :seats is missing"],
+          "furniture.8.table"=>["Required key :height is missing"],
+          "furniture.8.cupboard"=>["Required key :doors is missing"],
+          "furniture.8.couch"=>["Required key :seats is missing"],
           "furniture.9.table"=>["nil violates constraints (type?(Hash, nil) failed)"],
           "furniture.9.cupboard"=>["nil violates constraints (type?(Hash, nil) failed)"],
           "furniture.9.couch"=>["nil violates constraints (type?(Hash, nil) failed)"]

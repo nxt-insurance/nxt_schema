@@ -115,11 +115,11 @@ RSpec.describe NxtSchema do
             },
             :employee_names => {
               1 => {
-                :employee_name_underscore => { :itself => ["Required key :last_name is missing in {:first_name=>\"Nils\"}"] },
-                :employee_name => { :itself => ["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"] } },
+                :employee_name_underscore => { :itself => ["Required key :last_name is missing"] },
+                :employee_name => { :itself => ["Required key :firstname is missing", "Required key :lastname is missing"] } },
               2 => {
-                :employee_name_underscore => { :itself => ["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"] },
-                :employee_name => { :itself => ["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"] }
+                :employee_name_underscore => { :itself => ["Required key :first_name is missing", "Required key :last_name is missing"] },
+                :employee_name => { :itself => ["Required key :firstname is missing", "Required key :lastname is missing"] }
               }
             }
            )
@@ -149,12 +149,12 @@ RSpec.describe NxtSchema do
            :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
            :employee_names=>
              {1=>
-                {:employee_name_underscore=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Nils\"}"]},
+                {:employee_name_underscore=>{:itself=>["Required key :last_name is missing"]},
                  :employee_name=>
-                   {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
+                   {:itself=>["Required key :firstname is missing", "Required key :lastname is missing"]}},
               2=>
-                {:employee_name_underscore=>{:itself=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"]},
-                 :employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}
+                {:employee_name_underscore=>{:itself=>["Required key :first_name is missing", "Required key :last_name is missing"]},
+                 :employee_name=>{:itself=>["Required key :firstname is missing", "Required key :lastname is missing"]}}}
           )
         end
       end
@@ -246,12 +246,12 @@ RSpec.describe NxtSchema do
             },
             :employee_names => {
               1 => {
-                :employee_name_underscore => { :itself => ["Required key :last_name is missing in {:first_name=>\"Nils\"}"] },
-                :employee_name => { :itself => ["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"] }
+                :employee_name_underscore => { :itself => ["Required key :last_name is missing"] },
+                :employee_name => { :itself => ["Required key :firstname is missing", "Required key :lastname is missing"] }
               },
               2 => {
-                :employee_name_underscore => { :itself => ["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"] },
-                :employee_name => { :itself => ["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"] }
+                :employee_name_underscore => { :itself => ["Required key :first_name is missing", "Required key :last_name is missing"] },
+                :employee_name => { :itself => ["Required key :firstname is missing", "Required key :lastname is missing"] }
               }
             }
           )
@@ -281,12 +281,12 @@ RSpec.describe NxtSchema do
             :headquarter=>{:street_number=>{:itself=>["Street number must be greater 0"]}},
             :employee_names=>
               {1=>
-                  {:employee_name_underscore=>{:itself=>["Required key :last_name is missing in {:first_name=>\"Nils\"}"]},
+                  {:employee_name_underscore=>{:itself=>["Required key :last_name is missing"]},
                   :employee_name=>
-                    {:itself=>["Required key :firstname is missing in {:first_name=>\"Nils\"}", "Required key :lastname is missing in {:first_name=>\"Nils\"}"]}},
+                    {:itself=>["Required key :firstname is missing", "Required key :lastname is missing"]}},
                 2=>
-                  {:employee_name_underscore=>{:itself=>["Required key :first_name is missing in {}", "Required key :last_name is missing in {}"]},
-                  :employee_name=>{:itself=>["Required key :firstname is missing in {}", "Required key :lastname is missing in {}"]}}}
+                  {:employee_name_underscore=>{:itself=>["Required key :first_name is missing", "Required key :last_name is missing"]},
+                  :employee_name=>{:itself=>["Required key :firstname is missing", "Required key :lastname is missing"]}}}
           )
         end
       end

@@ -95,10 +95,10 @@ RSpec.describe NxtSchema::Node::Schema do
         subject.apply(values)
         expect(subject).to_not be_valid
         expect(subject.errors).to eq(
-          "roots.0.person" => ["Additional keys [:email] not allowed in {:first_name=>\"Raphael\", :last_name=>\"Kallensee\", :email=>\"rapha@bigdog.de\", :skills=>{:run=>true, :jump=>true, :swim=>true, :fly=>true, :crawl=>true, :fight=>false}}"],
-          "roots.0.person.skills"=>["Additional keys [:crawl, :fight] not allowed in {:run=>true, :jump=>true, :swim=>true, :fly=>true, :crawl=>true, :fight=>false}"],
-          "roots.1.person" => ["Additional keys [:email] not allowed in {:first_name=>\"Nils\", :last_name=>\"Herbst\", :email=>\"nils@seasons.de\", :skills=>{:run=>true, :jump=>true, :swim=>true, :fly=>true, :shoot=>true}}"],
-          "roots.1.person.skills"=>["Additional keys [:shoot] not allowed in {:run=>true, :jump=>true, :swim=>true, :fly=>true, :shoot=>true}"]
+          "roots.0.person"=>["Additional keys [:email] not allowed"],
+          "roots.0.person.skills"=>["Additional keys [:crawl, :fight] not allowed"],
+          "roots.1.person"=>["Additional keys [:email] not allowed"],
+          "roots.1.person.skills"=>["Additional keys [:shoot] not allowed"]
         )
         expect(subject.value).to eq(
           [

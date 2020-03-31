@@ -108,7 +108,7 @@ RSpec.describe NxtSchema do
       subject.apply(schema)
 
       expect(subject.errors).to eq(
-        "roots.4.person"=>["Required key :first_name is missing in {}"],
+        "roots.4.person"=>["Required key :first_name is missing"],
         "roots.5.person"=>["nil violates constraints (type?(Hash, nil) failed)"]
       )
     end

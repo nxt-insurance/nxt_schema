@@ -66,13 +66,13 @@ RSpec.describe NxtSchema::Node::Schema do
             {
               0=>{
                 :employee=>{
-                  :itself=>["Required key :first_name is missing in {:last_name=>\"Sommer\", :skills=>nil}"],
+                  :itself=>["Required key :first_name is missing"],
                   :skills=>{:itself=>["nil violates constraints (type?(Array, nil) failed)"]}
                 }
               },
               1=>{
                 :employee=>{
-                  :itself=>["Required key :last_name is missing in {:first_name=>\"Lütfi\", :skills=>[]}"]
+                  :itself=>["Required key :last_name is missing"]
                 }
               },
               2=>{
