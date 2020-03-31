@@ -84,19 +84,17 @@ module NxtSchema
         self
       end
 
-      def optional(optional_value, &block)
+      def optional(optional_value = nil, &block)
         raise ArgumentError, 'Optional nodes can only exist within schemas' unless parent.is_a?(NxtSchema::Node::Schema)
 
-        options.merge!(optional: optional_value)
-        evaluate_block(block) if block_given?
+        options.merge!(optional: optional_value || block)
         self
       end
 
-      def presence(presence_value, &block)
+      def presence(presence_value = nil, &block)
         raise ArgumentError, 'Present nodes can only exist within schemas' unless parent.is_a?(NxtSchema::Node::Schema)
 
-        options.merge!(presence: presence_value)
-        evaluate_block(block) if block_given?
+        options.merge!(presence: presence_value || block)
         self
       end
 

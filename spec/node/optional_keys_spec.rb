@@ -62,7 +62,10 @@ RSpec.describe NxtSchema do
         NxtSchema.root do
           nodes(:employees) do
             schema(:employee) do
-              node(:name, :String).optional ->(employee) { employee.empty? }
+              node(:name, :String).optional do |employee|
+                employee.empty?
+              end
+
               node(:email, :String).optional ->(employee) { employee.empty? || employee[:name] == 'Andy' }
             end
           end
