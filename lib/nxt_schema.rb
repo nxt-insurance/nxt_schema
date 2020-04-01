@@ -1,5 +1,4 @@
 require "nxt_schema/version"
-require "pry"
 require "active_support/all"
 require 'dry-types'
 require 'nxt_registry'
