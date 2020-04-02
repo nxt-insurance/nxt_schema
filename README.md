@@ -376,6 +376,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ### TODO:    
 
+- Flatten schema errors like validation errors
 - Conditionally required keys:
     required bool => required
     required conditionally => condition applies => required
