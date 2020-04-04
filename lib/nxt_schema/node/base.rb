@@ -15,7 +15,7 @@ module NxtSchema
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
         @errors = {}
-        @context = nil
+        @context = options.fetch(:context, nil)
         @applied = false
         @input = nil
         @value = NxtSchema::Undefined.new
@@ -213,10 +213,10 @@ module NxtSchema
 
       private
 
-      def register_node(context)
+      def register_node(current_context = context)
         return if all_nodes.key?(object_id)
 
-        self.context = context
+        self.context = current_context
         all_nodes[object_id] = self
       end
 
