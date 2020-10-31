@@ -14,6 +14,7 @@ require_relative 'nxt_schema/node/array'
 require_relative 'nxt_schema/node/hash'
 require_relative 'nxt_schema/node/leaf'
 
+require_relative 'nxt_schema/application/errors'
 require_relative 'nxt_schema/application/base'
 require_relative 'nxt_schema/application/leaf'
 require_relative 'nxt_schema/application/array'
