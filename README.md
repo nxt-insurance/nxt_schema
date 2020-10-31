@@ -1,5 +1,11 @@
 # NxtSchema
 
+## TODO:
+
+- Add back validations
+- Make nested schemas work properly (value coercion and error collection)
+- Add node presence methods (requires, present, optional, maybe) <-- Can we use dry types maybe?
+
 ## Installation
 
 Add this line to your application's Gemfile:
