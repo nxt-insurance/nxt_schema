@@ -5,14 +5,16 @@ RSpec.describe NxtSchema do
     end
   end
 
+  let(:input) { [1.0, 2, 'Andy'] }
+
   it do
-    result = subject.apply([1.0, 2.5, 'Andy'])
+    result = subject.apply(input)
 
     expect(result.errors.all).to eq(
-      :schema_errors=>{
-        0=>[{:itself=>["1.0 violates constraints (type?(String, 1.0) failed)"]}],
-        1=>[{:itself=>["2.5 violates constraints (type?(String, 2.5) failed)"]}]},
+      :schema_errors=>{ 0=>[{:itself=>["1.0 violates constraints (type?(String, 1.0) failed)"]}] },
       :validation_errors=>{}
     )
+
+    expect(result.output).to eq(input)
   end
 end
