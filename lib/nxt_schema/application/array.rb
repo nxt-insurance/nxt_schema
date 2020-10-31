@@ -8,7 +8,7 @@ module NxtSchema
           current_application = apply_item(item)
 
           if current_application.errors.any?
-            add_schema_error(current_application.errors.schema_errors, index: index)
+            add_schema_error(current_application.schema_errors, index: index)
           else
             output[index] = current_application.output
           end

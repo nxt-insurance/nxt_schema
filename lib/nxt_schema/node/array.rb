@@ -10,6 +10,7 @@ module NxtSchema
       end
 
       # This allows to validate against multiple sub schemas
+      # TODO: This should also exist in hash
       def any_of(&block)
         @all_of = false
         @any_of = true
