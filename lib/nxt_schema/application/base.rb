@@ -6,8 +6,6 @@ module NxtSchema
         @input = input
         @parent = parent
         @output = nil
-        # TODO: schema errors
-        # TODO: validation errors
       end
 
       attr_accessor :output, :node, :input
