@@ -26,6 +26,10 @@ module NxtSchema
         sub_nodes.each(&block)
       end
 
+      def sub_nodes
+        @sub_nodes ||= Node::SubNodes.new
+      end
+
       private
 
       def build_leaf_node(name, type, **options, &block)
@@ -34,10 +38,6 @@ module NxtSchema
 
       def build_array_node(name, **options, &block)
         NxtSchema::Node::Array.new(name: name, value_type: ::Array, parent_node: self, **options, &block)
-      end
-
-      def sub_nodes
-        @sub_nodes ||= Node::SubNodes.new
       end
     end
   end

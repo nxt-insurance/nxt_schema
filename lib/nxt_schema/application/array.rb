@@ -5,6 +5,7 @@ module NxtSchema
         self.output = apply_type
         # TODO: For now get the first node spec of the array
         sub_node = node.send(:sub_nodes).values.first
+        # TODO: Ask node for sub_node_evaluation
 
         input.each_with_index do |item, index|
           output[index] = sub_node.apply(item, parent: self).output
