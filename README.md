@@ -3,6 +3,7 @@
 ## TODO:
 
 - Add back validations
+- Test sub_nodes_evaluation with any_of and all_of
 - Make nested schemas work properly (value coercion and error collection)
 - Add node presence methods (requires, present, optional, maybe) <-- Can we use dry types maybe?
 

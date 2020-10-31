@@ -9,26 +9,26 @@ module NxtSchema
         super
       end
 
-      # TODO: Don't think we need this since Dry Types allows to easily combine types
-      # def any_of(&block)
-      #   @all_of = false
-      #   @any_of = true
-      #
-      #   configure(&block)
-      #   self
-      # end
-      #
-      # def all_of(&block)
-      #   @any_of = false
-      #   @all_of = true
-      #
-      #   configure(&block)
-      #   self
-      # end
-      #
-      # def sub_nodes_evaluation?(value)
-      #   value == (@all_of ? :all : :any)
-      # end
+      # This allows to validate against multiple sub schemas
+      def any_of(&block)
+        @all_of = false
+        @any_of = true
+
+        configure(&block)
+        self
+      end
+
+      def all_of(&block)
+        @any_of = false
+        @all_of = true
+
+        configure(&block)
+        self
+      end
+
+      def sub_nodes_evaluation?(value)
+        value == (@all_of ? :all : :any)
+      end
     end
   end
 end

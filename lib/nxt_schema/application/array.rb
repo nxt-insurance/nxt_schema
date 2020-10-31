@@ -23,6 +23,7 @@ module NxtSchema
         sub_node.apply(item, parent: self)
       end
 
+      # TODO: Respect sub_node_evaluation
       def sub_node
         @sub_node ||= sub_nodes.values.first
       end

@@ -1,6 +1,6 @@
 RSpec.describe NxtSchema do
   subject do
-    NxtSchema.array(:developers) do |devs|
+    NxtSchema.array(:developers).any_of do |devs|
       devs.node(:dev, NxtSchema::Types::Integer | NxtSchema::Types::String)
     end
   end
