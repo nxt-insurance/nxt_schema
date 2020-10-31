@@ -2,7 +2,7 @@ module NxtSchema
   module Application
     class Leaf < Application::Base
       def call
-        self.output = apply_type
+        coerce_input
         self
       end
     end

@@ -2,7 +2,7 @@ module NxtSchema
   module Application
     class Array < Application::Base
       def call
-        self.output = apply_type
+        coerce_input
         # TODO: For now get the first node spec of the array
         sub_node = node.send(:sub_nodes).values.first
         # TODO: Ask node for sub_node_evaluation

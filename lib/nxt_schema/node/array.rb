@@ -3,7 +3,9 @@ module NxtSchema
     class Array < Node::Base
       include HasSubNodes
 
-      def initialize(name:, value_type: :Array, parent_node:, **options, &block)
+      DEFAULT_TYPE = NxtSchema::Types::Strict::Array
+
+      def initialize(name:, value_type: DEFAULT_TYPE, parent_node:, **options, &block)
         super
       end
 

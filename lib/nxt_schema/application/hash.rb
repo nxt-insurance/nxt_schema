@@ -2,7 +2,7 @@ module NxtSchema
   module Application
     class Hash < Application::Base
       def call
-        self.output = apply_type
+        coerce_input
 
         input.each do |key, value|
           sub_node = sub_nodes[key]

@@ -19,8 +19,8 @@ module NxtSchema
 
       private
 
-      def apply_type
-        value_type[input]
+      def coerce_input
+        self.output = value_type[input]
       end
     end
   end
