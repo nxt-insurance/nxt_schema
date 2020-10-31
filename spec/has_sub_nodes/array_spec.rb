@@ -34,8 +34,8 @@ RSpec.describe NxtSchema do
 
         expect(subject.errors.schema_errors).to eq(
           {
-            5 => [{ itself: ["can't convert Array into Float"] }],
-            6 => [{ itself: ["can't convert Hash into Float"] }]
+            5 => ["can't convert Array into Float"],
+            6 => ["can't convert Hash into Float"]
           }
         )
 
@@ -87,15 +87,15 @@ RSpec.describe NxtSchema do
         expect(subject.schema_errors).to eq(
           { 0 =>
             [{ 0 =>
-              [{ name: [{ itself: ['nil violates constraints (type?(String, nil) failed)'] }] }] }],
+              [{ name: ['nil violates constraints (type?(String, nil) failed)'] }] }],
             2 =>
               [{ 0 =>
-                [{ name: [{ itself: ['nil violates constraints (type?(String, nil) failed)'] }],
-                   age: [{ itself: ['nil violates constraints (type?(Integer, nil) failed)'] }] }],
+                [{ name: ['nil violates constraints (type?(String, nil) failed)'],
+                   age: ['nil violates constraints (type?(Integer, nil) failed)'] }],
                  1 =>
-                  [{ itself: ['"invalid" violates constraints (type?(Hash, "invalid") failed)'] }],
-                 2 => [{ itself: ['1 violates constraints (type?(Hash, 1) failed)'] }],
-                 3 => [{ itself: ['2 violates constraints (type?(Hash, 2) failed)'] }] }] }
+                  ['"invalid" violates constraints (type?(Hash, "invalid") failed)'],
+                 2 => ['1 violates constraints (type?(Hash, 1) failed)'],
+                 3 => ['2 violates constraints (type?(Hash, 2) failed)'] }] }
         )
       end
     end

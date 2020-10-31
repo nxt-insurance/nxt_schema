@@ -16,7 +16,7 @@ module NxtSchema
         raise NotImplementedError, 'Implement this in our sub class'
       end
 
-      delegate :schema_errors, :validation_errors, :add_schema_error, :add_validation_error, to: :errors
+      delegate :schema_errors, :validation_errors, :add_schema_error, :add_validation_error, :merge_schema_errors, to: :errors
       delegate_missing_to :node
 
       def valid?

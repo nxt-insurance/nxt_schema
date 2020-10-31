@@ -11,7 +11,7 @@ module NxtSchema
           current_application = sub_node.apply(value, parent: self)
 
           if current_application.errors.any?
-            add_schema_error(current_application.schema_errors, index: key)
+            merge_schema_errors(current_application.schema_errors, index: key)
           else
             output[key] = current_application.output
           end
