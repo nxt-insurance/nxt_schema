@@ -1,23 +1,31 @@
 module NxtSchema
   module Node
     module HasSubNodes
+      def array(name, value_type = NxtSchema::Node::Array::DEFAULT_TYPE, **options, &block)
+        node = NxtSchema::Node::Array.new(name: name, value_type: value_type, parent_node: self, **options, &block)
+        add_sub_node(node)
+      end
+
+      def hash(name, value_type = NxtSchema::Node::Hash::DEFAULT_TYPE, **options, &block)
+        node = NxtSchema::Node::Hash.new(name: name, value_type: value_type, parent_node: self, **options, &block)
+        add_sub_node(node)
+      end
+
       def node(name, node_or_type_of_node, **options, &block)
-        node = case node_or_type_of_node.to_s.downcase.to_sym
-        when :array
-          build_array_node(name, **options, &block)
+        node = if node_or_type_of_node.is_a?(NxtSchema::Node::Base)
+          # node = type_or_node.clone
+          # node.options.merge!(options)
+          # node.name = name
+          # node.parent = self
+          # node
         else
-          if node_or_type_of_node.is_a?(NxtSchema::Node::Base)
-            # node = type_or_node.clone
-            # node.options.merge!(options)
-            # node.name = name
-            # node.parent = self
-            # node
-          else
-            # TODO: We should check whether the type is registered
-            build_leaf_node(name, node_or_type_of_node, **options, &block)
-          end
+          NxtSchema::Node::Leaf.new(name: name, value_type: node_or_type_of_node, parent_node: self, **options, &block)
         end
 
+        add_sub_node(node)
+      end
+
+      def add_sub_node(node)
         sub_nodes.add(node)
         node
       end
@@ -48,16 +56,6 @@ module NxtSchema
 
       def sub_nodes_evaluation?(value)
         value == (@all_of ? :all : :any)
-      end
-
-      private
-
-      def build_leaf_node(name, type, **options, &block)
-        NxtSchema::Node::Leaf.new(name: name, value_type: type, parent_node: self, **options, &block)
-      end
-
-      def build_array_node(name, **options, &block)
-        NxtSchema::Node::Array.new(name: name, value_type: ::Array, parent_node: self, **options, &block)
       end
     end
   end

@@ -1,11 +1,16 @@
 RSpec.describe NxtSchema do
   subject do
-    NxtSchema.array(:developers).any_of do |devs|
-      devs.node(:dev, NxtSchema::Types::Integer | NxtSchema::Types::String)
+    NxtSchema.array(:developers) do |devs|
+      devs.array(:frontend_devs) do |frontend_devs|
+        frontend_devs.hash(:frontend_dev) do |frontend_dev|
+          frontend_dev.node(:first_name, :String)
+          frontend_dev.node(:last_name, :String)
+        end
+      end
     end
   end
 
-  let(:input) { [1.0, 2, 'Andy'] }
+  let(:input) { [[{ first_name: 'Igor', last_name: 'Yamov' }], [{ first_name: 'Ben', last_name: 'Arbogast' }, { first_name: nil }]] }
 
   it do
     result = subject.apply(input)
