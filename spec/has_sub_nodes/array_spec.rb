@@ -1,25 +1,103 @@
+# frozen_string_literal: true
+
 RSpec.describe NxtSchema do
   subject do
-    NxtSchema.array(:developers) do |devs|
-      devs.array(:frontend_devs) do |frontend_devs|
-        frontend_devs.hash(:frontend_dev) do |frontend_dev|
-          frontend_dev.node(:first_name, :String)
-          frontend_dev.node(:last_name, :String)
-        end
+    schema.apply(input)
+  end
+
+  context 'array of leaf nodes' do
+    let(:schema) do
+      NxtSchema.array(:developers) do |devs|
+        devs.node(:dev, NxtSchema::Types::Strict::String | NxtSchema::Types::Coercible::Float)
+      end
+    end
+
+    context 'when the input is valid' do
+      let(:input) do
+        ['Aki', 1, 2, 'Ito', '4.0', 12.to_d]
+      end
+
+      it 'returns the correct output' do
+        expect(subject.output).to eq(['Aki', 1.0, 2.0, 'Ito', '4.0', 12.0])
+      end
+
+      it { expect(subject).to be_valid }
+    end
+
+    context 'when the input violates the schema' do
+      let(:input) do
+        ['Andy', 1, 2, 3.0, BigDecimal(4), [1, 2], {}]
+      end
+
+      it 'returns the correct errors' do
+        expect(subject).to_not be_valid
+
+        expect(subject.errors.schema_errors).to eq(
+          {
+            5 => [{ itself: ["can't convert Array into Float"] }],
+            6 => [{ itself: ["can't convert Hash into Float"] }]
+          }
+        )
+
+        expect(subject.errors.validation_errors).to be_empty
       end
     end
   end
 
-  let(:input) { [[{ first_name: 'Igor', last_name: 'Yamov' }], [{ first_name: 'Ben', last_name: 'Arbogast' }, { first_name: nil }]] }
+  context 'array of arrays of nodes' do
+    let(:schema) do
+      NxtSchema.array(:developers) do |developers|
+        developers.array(:frontend_devs) do |frontend_devs|
+          frontend_devs.hash(:frontend_dev) do |frontend_dev|
+            frontend_dev.node(:name, :String)
+            frontend_dev.node(:age, :Integer)
+          end
+        end
+      end
+    end
 
-  it do
-    result = subject.apply(input)
+    context 'when the input is valid' do
+      let(:input) do
+        [
+          [{ name: 'Ben', age: 12 }, { name: 'Igor', age: 11 }],
+          [{ name: 'Nils', age: 10 }, { name: 'Nico', age: 9 }]
+        ]
+      end
 
-    expect(result.errors.all).to eq(
-      :schema_errors=>{ 0=>[{:itself=>["1.0 violates constraints (type?(String, 1.0) failed)"]}] },
-      :validation_errors=>{}
-    )
+      it { expect(subject).to be_valid }
 
-    expect(result.output).to eq(input)
+      it 'returns the correct output' do
+        expect(subject.output).to eq(input)
+      end
+    end
+
+    context 'when the input violates the schema' do
+      let(:input) do
+        [
+          [{ first_name: 'Ben', age: 12 }, { name: 'Igor', age: 11 }],
+          [{ name: 'Nils', age: 10 }, { name: 'Nico', age: 9 }],
+          [{ first_name: 'Andy' }, 'invalid', 1, 2],
+          []
+        ]
+      end
+
+      it { expect(subject).to_not be_valid }
+
+      it 'returns the correct errors' do
+        expect(subject.schema_errors).to eq(
+          { 0 =>
+            [{ 0 =>
+              [{ name: [{ itself: ['nil violates constraints (type?(String, nil) failed)'] }] }] }],
+            2 =>
+              [{ 0 =>
+                [{ name: [{ itself: ['nil violates constraints (type?(String, nil) failed)'] }],
+                   age: [{ itself: ['nil violates constraints (type?(Integer, nil) failed)'] }] }],
+                 1 =>
+                  [{ itself: ['"invalid" violates constraints (type?(Hash, "invalid") failed)'] }],
+                 2 => [{ itself: ['1 violates constraints (type?(Hash, 1) failed)'] }],
+                 3 => [{ itself: ['2 violates constraints (type?(Hash, 2) failed)'] }] }] }
+        )
+      end
+    end
   end
 end

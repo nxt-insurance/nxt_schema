@@ -3,6 +3,7 @@ module NxtSchema
     class Hash < Application::Base
       def call
         coerce_input
+        return self unless valid?
 
         keys.each do |key|
           sub_node = sub_nodes[key]

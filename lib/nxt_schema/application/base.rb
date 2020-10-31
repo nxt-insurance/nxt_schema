@@ -19,6 +19,10 @@ module NxtSchema
       delegate :schema_errors, :validation_errors, :add_schema_error, :add_validation_error, to: :errors
       delegate_missing_to :node
 
+      def valid?
+        !errors.any?
+      end
+
       private
 
       def coerce_input
