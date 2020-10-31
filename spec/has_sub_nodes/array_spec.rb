@@ -77,7 +77,7 @@ RSpec.describe NxtSchema do
           [{ first_name: 'Ben', age: 12 }, { name: 'Igor', age: 11 }],
           [{ name: 'Nils', age: 10 }, { name: 'Nico', age: 9 }],
           [{ first_name: 'Andy' }, 'invalid', 1, 2],
-          []
+          [] # TODO: This should not be valid!
         ]
       end
 
