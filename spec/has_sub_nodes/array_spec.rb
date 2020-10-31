@@ -1,7 +1,7 @@
 RSpec.describe NxtSchema do
   subject do
-    NxtSchema.array(:developers).any_of do |devs|
-      devs.node(:dev, :String)
+    NxtSchema.array(:developers, type_system: NxtSchema::Types::Params).any_of do |devs|
+      devs.node(:dev, :Float)
     end
   end
 

@@ -5,21 +5,50 @@ module NxtSchema
         @name = name
         @parent_node = parent_node
         @options = options #TODO: Do we really need options?
-        @value_type = value_type
         @level = parent_node ? parent_node.level + 1 : 0
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
+
+        @type_system = resolve_type_system
+        @value_type = resolve_type(value_type)
 
         configure(&block) if block_given?
       end
 
       attr_accessor :name, :parent_node, :options, :value_type, :level, :root
+      attr_reader :type_system
 
       def apply(input, parent: nil)
         application_class.new(node: self, input: input, parent: parent).call
       end
 
       private
+
+      def resolve_type(name_or_type)
+        root.send(:type_resolver).resolve(type_system, name_or_type)
+      end
+
+      def resolve_type_system
+        type_system = options.fetch(:type_system) { parent_node&.type_system }
+
+        if type_system.is_a?(Module)
+          type_system
+        elsif type_system.is_a?(Symbol) || type_system.is_a?(String)
+          "NxtSchema::Types::#{type_system.to_s.classify}".constantize
+        else
+          NxtSchema::Types
+        end
+      end
+
+      def type_resolver
+        @type_resolver ||= begin
+          if root?
+            TypeResolver.new
+          else
+            raise NoMethodError, 'type_resolver is only available on root node'
+          end
+        end
+      end
 
       def application_class
         @application_class ||= "NxtSchema::Application::#{self.class.name.demodulize}".constantize

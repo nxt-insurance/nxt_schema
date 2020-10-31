@@ -9,6 +9,7 @@ module NxtSchema
       end
 
       attr_accessor :output, :node, :input
+      attr_reader :parent
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
@@ -19,7 +20,7 @@ module NxtSchema
       private
 
       def apply_type
-        send(node.value_type, input)
+        value_type[input]
       end
     end
   end

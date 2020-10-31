@@ -10,7 +10,7 @@ module NxtSchema
             # node = type_or_node.clone
             # node.options.merge!(options)
             # node.name = name
-            # node.parent_node = self
+            # node.parent = self
             # node
           else
             # TODO: We should check whether the type is registered

@@ -1,6 +1,6 @@
 RSpec.describe NxtSchema do
   subject do
-    NxtSchema.hash(:developers) do |devs|
+    NxtSchema.hash(:developers, type_system: NxtSchema::Types::Coercible) do |devs|
       devs.node(:first_name, :String)
       devs.node(:last_name, :String)
     end
