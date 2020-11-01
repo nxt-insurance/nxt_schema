@@ -53,27 +53,6 @@ module NxtSchema
       def sub_nodes
         @sub_nodes ||= Node::SubNodes.new
       end
-
-      # TODO: Do we want this?
-      def any_of(&block)
-        @all_of = false
-        @any_of = true
-
-        configure(&block)
-        self
-      end
-
-      def all_of(&block)
-        @any_of = false
-        @all_of = true
-
-        configure(&block)
-        self
-      end
-
-      def sub_nodes_evaluation?(value)
-        value == (@all_of ? :all : :any)
-      end
     end
   end
 end

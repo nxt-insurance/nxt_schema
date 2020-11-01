@@ -59,6 +59,20 @@ module NxtSchema
         @presence
       end
 
+      def any_of(&block)
+        @all_of = false
+        @any_of = true
+
+        configure(&block)
+      end
+
+      def all_of(&block)
+        @any_of = false
+        @all_of = true
+
+        configure(&block)
+      end
+
       private
 
       def resolve_type(name_or_type)
