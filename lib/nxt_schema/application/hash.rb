@@ -39,7 +39,7 @@ module NxtSchema
         return unless additional_keys?
 
         if restrict_addition_keys?
-          add_schema_error("Additional keys #{additional_keys} are not allowed")
+          add_schema_error("Additional keys are not allowed: #{additional_keys}")
         elsif reject_additional_keys?
           output.except!(*additional_keys)
         end

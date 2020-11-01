@@ -2,12 +2,26 @@ module NxtSchema
   module Node
     module HasSubNodes
       def array(name, value_type = NxtSchema::Node::Array::DEFAULT_TYPE, **options, &block)
-        node = NxtSchema::Node::Array.new(name: name, value_type: value_type, parent_node: self, **options, &block)
+        node = NxtSchema::Node::Array.new(
+          name: name,
+          value_type: value_type,
+          parent_node: self,
+          **options,
+          &block
+        )
+
         add_sub_node(node)
       end
 
       def hash(name, value_type = NxtSchema::Node::Hash::DEFAULT_TYPE, **options, &block)
-        node = NxtSchema::Node::Hash.new(name: name, value_type: value_type, parent_node: self, **options, &block)
+        node = NxtSchema::Node::Hash.new(
+          name: name,
+          value_type: value_type,
+          parent_node: self,
+          **options,
+          &block
+        )
+
         add_sub_node(node)
       end
 
@@ -38,6 +52,7 @@ module NxtSchema
         @sub_nodes ||= Node::SubNodes.new
       end
 
+      # TODO: Do we want this?
       def any_of(&block)
         @all_of = false
         @any_of = true

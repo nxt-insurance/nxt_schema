@@ -3,7 +3,7 @@ RSpec.describe NxtSchema do
     schema.apply(input)
   end
 
-  context 'when additional keys are rejected' do
+  context 'when additional keys are restricted' do
     let(:schema) do
       NxtSchema.hash(:task, additional_keys: :restrict) do |task|
         task.node(:name, :String)
@@ -30,9 +30,9 @@ RSpec.describe NxtSchema do
     it 'adds the correct errors' do
       expect(subject.schema_errors).to eq(
         {
-          itself: ["Additional keys [:description] are not allowed"],
+          itself: ["Additional keys are not allowed: [:description]"],
           sub_tasks: {
-            1 => ["Additional keys [:estimate] are not allowed"]
+            1 => ["Additional keys are not allowed: [:estimate]"]
           }
         }
       )

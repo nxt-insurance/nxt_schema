@@ -3,7 +3,7 @@ module NxtSchema
     class Array < Application::Base
       def call
         coerce_input
-        add_schema_error('is not allowed to be empty') if input.empty?
+        validate_filled
         return self unless valid?
 
         input.each_with_index do |item, index|
@@ -20,6 +20,11 @@ module NxtSchema
       end
 
       private
+
+      def validate_filled
+        # TODO: Consider maybe
+        add_schema_error('is not allowed to be empty') if input.empty?
+      end
 
       def apply_item(item)
         sub_node.apply(item, parent: self)
