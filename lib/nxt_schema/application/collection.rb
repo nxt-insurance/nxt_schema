@@ -1,6 +1,6 @@
 module NxtSchema
   module Application
-    class Array < Application::Base
+    class Collection < Application::Base
       def call
         coerce_input
         validate_filled

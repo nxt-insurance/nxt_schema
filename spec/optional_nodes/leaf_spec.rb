@@ -3,7 +3,7 @@ RSpec.describe NxtSchema do
 
   context 'when nodes are optional' do
     let(:schema) do
-      NxtSchema.hash(:person) do |person|
+      NxtSchema.schema(:person) do |person|
         person.node(:first_name, :String)
         person.node(:last_name, :String)
         person.node(:phone, :String).optional

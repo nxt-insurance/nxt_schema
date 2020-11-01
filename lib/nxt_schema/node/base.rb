@@ -28,6 +28,8 @@ module NxtSchema
       end
 
       def optional(&block)
+        raise ArgumentError, 'A present node cannot be optional at the same time' if presence?
+
         @optional = true
 
         if block_given?
@@ -39,6 +41,22 @@ module NxtSchema
 
       def optional?
         @optional
+      end
+
+      def presence(&block)
+        raise ArgumentError, 'A optional node cannot be present at the same time' if optional?
+
+        @presence = true
+
+        if block_given?
+          configure(&block)
+        else
+          self
+        end
+      end
+
+      def presence?
+        @presence
       end
 
       private

@@ -5,10 +5,10 @@ RSpec.describe NxtSchema do
 
   context 'when additional keys are rejected' do
     let(:schema) do
-      NxtSchema.hash(:task, additional_keys: :reject) do |task|
+      NxtSchema.schema(:task, additional_keys: :reject) do |task|
         task.node(:name, :String)
-        task.array(:sub_tasks) do |sub_tasks|
-          sub_tasks.hash(:sub_task) do |sub_task|
+        task.collection(:sub_tasks) do |sub_tasks|
+          sub_tasks.schema(:sub_task) do |sub_task|
             sub_task.node(:name, :String)
             sub_task.node(:description, :String)
           end

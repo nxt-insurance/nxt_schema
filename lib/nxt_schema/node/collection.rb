@@ -1,9 +1,9 @@
 module NxtSchema
   module Node
-    class Hash < Node::Base
+    class Collection < Node::Base
       include HasSubNodes
 
-      DEFAULT_TYPE = NxtSchema::Types::Strict::Hash
+      DEFAULT_TYPE = NxtSchema::Types::Strict::Array
 
       def initialize(name:, value_type: DEFAULT_TYPE, parent_node:, **options, &block)
         super

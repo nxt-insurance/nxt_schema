@@ -5,7 +5,10 @@
 - Add back validations
 - Test sub_nodes_evaluation with any_of and all_of
 - Make nested schemas work properly (value coercion and error collection)
-- Add node presence methods (requires, present, optional, maybe) <-- Can we use dry types maybe?
+- Add node presence methods
+    - presence
+    - requires
+    - maybe (use types?)
 
 ## Installation
 
@@ -45,7 +48,7 @@ schema = NxtSchema.root(:company) do
 
     
   nodes(:employees) do
-    hash(:employee) do
+    schema(:employee) do
       POSITIONS = %w[senior junior intern]
 
       requires(:first_name, :String)
@@ -108,7 +111,7 @@ The following types of nodes exist
 # Create schema nodes with:
 required(:test, :Schema) do ... end
 schema(:test) do ... end
-hash(:test) do ... end
+schema(:test) do ... end
 ```
 
 #### Collection Nodes
@@ -123,7 +126,7 @@ nodes(:test) do
   required(:item, :String) 
 end
 
-array(:test) do ... end
+collection(:test) do ... end
 ```
 
 #### Leaf Nodes

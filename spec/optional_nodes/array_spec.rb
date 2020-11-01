@@ -3,8 +3,8 @@ RSpec.describe NxtSchema do
 
   context 'when nodes are optional' do
     let(:schema) do
-      NxtSchema.hash(:person) do |person|
-        person.array(:skills).optional do |skills|
+      NxtSchema.schema(:person) do |person|
+        person.collection(:skills).optional do |skills|
           skills.node(:skill, :String)
         end
       end

@@ -1,8 +1,8 @@
 module NxtSchema
   module Node
     module HasSubNodes
-      def array(name, value_type = NxtSchema::Node::Array::DEFAULT_TYPE, **options, &block)
-        node = NxtSchema::Node::Array.new(
+      def collection(name, value_type = NxtSchema::Node::Collection::DEFAULT_TYPE, **options, &block)
+        node = NxtSchema::Node::Collection.new(
           name: name,
           value_type: value_type,
           parent_node: self,
@@ -13,8 +13,8 @@ module NxtSchema
         add_sub_node(node)
       end
 
-      def hash(name, value_type = NxtSchema::Node::Hash::DEFAULT_TYPE, **options, &block)
-        node = NxtSchema::Node::Hash.new(
+      def schema(name, value_type = NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
+        node = NxtSchema::Node::Schema.new(
           name: name,
           value_type: value_type,
           parent_node: self,

@@ -1,6 +1,6 @@
 module NxtSchema
   module Application
-    class Hash < Application::Base
+    class Schema < Application::Base
       def call
         coerce_input
         return self unless valid?
