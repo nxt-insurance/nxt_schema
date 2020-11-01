@@ -5,6 +5,8 @@ module NxtSchema
       NxtSchema::Node::Collection.new(name: name, parent_node: nil, **default_options.merge(options), &block)
     end
 
+    alias nodes collection
+
     def schema(name = :roots, **options, &block)
       default_options = { type_system: NxtSchema::Types }
       NxtSchema::Node::Schema.new(name: name, parent_node: nil, **default_options.merge(options), &block)

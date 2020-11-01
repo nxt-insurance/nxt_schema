@@ -47,7 +47,7 @@ RSpec.describe NxtSchema do
   context 'array of arrays of nodes' do
     let(:schema) do
       NxtSchema.collection(:developers) do |developers|
-        developers.collection(:frontend_devs) do |frontend_devs|
+        developers.nodes(:frontend_devs) do |frontend_devs|
           frontend_devs.schema(:frontend_dev) do |frontend_dev|
             frontend_dev.node(:name, :String)
             frontend_dev.node(:age, :Integer)

@@ -13,6 +13,8 @@ module NxtSchema
         add_sub_node(node)
       end
 
+      alias nodes collection
+
       def schema(name, value_type = NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
         node = NxtSchema::Node::Schema.new(
           name: name,
