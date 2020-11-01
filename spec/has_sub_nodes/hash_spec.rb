@@ -132,18 +132,14 @@ RSpec.describe NxtSchema do
         expect(subject.schema_errors).to eq(
           {
             name: ["nil violates constraints (type?(String, nil) failed)"],
-            houses: [
-              {
-                0 => [{ zip_code: ["nil violates constraints (type?(Integer, nil) failed)"] }],
-                1 => [{ street: ["nil violates constraints (type?(String, nil) failed)"] }],
-                2 => [
-                  {
-                    street: ["1 violates constraints (type?(String, 1) failed)"],
-                    zip_code: ["\"67661\" violates constraints (type?(Integer, \"67661\") failed)"]
-                  }
-                ]
+            houses: {
+              0 => { zip_code: ["nil violates constraints (type?(Integer, nil) failed)"] },
+              1 => { street: ["nil violates constraints (type?(String, nil) failed)"] },
+              2 => {
+                street: ["1 violates constraints (type?(String, 1) failed)"],
+                zip_code: ["\"67661\" violates constraints (type?(Integer, \"67661\") failed)"]
               }
-            ]
+            }
           }
         )
       end

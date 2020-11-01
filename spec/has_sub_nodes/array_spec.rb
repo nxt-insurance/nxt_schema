@@ -85,17 +85,18 @@ RSpec.describe NxtSchema do
 
       it 'returns the correct errors' do
         expect(subject.schema_errors).to eq(
-          { 0 =>
-            [{ 0 =>
-              [{ name: ['nil violates constraints (type?(String, nil) failed)'] }] }],
-            2 =>
-              [{ 0 =>
-                [{ name: ['nil violates constraints (type?(String, nil) failed)'],
-                   age: ['nil violates constraints (type?(Integer, nil) failed)'] }],
-                 1 =>
-                  ['"invalid" violates constraints (type?(Hash, "invalid") failed)'],
-                 2 => ['1 violates constraints (type?(Hash, 1) failed)'],
-                 3 => ['2 violates constraints (type?(Hash, 2) failed)'] }] }
+          {
+            0 => { 0 => { name: ['nil violates constraints (type?(String, nil) failed)'] } },
+            2 => {
+              0 => {
+                name: ['nil violates constraints (type?(String, nil) failed)'],
+                age: ['nil violates constraints (type?(Integer, nil) failed)']
+              },
+              1 => ['"invalid" violates constraints (type?(Hash, "invalid") failed)'],
+              2 => ['1 violates constraints (type?(Hash, 1) failed)'],
+              3 => ['2 violates constraints (type?(Hash, 2) failed)']
+            }
+          }
         )
       end
     end
