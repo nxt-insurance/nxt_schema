@@ -12,7 +12,8 @@ module NxtSchema
         @type_system = resolve_type_system
         @value_type = resolve_type(value_type)
 
-        resolve_additional_keys_strategy
+        @additional_keys_strategy = resolve_additional_keys_strategy
+        application_class # memoize
         configure(&block) if block_given?
       end
 
@@ -80,15 +81,7 @@ module NxtSchema
       end
 
       def resolve_type_system
-        type_system = options.fetch(:type_system) { parent_node&.type_system }
-
-        if type_system.is_a?(Module)
-          type_system
-        elsif type_system.is_a?(Symbol) || type_system.is_a?(String)
-          "NxtSchema::Types::#{type_system.to_s.classify}".constantize
-        else
-          NxtSchema::Types
-        end
+        TypeSystemResolver.new(node: self).call
       end
 
       def type_resolver
@@ -114,7 +107,7 @@ module NxtSchema
       end
 
       def resolve_additional_keys_strategy
-        self.additional_keys_strategy = options.fetch(:additional_keys) { parent_node&.send(:additional_keys_strategy) || :allow }
+        options.fetch(:additional_keys) { parent_node&.send(:additional_keys_strategy) || :allow }
       end
     end
   end

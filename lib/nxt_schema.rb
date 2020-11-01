@@ -2,11 +2,14 @@ require "nxt_schema/version"
 require "active_support/all"
 require 'dry-types'
 require 'nxt_registry'
+require 'nxt_init'
 require 'yaml'
+
 require_relative 'nxt_schema/types'
 require_relative 'nxt_schema/application'
 
 require_relative 'nxt_schema/node/type_resolver'
+require_relative 'nxt_schema/node/type_system_resolver'
 require_relative 'nxt_schema/node/base'
 require_relative 'nxt_schema/node/sub_nodes'
 require_relative 'nxt_schema/node/has_sub_nodes'
