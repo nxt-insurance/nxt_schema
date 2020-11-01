@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Leaf < Node::Base
-      def initialize(name:, value_type: :String, parent_node:, **options, &block)
+      def initialize(name:, type: :String, parent_node:, **options, &block)
         super
       end
 

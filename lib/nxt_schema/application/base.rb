@@ -32,7 +32,7 @@ module NxtSchema
       private
 
       def coerce_input
-        self.output = value_type[input]
+        self.output = type[input]
       rescue Dry::Types::ConstraintError, Dry::Types::CoercionError => error
         add_schema_error(error.message)
       end

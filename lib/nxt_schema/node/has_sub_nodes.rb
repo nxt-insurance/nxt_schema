@@ -1,10 +1,10 @@
 module NxtSchema
   module Node
     module HasSubNodes
-      def collection(name, value_type = NxtSchema::Node::Collection::DEFAULT_TYPE, **options, &block)
+      def collection(name, type = NxtSchema::Node::Collection::DEFAULT_TYPE, **options, &block)
         node = NxtSchema::Node::Collection.new(
           name: name,
-          value_type: value_type,
+          type: type,
           parent_node: self,
           **options,
           &block
@@ -15,10 +15,10 @@ module NxtSchema
 
       alias nodes collection
 
-      def schema(name, value_type = NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
+      def schema(name, type = NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
         node = NxtSchema::Node::Schema.new(
           name: name,
-          value_type: value_type,
+          type: type,
           parent_node: self,
           **options,
           &block
@@ -35,7 +35,7 @@ module NxtSchema
           # node.parent = self
           # node
         else
-          NxtSchema::Node::Leaf.new(name: name, value_type: node_or_type_of_node, parent_node: self, **options, &block)
+          NxtSchema::Node::Leaf.new(name: name, type: node_or_type_of_node, parent_node: self, **options, &block)
         end
 
         add_sub_node(node)

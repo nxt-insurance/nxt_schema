@@ -5,7 +5,7 @@ module NxtSchema
 
       DEFAULT_TYPE = NxtSchema::Types::Strict::Array
 
-      def initialize(name:, value_type: DEFAULT_TYPE, parent_node:, **options, &block)
+      def initialize(name:, type: DEFAULT_TYPE, parent_node:, **options, &block)
         super
       end
     end

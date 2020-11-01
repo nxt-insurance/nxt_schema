@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Base
-      def initialize(name:, value_type:, parent_node:, **options, &block)
+      def initialize(name:, type:, parent_node:, **options, &block)
         @name = name
         @parent_node = parent_node
         @options = options
@@ -10,14 +10,14 @@ module NxtSchema
         @root = parent_node.nil? ? self : parent_node.root
 
         @type_system = resolve_type_system
-        @value_type = resolve_type(value_type)
+        @type = resolve_type(type)
 
         @additional_keys_strategy = resolve_additional_keys_strategy
         application_class # memoize
         configure(&block) if block_given?
       end
 
-      attr_accessor :name, :parent_node, :options, :value_type, :level, :root, :additional_keys_strategy
+      attr_accessor :name, :parent_node, :options, :type, :level, :root, :additional_keys_strategy
       attr_reader :type_system
 
       def apply(input, parent: nil)
