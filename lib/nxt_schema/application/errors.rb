@@ -10,13 +10,21 @@ module NxtSchema
         @validation_errors = {}
       end
 
-      attr_reader :application, :node, :schema_errors, :validation_errors
+      attr_reader :application, :node
 
       def all
         {
           schema_errors: schema_errors,
           validation_errors: validation_errors
         }
+      end
+
+      def schema_errors
+        @schema_errors
+      end
+
+      def validation_errors
+        @validation_errors
       end
 
       def add_schema_error(error, index: DEFAULT_ERROR_INDEX)

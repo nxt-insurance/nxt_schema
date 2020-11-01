@@ -3,9 +3,8 @@ module NxtSchema
     class Array < Application::Base
       def call
         coerce_input
+        add_schema_error('is not allowed to be empty') if input.empty?
         return self unless valid?
-
-        # TODO: How can we validate input is not empty?
 
         input.each_with_index do |item, index|
           current_application = apply_item(item)

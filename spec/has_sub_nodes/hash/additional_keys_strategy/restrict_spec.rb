@@ -1,0 +1,41 @@
+RSpec.describe NxtSchema do
+  subject do
+    schema.apply(input)
+  end
+
+  context 'when additional keys are rejected' do
+    let(:schema) do
+      NxtSchema.hash(:task, additional_keys: :restrict) do |task|
+        task.node(:name, :String)
+        task.array(:sub_tasks) do |sub_tasks|
+          sub_tasks.hash(:sub_task) do |sub_task|
+            sub_task.node(:name, :String)
+            sub_task.node(:description, :String)
+          end
+        end
+      end
+    end
+
+    let(:input) do
+      {
+        name: 'Do something',
+        description: 'Will be rejected',
+        sub_tasks: [
+          { name: 'Do some more', description: 'do it carefully' },
+          { name: 'Do some more', description: 'do it carefully', estimate: 'We do not do estimates' }
+        ]
+      }
+    end
+
+    it 'adds the correct errors' do
+      expect(subject.schema_errors).to eq(
+        {
+          itself: ["Additional keys [:description] are not allowed"],
+          sub_tasks: {
+            1 => ["Additional keys [:estimate] are not allowed"]
+          }
+        }
+      )
+    end
+  end
+end

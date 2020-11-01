@@ -4,7 +4,7 @@ module NxtSchema
       def initialize(name:, value_type:, parent_node:, **options, &block)
         @name = name
         @parent_node = parent_node
-        @options = options #TODO: Do we really need options?
+        @options = options
         @level = parent_node ? parent_node.level + 1 : 0
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
@@ -12,10 +12,11 @@ module NxtSchema
         @type_system = resolve_type_system
         @value_type = resolve_type(value_type)
 
+        resolve_additional_keys_strategy
         configure(&block) if block_given?
       end
 
-      attr_accessor :name, :parent_node, :options, :value_type, :level, :root
+      attr_accessor :name, :parent_node, :options, :value_type, :level, :root, :additional_keys_strategy
       attr_reader :type_system
 
       def apply(input, parent: nil)
@@ -64,6 +65,10 @@ module NxtSchema
         else
           instance_exec(&block)
         end
+      end
+
+      def resolve_additional_keys_strategy
+        self.additional_keys_strategy = options.fetch(:additional_keys) { parent_node&.send(:additional_keys_strategy) || :allow }
       end
     end
   end

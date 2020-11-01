@@ -5,6 +5,8 @@ module NxtSchema
         coerce_input
         return self unless valid?
 
+        apply_additional_keys_strategy
+
         keys.each do |key|
           sub_node = sub_nodes[key]
           value = input[key]
@@ -21,8 +23,38 @@ module NxtSchema
       end
 
       def keys
-        # TODO: Depending on key strategy use keys from input union or those from schema
         sub_nodes.keys
+      end
+
+      def additional_keys
+        @additional_keys ||= input.keys - keys
+      end
+
+      def additional_keys?
+        additional_keys.any?
+      end
+
+      def apply_additional_keys_strategy
+        return if allow_additional_keys?
+        return unless additional_keys?
+
+        if restrict_addition_keys?
+          add_schema_error("Additional keys #{additional_keys} are not allowed")
+        elsif reject_additional_keys?
+          output.except!(*additional_keys)
+        end
+      end
+
+      def allow_additional_keys?
+        additional_keys_strategy == :allow
+      end
+
+      def reject_additional_keys?
+        additional_keys_strategy == :reject
+      end
+
+      def restrict_addition_keys?
+        additional_keys_strategy == :restrict
       end
     end
   end
