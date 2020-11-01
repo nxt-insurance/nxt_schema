@@ -41,6 +41,8 @@ module NxtSchema
         add_sub_node(node)
       end
 
+      alias requires node
+
       def add_sub_node(node)
         sub_nodes.add(node)
         node

@@ -6,9 +6,12 @@
 - Test sub_nodes_evaluation with any_of and all_of
 - Make nested schemas work properly (value coercion and error collection)
 - Add node presence methods
-    - presence
-    - requires
-    - maybe (use types?)
+    - nodes
+        - presence --> would default to nil
+        - requires --> simply alias node
+    - values
+        - maybe
+        - default
 
 ## Installation
 
