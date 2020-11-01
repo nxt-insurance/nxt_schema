@@ -27,6 +27,20 @@ module NxtSchema
         @is_root
       end
 
+      def optional(&block)
+        @optional = true
+
+        if block_given?
+          configure(&block)
+        else
+          self
+        end
+      end
+
+      def optional?
+        @optional
+      end
+
       private
 
       def resolve_type(name_or_type)
