@@ -22,6 +22,10 @@ module NxtSchema
         application_class.new(node: self, input: input, parent: parent).call
       end
 
+      def root?
+        @is_root
+      end
+
       private
 
       def resolve_type(name_or_type)
@@ -60,10 +64,6 @@ module NxtSchema
         else
           instance_exec(&block)
         end
-      end
-
-      def root?
-        @is_root
       end
     end
   end

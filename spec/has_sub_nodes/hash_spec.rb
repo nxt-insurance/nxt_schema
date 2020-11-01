@@ -128,7 +128,7 @@ RSpec.describe NxtSchema do
 
       it { expect(subject).to_not be_valid }
 
-      it 'returns the correct output' do
+      it 'returns the correct errors' do
         expect(subject.schema_errors).to eq(
           {
             name: ["nil violates constraints (type?(String, nil) failed)"],

@@ -6,7 +6,7 @@ module NxtSchema
         @input = input
         @parent = parent
         @output = nil
-        @errors = Errors.new
+        @errors = Errors.new(application: self, node: node)
       end
 
       attr_accessor :output, :node, :input

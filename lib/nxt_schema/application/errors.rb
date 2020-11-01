@@ -3,12 +3,14 @@ module NxtSchema
     class Errors
       DEFAULT_ERROR_INDEX = :itself
 
-      def initialize
+      def initialize(application:, node:)
+        @application = application
+        @node = node
         @schema_errors = {}
         @validation_errors = {}
       end
 
-      attr_reader :schema_errors, :validation_errors
+      attr_reader :application, :node, :schema_errors, :validation_errors
 
       def all
         {
@@ -26,10 +28,16 @@ module NxtSchema
       end
 
       def merge_schema_errors(errors, index:)
-        if errors.key?(DEFAULT_ERROR_INDEX)
-          schema_errors[index] = errors.fetch(DEFAULT_ERROR_INDEX) + schema_errors.fetch(index, [])
+        if errors.is_a?(::Hash)
+          if errors.key?(DEFAULT_ERROR_INDEX)
+            schema_errors[index] = errors.fetch(DEFAULT_ERROR_INDEX) + schema_errors.fetch(index, [])
+          else
+            schema_errors[index] ||= {}
+            schema_errors[index].merge!(errors)
+          end
         else
-          schema_errors_store(index) << errors
+          schema_errors[index] ||= []
+          schema_errors[index] << errors
         end
       end
 
