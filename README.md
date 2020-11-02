@@ -14,6 +14,9 @@
     - values (move methods to node)
         - maybe
         - default
+- How do we want to deal with nil values? 
+    --> Probably global option(s) would be nice
+    --> Probably should not be ok with nils by default
 
 ## Installation
 
