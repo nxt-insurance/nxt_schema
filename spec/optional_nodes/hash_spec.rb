@@ -6,7 +6,7 @@ RSpec.describe NxtSchema do
       NxtSchema.schema(:person) do |person|
         person.node(:first_name, :String)
         person.node(:last_name, :String)
-        person.schema(:address).optional do |address|
+        person.schema(:address, optional: true) do |address|
           address.node(:street, :String)
           address.node(:town, :String)
         end

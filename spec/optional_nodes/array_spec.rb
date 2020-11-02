@@ -4,7 +4,7 @@ RSpec.describe NxtSchema do
   context 'when nodes are optional' do
     let(:schema) do
       NxtSchema.schema(:person) do |person|
-        person.collection(:skills).optional do |skills|
+        person.collection(:skills, optional: true) do |skills|
           skills.node(:skill, :String)
         end
       end

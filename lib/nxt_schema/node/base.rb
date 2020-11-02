@@ -8,6 +8,7 @@ module NxtSchema
         @level = parent_node ? parent_node.level + 1 : 0
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
+        @optional = options.fetch(:optional, false)
 
         @type_system = resolve_type_system
         @type = resolve_type(type)
@@ -28,33 +29,33 @@ module NxtSchema
         @is_root
       end
 
-      def optional(&block)
-        raise ArgumentError, 'A present node cannot be optional at the same time' if presence?
-
-        @optional = true
-
-        if block_given?
-          configure(&block)
-        else
-          self
-        end
-      end
+      # def optional(&block)
+      #   raise ArgumentError, 'A present node cannot be optional at the same time' if presence?
+      #
+      #   @optional = true
+      #
+      #   if block_given?
+      #     configure(&block)
+      #   else
+      #     self
+      #   end
+      # end
 
       def optional?
         @optional
       end
 
-      def presence(&block)
-        raise ArgumentError, 'A optional node cannot be present at the same time' if optional?
-
-        @presence = true
-
-        if block_given?
-          configure(&block)
-        else
-          self
-        end
-      end
+      # def presence(&block)
+      #   raise ArgumentError, 'A optional node cannot be present at the same time' if optional?
+      #
+      #   @presence = true
+      #
+      #   if block_given?
+      #     configure(&block)
+      #   else
+      #     self
+      #   end
+      # end
 
       def presence?
         @presence
@@ -75,6 +76,8 @@ module NxtSchema
       end
 
       private
+
+      attr_accessor :optional
 
       def resolve_type(name_or_type)
         root.send(:type_resolver).resolve(type_system, name_or_type)
