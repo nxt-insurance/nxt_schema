@@ -32,7 +32,7 @@ module NxtSchema
       private
 
       def coerce_input
-        self.output = type[input]
+        self.output = type[input] unless input.is_a?(MissingInput) && node.omnipresent?
       rescue Dry::Types::ConstraintError, Dry::Types::CoercionError => error
         add_schema_error(error.message)
       end

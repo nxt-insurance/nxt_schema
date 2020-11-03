@@ -75,7 +75,7 @@ RSpec.describe NxtSchema do
 
       it 'returns the correct output' do
         expect(subject.schema_errors).to eq(
-          :address => ["nil violates constraints (type?(Hash, nil) failed)"],
+          :address => ["NxtSchema::MissingInput violates constraints (type?(Hash, NxtSchema::MissingInput) failed)"],
           :customers => ["\"a lot\" violates constraints (type?(Integer, \"a lot\") failed)"]
         )
       end
@@ -129,6 +129,7 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct errors' do
+        binding.pry
         expect(subject.schema_errors).to eq(
           {
             name: ["nil violates constraints (type?(String, nil) failed)"],

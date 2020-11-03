@@ -5,12 +5,14 @@ module NxtSchema
         coerce_input
         return self unless valid?
 
+        # flag_missing_keys --> The problem here is merging the errors
+        # TODO: Would be nice if this would work and be pass to itself
         apply_additional_keys_strategy
 
         keys.each do |key|
           sub_node = sub_nodes[key]
-          value = input[key]
-          current_application = sub_node.apply(value, parent: self)
+          value = input.key?(key) ? input[key] : MissingInput.new
+          current_application = sub_node.apply(value, self)
 
           if current_application.errors.any?
             merge_schema_errors(current_application.schema_errors, index: key)
@@ -38,6 +40,11 @@ module NxtSchema
         additional_keys.any?
       end
 
+      # TODO: Should we raise directly when keys are missing?
+      def missing_keys
+        @missing_keys ||= sub_nodes.reject { |_, node| node.omnipresent? || node.optional? }.keys - input.keys
+      end
+
       def apply_additional_keys_strategy
         return if allow_additional_keys?
         return unless additional_keys?
@@ -47,6 +54,12 @@ module NxtSchema
         elsif reject_additional_keys?
           output.except!(*additional_keys)
         end
+      end
+
+      def flag_missing_keys
+        return if missing_keys.empty?
+
+        add_schema_error("The following keys are missing: #{missing_keys}")
       end
 
       def allow_additional_keys?

@@ -9,6 +9,7 @@ module NxtSchema
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
         @optional = options.fetch(:optional, false)
+        @omnipresent = options.fetch(:omnipresent, false)
 
         @type_system = resolve_type_system
         @type = resolve_type(type)
@@ -21,7 +22,9 @@ module NxtSchema
       attr_accessor :name, :parent_node, :options, :type, :level, :root, :additional_keys_strategy
       attr_reader :type_system
 
-      def apply(input, parent: nil)
+      # TODO: This does not work with keyword args maybe make second arg no keyword as well?
+      # We are trying to detect when input is missing at all here
+      def apply(input = MissingInput, parent = nil)
         application_class.new(node: self, input: input, parent: parent).call
       end
 
@@ -29,33 +32,13 @@ module NxtSchema
         @is_root
       end
 
-      # def optional(&block)
-      #   raise ArgumentError, 'A present node cannot be optional at the same time' if presence?
-      #
-      #   @optional = true
-      #
-      #   if block_given?
-      #     configure(&block)
-      #   else
-      #     self
-      #   end
-      # end
-
       def optional?
         @optional
       end
 
-      # def presence(&block)
-      #   raise ArgumentError, 'A optional node cannot be present at the same time' if optional?
-      #
-      #   @presence = true
-      #
-      #   if block_given?
-      #     configure(&block)
-      #   else
-      #     self
-      #   end
-      # end
+      def omnipresent?
+        @omnipresent
+      end
 
       def presence?
         @presence

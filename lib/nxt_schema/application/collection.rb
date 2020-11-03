@@ -29,7 +29,7 @@ module NxtSchema
       end
 
       def apply_item(item)
-        sub_node.apply(item, parent: self)
+        sub_node.apply(item, self)
       end
 
       # TODO: Respect sub_node_evaluation

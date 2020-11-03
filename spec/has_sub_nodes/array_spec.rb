@@ -89,8 +89,8 @@ RSpec.describe NxtSchema do
             0 => { 0 => { name: ['nil violates constraints (type?(String, nil) failed)'] } },
             2 => {
               0 => {
-                name: ['nil violates constraints (type?(String, nil) failed)'],
-                age: ['nil violates constraints (type?(Integer, nil) failed)']
+                name: ['NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)'],
+                age: ['NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)']
               },
               1 => ['"invalid" violates constraints (type?(Hash, "invalid") failed)'],
               2 => ['1 violates constraints (type?(Hash, 1) failed)'],

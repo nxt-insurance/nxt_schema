@@ -17,6 +17,7 @@
 - How do we want to deal with nil values? 
     --> Probably global option(s) would be nice
     --> Probably should not be ok with nils by default
+--> Raise when options are impossible --> optional and present, required and optional, required and present
 
 ## Installation
 

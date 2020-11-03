@@ -9,8 +9,8 @@ module NxtSchema
         super
       end
 
-      def present(name, node_or_type_of_node, **options, &block)
-        node(name, node_or_type_of_node, **options.merge(present: true), &block)
+      def omnipresent(name, node_or_type_of_node, **options, &block)
+        node(name, node_or_type_of_node, **options.merge(omnipresent: true), &block)
       end
     end
   end
