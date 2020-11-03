@@ -1,6 +1,6 @@
 module NxtSchema
   module Application
-    class MissingValue
+    class MissingInput
     end
   end
 end

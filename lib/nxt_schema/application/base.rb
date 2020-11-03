@@ -1,7 +1,7 @@
 module NxtSchema
   module Application
     class Base
-      def initialize(node:, input: MissingValue.new, parent:)
+      def initialize(node:, input: MissingInput.new, parent:)
         @node = node
         @input = input
         @parent = parent

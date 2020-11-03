@@ -8,9 +8,9 @@
 - Add node presence methods
     - nodes 
         (move methods to has_sub_nodes so it can only be called with name and maybe instance exec to prevent calling it from outside if possible)
-        - optional --> optional node (dispensable, omittable)
-        - presence --> node that is present with nil as default
-        - requires --> node that is not optional
+        - optional --> optional node
+        - present --> node that is present with nil as default
+        - required --> node that is not optional
     - values (move methods to node)
         - maybe
         - default

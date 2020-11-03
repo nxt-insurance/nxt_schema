@@ -23,14 +23,14 @@ module NxtSchema
       end
 
       def keys
-        sub_nodes.reject { |key, _| optional_and_not_present_key?(key) }.keys
+        sub_nodes.reject { |key, _| optional_and_not_given_key?(key) }.keys
       end
 
       def additional_keys
         @additional_keys ||= input.keys - keys
       end
 
-      def optional_and_not_present_key?(key)
+      def optional_and_not_given_key?(key)
         sub_nodes[key].optional? && !input.key?(key)
       end
 

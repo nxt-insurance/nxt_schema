@@ -22,7 +22,9 @@ module NxtSchema
       private
 
       def validate_filled
-        # TODO: Consider maybe
+        # When all sub nodes are optional it does not have to be filled
+        return if sub_nodes.values.all?(&:optional?)
+
         add_schema_error('is not allowed to be empty') if input.empty?
       end
 

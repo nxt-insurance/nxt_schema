@@ -1,7 +1,7 @@
 RSpec.describe NxtSchema do
   subject { schema.apply(input) }
 
-  context 'when nodes are optional' do
+  context 'when a collection node is optional' do
     let(:schema) do
       NxtSchema.schema(:person) do |person|
         person.collection(:skills, optional: true) do |skills|
@@ -9,7 +9,6 @@ RSpec.describe NxtSchema do
         end
       end
     end
-
 
     context 'and it is present' do
       let(:input) do
@@ -32,6 +31,26 @@ RSpec.describe NxtSchema do
 
       it do
         expect(subject.output).to eq(input)
+      end
+    end
+  end
+
+  context 'when a node within a collection is optional' do
+    let(:schema) do
+      NxtSchema.schema(:person) do |person|
+        person.collection(:skills) do |skills|
+          skills.optional(:skill, :String)
+        end
+      end
+    end
+
+    context 'and the node is not given' do
+      let(:input) do
+        { skills: [] }
+      end
+
+      it do
+        expect(subject).to be_valid
       end
     end
   end

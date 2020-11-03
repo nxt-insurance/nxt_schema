@@ -17,6 +17,7 @@ require_relative 'nxt_schema/node/collection'
 require_relative 'nxt_schema/node/schema'
 require_relative 'nxt_schema/node/leaf'
 
+require_relative 'nxt_schema/application/missing_input'
 require_relative 'nxt_schema/application/errors'
 require_relative 'nxt_schema/application/base'
 require_relative 'nxt_schema/application/leaf'
