@@ -27,7 +27,7 @@ module NxtSchema
         add_sub_node(node)
       end
 
-      def combination
+      def any_of
 
       end
 
