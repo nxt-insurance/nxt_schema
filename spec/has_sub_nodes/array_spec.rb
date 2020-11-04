@@ -84,7 +84,6 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct errors' do
-        binding.pry
         expect(subject.schema_errors).to eq(
           {
             0 => {

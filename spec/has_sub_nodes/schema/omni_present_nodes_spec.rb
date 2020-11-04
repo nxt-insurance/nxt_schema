@@ -4,8 +4,8 @@ RSpec.describe NxtSchema do
   context 'with present nodes' do
     let(:schema) do
       NxtSchema.schema(:person) do |person|
-        person.omnipresent(:first_name, :String)#.default('Mohamed')
-        person.omnipresent(:last_name, :String)#.default('Ali')
+        person.omnipresent(:first_name, :String)
+        person.omnipresent(:last_name, :String)
       end
     end
 
@@ -26,7 +26,10 @@ RSpec.describe NxtSchema do
       it { expect(subject).to be_valid }
 
       it do
-        expect(subject.output).to eq(first_name: 'Mohamed', last_name: 'Ali')
+        expect(subject.output).to match(
+          first_name: instance_of(NxtSchema::MissingInput),
+          last_name: instance_of(NxtSchema::MissingInput)
+        )
       end
     end
   end
