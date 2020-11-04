@@ -51,14 +51,14 @@ schema = NxtSchema.root(:company) do
   end
 
     
-  nodes(:employees) do
-    schema(:employee) do
-      POSITIONS = %w[senior junior intern]
+  nodes(:employees).any_of do
+  schema(:employee) do
+    POSITIONS = %w[senior junior intern]
 
-      requires(:first_name, :String)
-      requires(:last_name, :String)
-      optional(:email, :String).validate(:format, /\A.*@.*\z/)
-      requires(:position, NxtSchema::Types::Enums[*POSITIONS])
+    requires(:first_name, :String)
+    requires(:last_name, :String)
+    optional(:email, :String).validate(:format, /\A.*@.*\z/)
+    requires(:position, NxtSchema::Types::Enums[*POSITIONS])
     end
   end
 end
