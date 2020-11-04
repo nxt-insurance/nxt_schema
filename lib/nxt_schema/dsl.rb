@@ -25,5 +25,14 @@ module NxtSchema
         &block
       )
     end
+
+    def any_of(name = :roots, **options, &block)
+      NxtSchema::Node::AnyOf.new(
+        name: name,
+        parent_node: nil,
+        **options,
+        &block
+      )
+    end
   end
 end

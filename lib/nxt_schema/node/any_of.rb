@@ -1,24 +1,35 @@
 module NxtSchema
   module Node
-    class AnyOf
+    class AnyOf < Base
       include HasSubNodes
 
-      def initialize(parent_node:, **options, &block)
-        @parent_node = parent_node
-        @options = options
-        @level = parent_node ? parent_node.level + 1 : 0
-        @is_root = parent_node.nil?
-        @root = parent_node.nil? ? self : parent_node.root
-
-        application_class
-
-        configure(&block) if block_given?
+      def initialize(name:, type: nil, parent_node:, **options, &block)
+        super
       end
 
-      attr_accessor :name, :parent_node, :options, :level, :root
-
       def apply(input = MissingInput, context = nil, parent = nil)
-        application_class.new(node: self, input: input, parent: parent, context: context).call
+        application_class.new(
+          node: self,
+          input: input,
+          parent: parent,
+          context: context
+        ).call
+      end
+
+      # TODO: Maybe overwrite sub node methods to not have to provide a name here and use node count instead
+
+      private
+
+      def resolve_type(name_or_type)
+        # no opt
+      end
+
+      def resolve_optional_option
+        # TODO: raise if optional is passed here?!
+      end
+
+      def resolve_omnipresent_option
+        # TODO: raise if omni present is passed here?!
       end
     end
   end

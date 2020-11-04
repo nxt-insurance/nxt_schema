@@ -4,7 +4,7 @@
 
 - Add back validations
 - Make nested schemas work properly (value coercion and error collection)
-- Add node presence methods
+- Add value methods
     - values (move methods to node)
         - maybe
         - default
