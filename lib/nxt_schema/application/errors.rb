@@ -37,7 +37,7 @@ module NxtSchema
 
       def merge_schema_errors(errors, index:)
         if errors.is_a?(::Hash)
-          if errors.key?(DEFAULT_ERROR_INDEX)
+          if errors.keys == [DEFAULT_ERROR_INDEX]
             schema_errors[index] = errors.fetch(DEFAULT_ERROR_INDEX) + schema_errors.fetch(index, [])
           else
             schema_errors[index] ||= {}

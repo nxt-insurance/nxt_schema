@@ -18,6 +18,7 @@
     --> Probably global option(s) would be nice
     --> Probably should not be ok with nils by default
 --> Raise when options are impossible --> optional and present, required and optional, required and present
+--> Do not forget to collect Flat errors!
 
 ## Installation
 
