@@ -1,12 +1,18 @@
 module NxtSchema
   module Node
     class AnyOf
+      include HasSubNodes
+
       def initialize(parent_node:, **options, &block)
         @parent_node = parent_node
         @options = options
         @level = parent_node ? parent_node.level + 1 : 0
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
+
+        application_class
+
+        configure(&block) if block_given?
       end
 
       attr_accessor :name, :parent_node, :options, :level, :root
