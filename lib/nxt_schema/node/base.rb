@@ -22,10 +22,9 @@ module NxtSchema
       attr_accessor :name, :parent_node, :options, :type, :level, :root, :additional_keys_strategy
       attr_reader :type_system
 
-      # TODO: This does not work with keyword args maybe make second arg no keyword as well?
-      # We are trying to detect when input is missing at all here
-      def apply(input = MissingInput, parent = nil)
-        application_class.new(node: self, input: input, parent: parent).call
+      # This does not work with keyword args?!
+      def apply(input = MissingInput, context = nil, parent = nil)
+        application_class.new(node: self, input: input, parent: parent, context: context).call
       end
 
       def root?
