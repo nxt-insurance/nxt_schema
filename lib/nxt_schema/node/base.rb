@@ -96,6 +96,7 @@ module NxtSchema
 
       def resolve_optional_option
         optional = options.fetch(:optional, false)
+        raise Errors::InvalidOptions, 'Optional nodes are only available within schemas' if optional && !parent_node.is_a?(Schema)
         raise Errors::InvalidOptions, "Can't make omnipresent node optional" if optional && omnipresent?
 
         @optional = optional
@@ -103,6 +104,7 @@ module NxtSchema
 
       def resolve_omnipresent_option
         omnipresent = options.fetch(:omnipresent, false)
+        raise Errors::InvalidOptions, 'Omnipresent nodes are only available within schemas' if omnipresent && !parent_node.is_a?(Schema)
         raise Errors::InvalidOptions, "Can't make omnipresent node optional" if optional? && omnipresent
 
         @omnipresent = omnipresent
