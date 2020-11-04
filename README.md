@@ -3,7 +3,6 @@
 ## TODO:
 
 - Add back validations
-- Test sub_nodes_evaluation with any_of and all_of
 - Make nested schemas work properly (value coercion and error collection)
 - Add node presence methods
     - nodes 
@@ -19,6 +18,7 @@
     --> Probably should not be ok with nils by default
 --> Raise when options are impossible --> optional and present, required and optional, required and present
 --> Do not forget to collect Flat errors!
+- We do not need any of and all of since this is possible with optional and required keywords
 
 ## Installation
 

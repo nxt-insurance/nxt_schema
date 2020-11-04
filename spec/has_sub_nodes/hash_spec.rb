@@ -75,8 +75,9 @@ RSpec.describe NxtSchema do
 
       it 'returns the correct output' do
         expect(subject.schema_errors).to eq(
-          :address => ["NxtSchema::MissingInput violates constraints (type?(Hash, NxtSchema::MissingInput) failed)"],
-          :customers => ["\"a lot\" violates constraints (type?(Integer, \"a lot\") failed)"]
+          itself: ["The following keys are missing: [:address]"],
+          address: ["NxtSchema::MissingInput violates constraints (type?(Hash, NxtSchema::MissingInput) failed)"],
+          customers: ["\"a lot\" violates constraints (type?(Integer, \"a lot\") failed)"]
         )
       end
     end
@@ -129,12 +130,15 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct errors' do
-        binding.pry
         expect(subject.schema_errors).to eq(
           {
-            name: ["nil violates constraints (type?(String, nil) failed)"],
+            itself: ["The following keys are missing: [:name]"],
+            name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
             houses: {
-              0 => { zip_code: ["nil violates constraints (type?(Integer, nil) failed)"] },
+              0 => {
+                itself: ["The following keys are missing: [:zip_code]"],
+                zip_code: ["NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)"]
+              },
               1 => { street: ["nil violates constraints (type?(String, nil) failed)"] },
               2 => {
                 street: ["1 violates constraints (type?(String, 1) failed)"],

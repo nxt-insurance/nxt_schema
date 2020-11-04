@@ -84,11 +84,18 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct errors' do
+        binding.pry
         expect(subject.schema_errors).to eq(
           {
-            0 => { 0 => { name: ['nil violates constraints (type?(String, nil) failed)'] } },
+            0 => {
+              0 => {
+                itself: ["The following keys are missing: [:name]"],
+                name: ['NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)']
+              }
+            },
             2 => {
               0 => {
+                itself: ["The following keys are missing: [:name, :age]"],
                 name: ['NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)'],
                 age: ['NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)']
               },

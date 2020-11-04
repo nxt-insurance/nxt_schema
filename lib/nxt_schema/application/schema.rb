@@ -5,8 +5,7 @@ module NxtSchema
         coerce_input
         return self unless valid?
 
-        # flag_missing_keys --> The problem here is merging the errors
-        # TODO: Would be nice if this would work and be pass to itself
+        flag_missing_keys
         apply_additional_keys_strategy
 
         keys.each do |key|
