@@ -7,9 +7,12 @@
 - Add node presence methods
     - nodes 
         (move methods to has_sub_nodes so it can only be called with name and maybe instance exec to prevent calling it from outside if possible)
-        - optional --> optional node
-        - present --> node that is present with nil as default
+        - optional --> optional node (schemas and collections)
+            --> schemas
+        - omnipresent --> node that is present with nil as default (Only makes sense in schemas!)
+            --> Make sure this only is used in schemas!!!
         - required --> node that is not optional
+            --> schemas
     - values (move methods to node)
         - maybe
         - default

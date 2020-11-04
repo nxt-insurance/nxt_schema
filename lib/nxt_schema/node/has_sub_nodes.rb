@@ -43,10 +43,6 @@ module NxtSchema
 
       alias required node
 
-      def optional(name, node_or_type_of_node, **options, &block)
-        node(name, node_or_type_of_node, **options.merge(optional: true), &block)
-      end
-
       def add_sub_node(node)
         sub_nodes.add(node)
         node

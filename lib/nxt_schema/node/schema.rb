@@ -9,6 +9,10 @@ module NxtSchema
         super
       end
 
+      def optional(name, node_or_type_of_node, **options, &block)
+        node(name, node_or_type_of_node, **options.merge(optional: true), &block)
+      end
+
       def omnipresent(name, node_or_type_of_node, **options, &block)
         node(name, node_or_type_of_node, **options.merge(omnipresent: true), &block)
       end
