@@ -5,14 +5,6 @@
 - Add back validations
 - Make nested schemas work properly (value coercion and error collection)
 - Add node presence methods
-    - nodes 
-        (move methods to has_sub_nodes so it can only be called with name and maybe instance exec to prevent calling it from outside if possible)
-        - optional --> optional node (schemas and collections)
-            --> schemas
-        - omnipresent --> node that is present with nil as default (Only makes sense in schemas!)
-            --> Make sure this only is used in schemas!!!
-        - required --> node that is not optional
-            --> schemas
     - values (move methods to node)
         - maybe
         - default
@@ -21,7 +13,7 @@
     --> Probably should not be ok with nils by default
 --> Raise when options are impossible --> optional and present, required and optional, required and present
 --> Do not forget to collect Flat errors!
-- We do not need any of and all of since this is possible with optional and required keywords
+- We need any of and all!
 
 ## Installation
 

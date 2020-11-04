@@ -8,6 +8,7 @@ require 'yaml'
 require_relative 'nxt_schema/types'
 require_relative 'nxt_schema/application'
 require_relative 'nxt_schema/missing_input'
+require_relative 'nxt_schema/errors/invalid_options'
 
 require_relative 'nxt_schema/node/type_resolver'
 require_relative 'nxt_schema/node/type_system_resolver'

@@ -8,13 +8,12 @@ module NxtSchema
         @level = parent_node ? parent_node.level + 1 : 0
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
-        @optional = options.fetch(:optional, false)
-        @omnipresent = options.fetch(:omnipresent, false)
 
-        @type_system = resolve_type_system
-        @type = resolve_type(type)
-
-        @additional_keys_strategy = resolve_additional_keys_strategy
+        resolve_optional_option
+        resolve_omnipresent_option
+        resolve_type_system
+        resolve_type(type)
+        resolve_additional_keys_strategy
         application_class # memoize
         configure(&block) if block_given?
       end
@@ -62,11 +61,11 @@ module NxtSchema
       attr_accessor :optional
 
       def resolve_type(name_or_type)
-        root.send(:type_resolver).resolve(type_system, name_or_type)
+        @type = root.send(:type_resolver).resolve(type_system, name_or_type)
       end
 
       def resolve_type_system
-        TypeSystemResolver.new(node: self).call
+        @type_system = TypeSystemResolver.new(node: self).call
       end
 
       def type_resolver
@@ -92,7 +91,21 @@ module NxtSchema
       end
 
       def resolve_additional_keys_strategy
-        options.fetch(:additional_keys) { parent_node&.send(:additional_keys_strategy) || :allow }
+        @additional_keys_strategy = options.fetch(:additional_keys) { parent_node&.send(:additional_keys_strategy) || :allow }
+      end
+
+      def resolve_optional_option
+        optional = options.fetch(:optional, false)
+        raise Errors::InvalidOptions, "Can't make omnipresent node optional" if optional && omnipresent?
+
+        @optional = optional
+      end
+
+      def resolve_omnipresent_option
+        omnipresent = options.fetch(:omnipresent, false)
+        raise Errors::InvalidOptions, "Can't make omnipresent node optional" if optional? && omnipresent
+
+        @omnipresent = omnipresent
       end
     end
   end
