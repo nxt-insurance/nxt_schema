@@ -71,6 +71,10 @@ module NxtSchema
       def sub_nodes
         @sub_nodes ||= Node::SubNodes.new
       end
+
+      def [](key)
+        sub_nodes[key]
+      end
     end
   end
 end
