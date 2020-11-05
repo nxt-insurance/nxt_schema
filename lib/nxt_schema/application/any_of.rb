@@ -1,6 +1,10 @@
 module NxtSchema
   module Application
     class AnyOf < Application::Base
+      def valid?
+        valid_result.present?
+      end
+
       def call
         # TODO: We should check that this is not empty!
 
@@ -22,10 +26,6 @@ module NxtSchema
           acc[result.name] = result.schema_errors
           acc
         end
-      end
-
-      def valid?
-        valid_result.present?
       end
 
       def valid_result

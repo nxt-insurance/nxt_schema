@@ -5,10 +5,10 @@ RSpec.describe NxtSchema do
 
   context 'any of leaf nodes' do
     let(:schema) do
-      NxtSchema.schema(:scores) do |scores|
-        scores.any_of(:score) do |score|
-          score.node(:integer, :Integer)
-          score.node(:string, :String)
+      NxtSchema.schema(:scores) do
+        any_of(:score) do
+          node(:integer, :Integer)
+          node(:string, :String)
         end
       end
     end
