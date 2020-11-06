@@ -2,6 +2,7 @@
 
 ## TODO:
 
+- inject index directly in application
 - Add back validations
 - Make nested schemas work properly (value coercion and error collection)
 - Add value methods
