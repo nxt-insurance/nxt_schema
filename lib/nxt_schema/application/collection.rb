@@ -7,7 +7,7 @@ module NxtSchema
         return self unless valid?
 
         input.each_with_index do |item, index|
-          current_application = apply_item(item)
+          current_application = apply_item(item, index)
 
           if current_application.errors.any?
             merge_schema_errors(current_application.schema_errors, index: index)
@@ -25,8 +25,8 @@ module NxtSchema
         add_schema_error('is not allowed to be empty') if input.empty?
       end
 
-      def apply_item(item)
-        sub_node.apply(item, nil, self)
+      def apply_item(item, error_key)
+        sub_node.apply(item, nil, self, error_key)
       end
 
       # TODO: Respect sub_node_evaluation

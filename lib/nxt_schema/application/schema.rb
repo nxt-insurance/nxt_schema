@@ -11,7 +11,7 @@ module NxtSchema
         keys.each do |key|
           sub_node = sub_nodes[key]
           value = input.key?(key) ? input[key] : MissingInput.new
-          current_application = sub_node.apply(value, nil, self)
+          current_application = sub_node.apply(value, nil, self, key)
 
           if current_application.errors.any?
             merge_schema_errors(current_application.schema_errors, index: key)

@@ -1,17 +1,18 @@
 module NxtSchema
   module Application
     class Base
-      def initialize(node:, input: MissingInput.new, parent:, context:)
+      def initialize(node:, input: MissingInput.new, parent:, context:, error_key:)
         @node = node
         @input = input
         @parent = parent
         @output = nil
+        @error_key = error_key
         @errors = Errors.new(application: self, node: node)
         @context = context || parent&.context
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :errors, :context
+      attr_reader :parent, :errors, :context, :error_key
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'

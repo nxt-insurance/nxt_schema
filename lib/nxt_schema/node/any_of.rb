@@ -7,15 +7,6 @@ module NxtSchema
         super
       end
 
-      def apply(input = MissingInput, context = nil, parent = nil)
-        application_class.new(
-          node: self,
-          input: input,
-          parent: parent,
-          context: context
-        ).call
-      end
-
       # TODO: Maybe overwrite sub node methods to not have to provide a name here and use node count instead
 
       private

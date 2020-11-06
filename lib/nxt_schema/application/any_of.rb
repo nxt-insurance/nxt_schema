@@ -33,7 +33,7 @@ module NxtSchema
       end
 
       def results
-        @results ||= nodes.map { |node| node.apply(input, context, self) }
+        @results ||= nodes.each_with_index.map { |node, index| node.apply(input, context, self, index) }
       end
 
       def nodes

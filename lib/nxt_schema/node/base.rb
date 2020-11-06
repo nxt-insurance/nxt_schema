@@ -23,8 +23,14 @@ module NxtSchema
       attr_reader :type_system, :path
 
       # This does not work with keyword args?!
-      def apply(input = MissingInput, context = nil, parent = nil)
-        application_class.new(node: self, input: input, parent: parent, context: context).call
+      def apply(input = MissingInput, context = nil, parent = nil, error_key = :itself)
+        application_class.new(
+          node: self,
+          input: input,
+          parent: parent,
+          context: context,
+          error_key: error_key
+        ).call
       end
 
       def root?
