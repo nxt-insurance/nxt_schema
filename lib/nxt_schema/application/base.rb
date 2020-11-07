@@ -21,6 +21,7 @@ module NxtSchema
       end
 
       delegate :schema_errors,
+        :flat_schema_errors,
         :validation_errors,
         :add_schema_error,
         :add_validation_error,

@@ -8,9 +8,10 @@ module NxtSchema
         @node = node
         @schema_errors = {}
         @validation_errors = {}
+        @flat_schema_errors = {}
       end
 
-      attr_reader :application, :node, :schema_errors, :validation_errors
+      attr_reader :application, :node, :schema_errors, :validation_errors, :flat_schema_errors
 
       def all
         {
@@ -21,40 +22,36 @@ module NxtSchema
 
       alias to_h all
 
-      def add_schema_error(error, index: DEFAULT_ERROR_KEY)
-        schema_errors_store(index) << error
-      end
-
-      def add_validation_error(error, index: DEFAULT_ERROR_KEY)
-        validation_errors_store(index) << error
+      def add_schema_error(error)
+        schema_errors[DEFAULT_ERROR_KEY] ||= []
+        schema_errors[DEFAULT_ERROR_KEY] << error
       end
 
       def merge_schema_errors(child_application)
-        errors = child_application.schema_errors
+        child_errors = child_application.schema_errors
         child_error_key = child_application.error_key
 
-        if nested_errors?(errors)
+        if nested_errors?(child_errors)
           schema_errors[child_error_key] ||= {}
-          schema_errors[child_error_key].merge!(errors)
+          schema_errors[child_error_key].merge!(child_errors)
         else
-          schema_errors[child_error_key] = errors.fetch(DEFAULT_ERROR_KEY) + schema_errors.fetch(child_error_key, [])
+          schema_errors[child_error_key] = child_errors.fetch(DEFAULT_ERROR_KEY) # + schema_errors.fetch(child_error_key, [])
         end
+
+        flat_schema_errors.merge!(child_application.flat_schema_errors)
       end
 
       def any?
         schema_errors.any? || validation_errors.any?
       end
 
-      def schema_errors_store(error_key)
-        schema_errors[error_key] ||= []
-      end
-
-      def validation_errors_store(error_key)
-        validation_errors[error_key] ||= []
-      end
-
       def nested_errors?(errors)
         errors.keys != [DEFAULT_ERROR_KEY]
+      end
+
+      def add_flat_schema_error(error)
+        flat_schema_errors[application.nested_error_key] ||= []
+        flat_schema_errors[application.nested_error_key] << error
       end
     end
   end
