@@ -29,7 +29,6 @@ module NxtSchema
         sub_node.apply(item, nil, self, error_key)
       end
 
-      # TODO: Respect sub_node_evaluation
       def sub_node
         @sub_node ||= sub_nodes.values.first
       end
