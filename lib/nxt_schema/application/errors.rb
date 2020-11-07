@@ -33,16 +33,11 @@ module NxtSchema
         errors = child_application.schema_errors
         child_error_key = child_application.error_key
 
-        if errors.is_a?(::Hash)
-          if errors.keys == [DEFAULT_ERROR_KEY]
-            schema_errors[child_error_key] = errors.fetch(DEFAULT_ERROR_KEY) + schema_errors.fetch(child_error_key, [])
-          else
-            schema_errors[child_error_key] ||= {}
-            schema_errors[child_error_key].merge!(errors)
-          end
+        if nested_errors?(errors)
+          schema_errors[child_error_key] ||= {}
+          schema_errors[child_error_key].merge!(errors)
         else
-          schema_errors[child_error_key] ||= []
-          schema_errors[child_error_key] << errors
+          schema_errors[child_error_key] = errors.fetch(DEFAULT_ERROR_KEY) + schema_errors.fetch(child_error_key, [])
         end
       end
 
@@ -56,6 +51,10 @@ module NxtSchema
 
       def validation_errors_store(error_key)
         validation_errors[error_key] ||= []
+      end
+
+      def nested_errors?(errors)
+        errors.keys != [DEFAULT_ERROR_KEY]
       end
     end
   end
