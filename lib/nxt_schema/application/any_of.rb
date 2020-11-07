@@ -12,7 +12,7 @@ module NxtSchema
           self.output = valid_application.output
         else
           applications.each do |application|
-            merge_schema_errors(application, index: application.name)
+            merge_schema_errors(application)
           end
         end
 
@@ -26,7 +26,7 @@ module NxtSchema
       end
 
       def applications
-        @applications ||= nodes.each_with_index.map { |node, index| node.apply(input, context, self, index) }
+        @applications ||= nodes.map { |node| node.apply(input, context, self, node.name) }
       end
 
       def nodes

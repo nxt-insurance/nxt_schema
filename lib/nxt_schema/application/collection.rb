@@ -10,7 +10,7 @@ module NxtSchema
           current_application = apply_item(item, index)
 
           if current_application.errors.any?
-            merge_schema_errors(current_application, index: index)
+            merge_schema_errors(current_application)
           else
             output[index] = current_application.output
           end

@@ -29,8 +29,9 @@ module NxtSchema
         validation_errors_store(index) << error
       end
 
-      def merge_schema_errors(application, index:)
-        errors = application.schema_errors
+      def merge_schema_errors(child_application)
+        errors = child_application.schema_errors
+        index = child_application.error_key
 
         if errors.is_a?(::Hash)
           if errors.keys == [DEFAULT_ERROR_INDEX]
