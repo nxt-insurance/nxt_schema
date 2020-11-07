@@ -2,17 +2,17 @@ module NxtSchema
   module Application
     class AnyOf < Application::Base
       def valid?
-        valid_result.present?
+        valid_application.present?
       end
 
       def call
         # TODO: We should check that this is not empty!
 
         if valid?
-          self.output = valid_result.output
+          self.output = valid_application.output
         else
-          collect_schema_errors.each do |index, error|
-            merge_schema_errors(error, index: index)
+          applications.each do |application|
+            merge_schema_errors(application, index: application.name)
           end
         end
 
@@ -21,19 +21,12 @@ module NxtSchema
 
       private
 
-      def collect_schema_errors
-        @collect_schema_errors ||= results.inject({}) do |acc, result|
-          acc[result.name] = result.schema_errors
-          acc
-        end
+      def valid_application
+        applications.find(&:valid?)
       end
 
-      def valid_result
-        results.find(&:valid?)
-      end
-
-      def results
-        @results ||= nodes.each_with_index.map { |node, index| node.apply(input, context, self, index) }
+      def applications
+        @applications ||= nodes.each_with_index.map { |node, index| node.apply(input, context, self, index) }
       end
 
       def nodes
