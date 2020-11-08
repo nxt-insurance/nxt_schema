@@ -2,7 +2,21 @@
 
 ## TODO:
 
-- inject index directly in application
+Default values:
+    when do we want to apply default values? --> input is missing, nil, blank 
+        mabye it would be better to say on(:nil?, )
+    defaults would have to sty within types and would be evaluated before maybes    
+    
+    leaf node:
+        Can we implement this using type system?
+        make input, context and schema accessible
+        simple value
+        proc
+        method
+    schemas:
+
+
+
 - Add back validations
 - Make nested schemas work properly (value coercion and error collection)
 - Add value methods
@@ -14,6 +28,8 @@
     --> Probably should not be ok with nils by default
 --> Do not forget to collect Flat errors!
 - We need any of and all of!
+- transform keys 
+- allow to add meta data
 
 ## Installation
 
@@ -36,7 +52,9 @@ Or install it yourself as:
 ```ruby
 # Schema with hash root
 schema = NxtSchema.root(:company) do 
-  requires(:name, :String)  
+  requires(:name, :String).on(->(input) { input == nil }, 'Andy')
+  requires(:name, :String).defaults_to('Andy')
+
   requires(:value, :Integer).maybe(nil)  
   present(:stock_options, :Bool).default(false)
   
