@@ -1,7 +1,7 @@
 RSpec.describe NxtSchema do
   subject { schema.apply(input) }
 
-  context 'any of within a collection' do
+  context 'any of multiple schemas' do
     let(:schema) do
       NxtSchema.any_of(:contacts) do |contact|
         contact.schema(:female) do |female|

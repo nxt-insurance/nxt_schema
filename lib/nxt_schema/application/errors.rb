@@ -7,8 +7,8 @@ module NxtSchema
         @application = application
         @node = node
         @schema_errors = {}
-        @validation_errors = {}
         @flat_schema_errors = {}
+        @validation_errors = {}
       end
 
       attr_reader :application, :node, :schema_errors, :validation_errors, :flat_schema_errors
