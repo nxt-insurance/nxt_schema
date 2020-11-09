@@ -21,6 +21,8 @@ Maybe values:
 - We should not allow options and evaluators to be called on any_od nodes!
 - Make combinations of validations work with monads kind of implementation
 - Add back validations
+- We have to allow callables for optional options 
+    - Question then is when to evaluate? --> Should be solve in master
 - How do we want to deal with nil values? 
     --> Probably global option(s) would be nice
     --> Probably should not be ok with nils by default
