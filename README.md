@@ -30,6 +30,7 @@ Maybe values:
 - Check how we can use constructors to create structs
 - Introduce Coercible error that wraps dry errors
     - Should we allow anything callable as types?
+- Does it make sense to differentiate between execution and build context?
 
 ## Installation
 

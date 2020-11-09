@@ -11,6 +11,7 @@ module NxtSchema
         @path = resolve_path
         @on_evaluators = []
 
+        resolve_context
         resolve_optional_option
         resolve_omnipresent_option
         resolve_type_system
@@ -20,11 +21,19 @@ module NxtSchema
         configure(&block) if block_given?
       end
 
-      attr_accessor :name, :parent_node, :options, :type, :level, :root, :additional_keys_strategy, :on_evaluators
-      attr_reader :type_system, :path
+      attr_accessor :name,
+        :parent_node,
+        :options,
+        :type,
+        :level,
+        :root,
+        :additional_keys_strategy,
+        :on_evaluators
+
+        attr_reader :type_system, :path, :context, :meta
 
       # This does not work with keyword args?!
-      def apply(input = MissingInput.new, context = nil, parent = nil, error_key = Application::Errors::DEFAULT_ERROR_KEY)
+      def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = Application::Errors::DEFAULT_ERROR_KEY)
         application_class.new(
           node: self,
           input: input,
@@ -67,7 +76,7 @@ module NxtSchema
 
       private
 
-      attr_writer :path
+      attr_writer :path, :meta, :context
 
       def resolve_type(name_or_type)
         @type = root.send(:type_resolver).resolve(type_system, name_or_type)
@@ -121,6 +130,10 @@ module NxtSchema
 
       def resolve_path
         self.path = root? ? name : "#{parent_node.path}.#{name}"
+      end
+
+      def resolve_context
+        self.context = options.fetch(:context) { parent_node&.send(:context) }
       end
     end
   end
