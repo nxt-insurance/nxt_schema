@@ -25,6 +25,7 @@ module NxtSchema
       def add_schema_error(error)
         schema_errors[DEFAULT_ERROR_KEY] ||= []
         schema_errors[DEFAULT_ERROR_KEY] << error
+        add_flat_schema_error(error)
       end
 
       def merge_schema_errors(child_application)

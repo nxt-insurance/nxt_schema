@@ -37,10 +37,16 @@ module NxtSchema
       private
 
       def coerce_input
+        apply_on_evaluators
+
         output = input.is_a?(MissingInput) && node.omnipresent? ? input : type[input]
         self.output = output
       rescue Dry::Types::ConstraintError, Dry::Types::CoercionError => error
         add_schema_error(error.message)
+      end
+
+      def apply_on_evaluators
+        on_evaluators.each { |evaluator| self.input = evaluator.call(input, self) }
       end
 
       def resolve_nested_error_key

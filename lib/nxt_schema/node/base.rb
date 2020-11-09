@@ -9,6 +9,7 @@ module NxtSchema
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
         @path = resolve_path
+        @on_evaluators = []
 
         resolve_optional_option
         resolve_omnipresent_option
@@ -19,7 +20,7 @@ module NxtSchema
         configure(&block) if block_given?
       end
 
-      attr_accessor :name, :parent_node, :options, :type, :level, :root, :additional_keys_strategy
+      attr_accessor :name, :parent_node, :options, :type, :level, :root, :additional_keys_strategy, :on_evaluators
       attr_reader :type_system, :path
 
       # This does not work with keyword args?!
@@ -47,6 +48,10 @@ module NxtSchema
 
       def presence?
         @presence
+      end
+
+      def on(condition, value)
+        on_evaluators << OnEvaluator.new(condition: condition, value: value)
       end
 
       private
