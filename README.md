@@ -18,21 +18,18 @@ Default values:
 Maybe values:
     maybes basically halt the coercion as they allow the condition to apply?!
 
-
-
 - Add back validations
-- Make nested schemas work properly (value coercion and error collection)
-- Add value methods
-    - values (move methods to node)
-        - maybe
-        - default
 - How do we want to deal with nil values? 
     --> Probably global option(s) would be nice
     --> Probably should not be ok with nils by default
---> Do not forget to collect Flat errors!
-- We need any of and all of!
+
+- Do we need all off in order to combine multiple schemas?
 - transform keys 
 - allow to add meta data
+- Check merging schemas
+- Check how we can use constructors to create structs
+- Introduce Coercible error that wraps dry errors
+    - Should we allow anything callable as types?
 
 ## Installation
 
