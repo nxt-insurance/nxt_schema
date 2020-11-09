@@ -72,7 +72,7 @@ RSpec.describe NxtSchema do
     let(:schema) do
       NxtSchema.schema(:developers) do
         required(:first_name, :String)
-        required(:last_name, :String).on(:nil?) do |_, application|
+        required(:last_name, :String).on(true) do |_, application|
           "#{application.name} was not given"
         end
       end

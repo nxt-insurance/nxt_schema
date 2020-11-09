@@ -18,7 +18,7 @@ module NxtSchema
     attr_reader :callable, :target, :args
 
     def method?
-      @method ||= !proc? && target.respond_to?(callable)
+      @method ||= callable.class.in?([Symbol, String]) && target.respond_to?(callable)
     end
 
     def proc?
