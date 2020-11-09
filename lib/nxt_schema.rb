@@ -12,6 +12,7 @@ require_relative 'nxt_schema/missing_input'
 require_relative 'nxt_schema/errors/invalid_options'
 
 require_relative 'nxt_schema/node/on_evaluator'
+require_relative 'nxt_schema/node/maybe_evaluator'
 require_relative 'nxt_schema/node/type_resolver'
 require_relative 'nxt_schema/node/type_system_resolver'
 require_relative 'nxt_schema/node/base'

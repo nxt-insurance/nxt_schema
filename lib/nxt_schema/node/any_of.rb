@@ -8,6 +8,7 @@ module NxtSchema
       end
 
       # TODO: Maybe overwrite sub node methods to not have to provide a name here and use node count instead
+      # TODO: We should not allow to call :on and :maybe on any_of nodes!
 
       private
 

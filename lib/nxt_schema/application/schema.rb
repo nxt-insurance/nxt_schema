@@ -4,6 +4,7 @@ module NxtSchema
       def call
         coerce_input
         return self unless valid?
+        return self if maybe_evaluator_applies?
 
         flag_missing_keys
         apply_additional_keys_strategy
@@ -51,7 +52,7 @@ module NxtSchema
         if restrict_addition_keys?
           add_schema_error("Additional keys are not allowed: #{additional_keys}")
         elsif reject_additional_keys?
-          output.except!(*additional_keys)
+          self.output = output.except(*additional_keys)
         end
       end
 

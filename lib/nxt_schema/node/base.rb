@@ -10,6 +10,7 @@ module NxtSchema
         @root = parent_node.nil? ? self : parent_node.root
         @path = resolve_path
         @on_evaluators = []
+        @maybe_evaluators = []
 
         resolve_context
         resolve_optional_option
@@ -27,10 +28,9 @@ module NxtSchema
         :type,
         :level,
         :root,
-        :additional_keys_strategy,
-        :on_evaluators
+        :additional_keys_strategy
 
-        attr_reader :type_system, :path, :context, :meta
+        attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators
 
       # This does not work with keyword args?!
       def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = Application::Errors::DEFAULT_ERROR_KEY)
@@ -74,9 +74,16 @@ module NxtSchema
         self
       end
 
+      def maybe(value = NxtSchema::MissingInput.new, &block)
+        value = value.is_a?(NxtSchema::MissingInput) ? block : value
+        maybe_evaluators << MaybeEvaluator.new(value: value)
+
+        self
+      end
+
       private
 
-      attr_writer :path, :meta, :context
+      attr_writer :path, :meta, :context, :on_evaluators, :maybe_evaluators
 
       def resolve_type(name_or_type)
         @type = root.send(:type_resolver).resolve(type_system, name_or_type)

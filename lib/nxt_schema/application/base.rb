@@ -39,14 +39,28 @@ module NxtSchema
       def coerce_input
         apply_on_evaluators
 
-        output = input.is_a?(MissingInput) && node.omnipresent? ? input : type[input]
-        self.output = output
+        if maybe_evaluator_applies?
+          self.output = input
+        else
+          output = input.is_a?(MissingInput) && node.omnipresent? ? input : type[input]
+          self.output = output
+        end
+
       rescue Dry::Types::ConstraintError, Dry::Types::CoercionError => error
         add_schema_error(error.message)
       end
 
       def apply_on_evaluators
         on_evaluators.each { |evaluator| self.input = evaluator.call(input, self) }
+      end
+
+      def maybe_evaluator_applies?
+        @maybe_evaluator_applies ||= maybe_evaluators.inject(false) do |acc, evaluator|
+          result = (acc || evaluator.call(input, self))
+          break true if result
+
+          result
+        end
       end
 
       def resolve_nested_error_key

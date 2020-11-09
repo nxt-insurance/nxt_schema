@@ -5,6 +5,7 @@ module NxtSchema
         coerce_input
         validate_filled
         return self unless valid?
+        return self if maybe_evaluator_applies?
 
         input.each_with_index do |item, index|
           current_application = apply_item(item, index)
@@ -22,7 +23,7 @@ module NxtSchema
       private
 
       def validate_filled
-        add_schema_error('is not allowed to be empty') if input.empty?
+        add_schema_error('is not allowed to be empty') if input.empty? && !maybe_evaluator_applies?
       end
 
       def apply_item(item, error_key)
