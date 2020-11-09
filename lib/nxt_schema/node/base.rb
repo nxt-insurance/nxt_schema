@@ -50,8 +50,19 @@ module NxtSchema
         @presence
       end
 
-      def on(condition, value)
+      def default(value = NxtSchema::MissingInput.new, &block)
+        value = value.is_a?(NxtSchema::MissingInput) ? block : value
+        condition = ->(input) { input.is_a?(NxtSchema::MissingInput) || input.nil? }
+        on(condition, value)
+
+        self
+      end
+
+      def on(condition, value = NxtSchema::MissingInput.new, &block)
+        value = value.is_a?(NxtSchema::MissingInput) ? block : value
         on_evaluators << OnEvaluator.new(condition: condition, value: value)
+
+        self
       end
 
       private

@@ -67,4 +67,25 @@ RSpec.describe NxtSchema do
       end
     end
   end
+
+  context 'when passing a block as value' do
+    let(:schema) do
+      NxtSchema.schema(:developers) do
+        required(:first_name, :String)
+        required(:last_name, :String).on(:nil?) do |_, application|
+          "#{application.name} was not given"
+        end
+      end
+    end
+
+    context 'when the method applies' do
+      let(:input) { { first_name: 'Andy', last_name: nil } }
+
+      it { expect(subject).to be_valid }
+
+      it do
+        expect(subject.output).to eq(first_name: 'Andy', last_name: 'last_name was not given')
+      end
+    end
+  end
 end

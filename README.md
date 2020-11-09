@@ -53,7 +53,9 @@ Or install it yourself as:
 # Schema with hash root
 schema = NxtSchema.root(:company) do 
   requires(:name, :String).on(->(input) { input == nil }, 'Andy')
-  requires(:name, :String).defaults_to('Andy')
+    requires(:name, :String).on(:nil?) do
+    end
+  requires(:name, :String).default('Andy')
 
   requires(:value, :Integer).maybe(nil)  
   present(:stock_options, :Bool).default(false)
