@@ -8,20 +8,31 @@ module NxtSchema
       end
 
       # TODO: Maybe overwrite sub node methods to not have to provide a name here and use node count instead
-      # TODO: We should not allow to call :on and :maybe on any_of nodes!
+
+      def on(*args)
+        raise NotImplementedError
+      end
+
+      def maybe(*args)
+        raise NotImplementedError
+      end
 
       private
 
       def resolve_type(name_or_type)
-        # no opt
+        nil
       end
 
       def resolve_optional_option
-        # TODO: raise if optional is passed here?!
+        return unless options.key?(:optional)
+
+        raise InvalidOptions, "The optional option is not available for nodes of type #{self.class.name}"
       end
 
       def resolve_omnipresent_option
-        # TODO: raise if omni present is passed here?!
+        return unless options.key?(:omnipresent)
+
+        raise InvalidOptions, "The omnipresent option is not available for nodes of type #{self.class.name}"
       end
     end
   end
