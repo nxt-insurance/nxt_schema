@@ -4,16 +4,16 @@ RSpec.describe NxtSchema do
   context 'any of multiple schemas' do
     let(:schema) do
       NxtSchema.any_of(:contacts) do |contact|
-        contact.schema(:female) do |female|
-          female.required(:first_name, :String)
-          female.required(:last_name, :String)
-          female.required(:female, :Bool)
+        contact.schema do
+          required(:first_name, :String)
+          required(:last_name, :String)
+          required(:female, :Bool)
         end
 
-        contact.schema(:male) do |male|
-          male.required(:first_name, :String)
-          male.required(:last_name, :String)
-          male.required(:male, :Bool)
+        contact.schema do
+          required(:first_name, :String)
+          required(:last_name, :String)
+          required(:male, :Bool)
         end
       end
     end
@@ -37,12 +37,12 @@ RSpec.describe NxtSchema do
 
       it 'returns the correct schema errors' do
         expect(subject.schema_errors).to eq(
-          female: {
+          0 => {
             itself: ["The following keys are missing: [:first_name, :last_name, :female]"],
             first_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
             last_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
             female: ["NxtSchema::MissingInput violates constraints (type?(FalseClass, NxtSchema::MissingInput) failed)"]},
-          male: {
+          1 => {
             itself: ["The following keys are missing: [:first_name, :last_name, :male]"],
             first_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
             last_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],

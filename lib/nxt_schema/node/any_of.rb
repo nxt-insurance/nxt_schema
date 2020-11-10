@@ -7,6 +7,18 @@ module NxtSchema
         super
       end
 
+      def collection(name = sub_nodes.count, type = NxtSchema::Node::Collection::DEFAULT_TYPE, **options, &block)
+        super
+      end
+
+      def schema(name = sub_nodes.count, type = NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
+        super
+      end
+
+      def node(name = sub_nodes.count, node_or_type_of_node = nil, **options, &block)
+        super
+      end
+
       # TODO: Maybe overwrite sub node methods to not have to provide a name here and use node count instead
 
       def on(*args)

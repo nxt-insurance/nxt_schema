@@ -55,11 +55,6 @@ module NxtSchema
       alias required node
 
       def add_sub_node(node)
-        # TODO: Test that this raises
-        if is_a?(Collection) && !sub_nodes.empty?
-          raise ArgumentError, "It's not possible to define multiple nodes within a collection"
-        end
-
         sub_nodes.add(node)
         node
       end
