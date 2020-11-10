@@ -1,23 +1,7 @@
 # NxtSchema
 
 ## TODO:
-
-Default values:
-    when do we want to apply default values? --> input is missing, nil, blank 
-        mabye it would be better to say on(:nil?, )
-    defaults would have to sty within types and would be evaluated before maybes    
-    
-    leaf node:
-        Can we implement this using type system?
-        make input, context and schema accessible
-        simple value
-        proc
-        method
-    schemas:
-    
-Maybe values:
-    maybes basically halt the coercion as they allow the condition to apply?!
-    
+- Can we achieve to differentiate to get a clean module vs a global dsl?
 - We have to allow callables for optional options 
     - Question then is when to evaluate? --> Should be solve in master
     - We also need to provide navigation methods to access other nodes
@@ -27,6 +11,7 @@ Maybe values:
 
 - Make combinations of validations work with monads kind of implementation
 - Add back validations
+    - Should we have a global and a local registry for validators?
 - How do we want to deal with nil values? 
     --> Probably global option(s) would be nice
     --> Probably should not be ok with nils by default
@@ -60,7 +45,7 @@ Or install it yourself as:
 
 ```ruby
 # Schema with hash root
-schema = NxtSchema.root(:company) do 
+schema = NxtSchema.schema(:company) do
   requires(:name, :String).on(->(input) { input == nil }, 'Andy')
     requires(:name, :String).on(:nil?) do
     end
