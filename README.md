@@ -17,12 +17,14 @@ Default values:
     
 Maybe values:
     maybes basically halt the coercion as they allow the condition to apply?!
-
-- We should not allow options and evaluators to be called on any_od nodes!
-- Make combinations of validations work with monads kind of implementation
-- Add back validations
+    
 - We have to allow callables for optional options 
     - Question then is when to evaluate? --> Should be solve in master
+    
+- Spec contexts
+
+- Make combinations of validations work with monads kind of implementation
+- Add back validations
 - How do we want to deal with nil values? 
     --> Probably global option(s) would be nice
     --> Probably should not be ok with nils by default
