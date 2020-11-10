@@ -72,7 +72,7 @@ module NxtSchema
           parts << name
         end
 
-        parts << node.name if error_key.is_a?(Integer)
+        parts << node.name if error_key.is_a?(Integer) && error_key != node.name
         parts << error_key
         parts.compact!
         parts.reject! { |part| part == Application::Errors::DEFAULT_ERROR_KEY }
