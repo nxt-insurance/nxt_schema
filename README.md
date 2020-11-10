@@ -20,6 +20,8 @@ Maybe values:
     
 - We have to allow callables for optional options 
     - Question then is when to evaluate? --> Should be solve in master
+    - We also need to provide navigation methods to access other nodes
+    - Do we want a special method that applies the nodes when accessing them from inside the schema?
     
 - Spec contexts
 
