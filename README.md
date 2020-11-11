@@ -2,7 +2,12 @@
 
 ## TODO:
 - Can we achieve to differentiate to get a clean module vs a global dsl?
-- Let's try to apply when output is being accessed --> custom reader that walks the pass 
+- Collect nodes when applied in order to validate applied ones
+    - Apply validations only when applied 
+    - Implement apply! that raises 
+    - Allow to disable validation when applying 
+    - Levels should only be assigned at apply time so that it's correct when merging schemas
+        --> Are there other attributes that should be moved to apply time?
 - We have to allow callables for optional options 
     - Question then is when to evaluate? --> Should be solve in master
     - We also need to provide navigation methods to access other nodes
