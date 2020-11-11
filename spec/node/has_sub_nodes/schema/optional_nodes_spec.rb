@@ -14,7 +14,6 @@ RSpec.describe NxtSchema do
       end
     end
 
-
     context 'and they are given' do
       let(:input) do
         {

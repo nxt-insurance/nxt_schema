@@ -17,14 +17,14 @@ module NxtSchema
           end
         end
 
-        register_as_applied
+        register_as_applied if valid?
         self
       end
 
       private
 
       def validate_filled
-        add_schema_error('is not allowed to be empty') if input.empty? && !maybe_evaluator_applies?
+        add_schema_error('is not allowed to be empty') if input.blank? && !maybe_evaluator_applies?
       end
 
       def apply_item(item, error_key)
