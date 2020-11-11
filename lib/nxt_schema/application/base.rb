@@ -51,12 +51,12 @@ module NxtSchema
       end
 
       def apply_on_evaluators
-        on_evaluators.each { |evaluator| self.input = evaluator.call(input, self, node.context) }
+        on_evaluators.each { |evaluator| self.input = evaluator.call(input, self, context) }
       end
 
       def maybe_evaluator_applies?
         @maybe_evaluator_applies ||= maybe_evaluators.inject(false) do |acc, evaluator|
-          result = (acc || evaluator.call(input, self, node.context))
+          result = (acc || evaluator.call(input, self, context))
           break true if result
 
           result
