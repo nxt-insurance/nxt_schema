@@ -2,6 +2,7 @@
 
 ## TODO:
 - Can we achieve to differentiate to get a clean module vs a global dsl?
+- Let's try to apply when output is being accessed --> custom reader that walks the pass 
 - We have to allow callables for optional options 
     - Question then is when to evaluate? --> Should be solve in master
     - We also need to provide navigation methods to access other nodes
