@@ -9,12 +9,14 @@ module NxtSchema
         @error_key = error_key
         @errors = Errors.new(application: self, node: node)
         @context = context || parent&.context
+        @applied = false
+        @applied_nodes = parent&.applied_nodes || []
 
         resolve_nested_error_key
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :errors, :context, :error_key, :nested_error_key
+      attr_reader :parent, :errors, :context, :error_key, :nested_error_key, :applied, :applied_nodes
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
@@ -35,6 +37,8 @@ module NxtSchema
       end
 
       private
+
+      attr_writer :applied
 
       def coerce_input
         apply_on_evaluators
@@ -77,6 +81,11 @@ module NxtSchema
         parts.compact!
         parts.reject! { |part| part == Application::Errors::DEFAULT_ERROR_KEY }
         @nested_error_key = parts.join('.')
+      end
+
+      def register_as_applied
+        self.applied = true
+        applied_nodes << self
       end
     end
   end

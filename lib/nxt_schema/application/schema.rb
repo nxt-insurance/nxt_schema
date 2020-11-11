@@ -21,6 +21,7 @@ module NxtSchema
           end
         end
 
+        register_as_applied
         self
       end
 
