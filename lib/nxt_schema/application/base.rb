@@ -36,6 +36,11 @@ module NxtSchema
         !errors.any?
       end
 
+      # Adds a validation error
+      def add_error(*args)
+
+      end
+
       private
 
       attr_writer :applied

@@ -11,6 +11,7 @@ module NxtSchema
         @path = resolve_path
         @on_evaluators = []
         @maybe_evaluators = []
+        @validations = Array(options.fetch(:validate, []))
 
         resolve_context
         resolve_optional_option
@@ -30,7 +31,7 @@ module NxtSchema
         :root,
         :additional_keys_strategy
 
-        attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators
+        attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations
 
       # TODO: Can we male this not work with keyword args?!
       def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = Application::Errors::DEFAULT_ERROR_KEY)
@@ -81,9 +82,33 @@ module NxtSchema
         self
       end
 
+      def validate(key, *args, &block)
+        if key.is_a?(Symbol)
+          validator = validator(key, *args)
+        elsif key.respond_to?(:call)
+          validator = key
+        elsif block_given?
+          validator = block
+        else
+          raise ArgumentError, "Don't know how to resolve validator from: #{key}"
+        end
+
+        register_validator(validator)
+
+        self
+      end
+
       private
 
       attr_writer :path, :meta, :context, :on_evaluators, :maybe_evaluators
+
+      def validator(key, *args)
+        Validators::REGISTRY.resolve!(key).new(*args).build
+      end
+
+      def register_validator(validator)
+        validations << validator
+      end
 
       def resolve_type(name_or_type)
         @type = root.send(:type_resolver).resolve(type_system, name_or_type)

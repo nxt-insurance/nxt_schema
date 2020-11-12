@@ -1,7 +1,6 @@
 # NxtSchema
 
 ## TODO:
-- Can we achieve to differentiate to get a clean module vs a global dsl?
 - Collect nodes when applied in order to validate applied ones
     - Apply validations only when applied 
     - Implement apply! that raises 

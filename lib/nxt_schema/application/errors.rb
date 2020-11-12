@@ -9,9 +9,10 @@ module NxtSchema
         @schema_errors = {}
         @flat_schema_errors = {}
         @validation_errors = {}
+        @flat_validation_errors = {}
       end
 
-      attr_reader :application, :node, :schema_errors, :validation_errors, :flat_schema_errors
+      attr_reader :application, :node, :schema_errors, :validation_errors, :flat_schema_errors, :flat_validation_errors
 
       def all
         {
@@ -26,6 +27,12 @@ module NxtSchema
         schema_errors[DEFAULT_ERROR_KEY] ||= []
         schema_errors[DEFAULT_ERROR_KEY] << error
         add_flat_schema_error(error)
+      end
+
+      def add_validation_error(error)
+        validation_errors[DEFAULT_ERROR_KEY] ||= []
+        validation_errors[DEFAULT_ERROR_KEY] << error
+        add_flat_validation_error(error)
       end
 
       def merge_schema_errors(child_application)
@@ -53,6 +60,11 @@ module NxtSchema
       def add_flat_schema_error(error)
         flat_schema_errors[application.nested_error_key] ||= []
         flat_schema_errors[application.nested_error_key] << error
+      end
+
+      def add_flat_validation_error(error)
+        flat_validation_errors[application.nested_error_key] ||= []
+        flat_validation_errors[application.nested_error_key] << error
       end
     end
   end
