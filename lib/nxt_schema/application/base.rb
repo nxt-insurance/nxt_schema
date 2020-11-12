@@ -11,12 +11,15 @@ module NxtSchema
         @context = context || parent&.context
         @applied = false
         @applied_nodes = parent&.applied_nodes || []
+        @is_root = parent_node.nil?
+        @root = parent_node.nil? ? self : parent_node.root
+
 
         resolve_nested_error_key
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :errors, :context, :error_key, :nested_error_key, :applied, :applied_nodes
+      attr_reader :parent, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
@@ -31,6 +34,10 @@ module NxtSchema
         to: :errors
 
       delegate_missing_to :node
+
+      def root?
+        @is_root
+      end
 
       def valid?
         !errors.any?
@@ -51,7 +58,7 @@ module NxtSchema
 
       private
 
-      attr_writer :applied
+      attr_writer :applied, :root
 
       def coerce_input
         apply_on_evaluators
@@ -99,6 +106,21 @@ module NxtSchema
       def register_as_applied
         self.applied = true
         applied_nodes << self
+      end
+
+      def initialize_error_store
+        if root?
+          @error_store = ApplicationErrors.new
+        else
+          @application_errors = {
+            schema_errors: [],
+            validation_errors: []
+          }
+        end
+      end
+
+      def errors
+        @errors ||= root.error_store
       end
     end
   end

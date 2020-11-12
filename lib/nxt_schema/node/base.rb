@@ -28,10 +28,9 @@ module NxtSchema
         :options,
         :type,
         :level,
-        :root,
         :additional_keys_strategy
 
-        attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations
+        attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations, :root
 
       # TODO: Can we male this not work with keyword args?!
       def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = Application::Errors::DEFAULT_ERROR_KEY)
@@ -96,7 +95,7 @@ module NxtSchema
 
       private
 
-      attr_writer :path, :meta, :context, :on_evaluators, :maybe_evaluators
+      attr_writer :path, :meta, :context, :on_evaluators, :maybe_evaluators, :root
 
       def validator(key, *args)
         Validators::REGISTRY.resolve!(key).new(*args).build
