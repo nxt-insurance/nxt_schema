@@ -7,19 +7,18 @@ module NxtSchema
         @parent = parent
         @output = nil
         @error_key = error_key
-        @errors = Errors.new(application: self, node: node)
         @context = context || parent&.context
         @applied = false
         @applied_nodes = parent&.applied_nodes || []
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
 
-
         resolve_nested_error_key
+        initialize_error_stores
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root
+      attr_reader :parent, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root, :errors
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
@@ -108,15 +107,13 @@ module NxtSchema
         applied_nodes << self
       end
 
-      def initialize_error_store
-        if root?
-          @error_store = ApplicationErrors.new
-        else
-          @application_errors = {
-            schema_errors: [],
-            validation_errors: []
-          }
-        end
+      def initialize_error_stores
+        @application_errors = ApplicationErrors.new if root?
+        @errors = Errors.new(application)
+      end
+
+      def application_errors
+        @application_errors ||= root? ? @application_errors : root.application_errors
       end
 
       def errors
