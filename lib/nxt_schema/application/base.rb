@@ -36,9 +36,17 @@ module NxtSchema
         !errors.any?
       end
 
-      # Adds a validation error
-      def add_error(*args)
+      def add_error(error)
+        add_validation_error(error)
+      end
 
+      def run_validations
+        return false unless applied?
+
+        validatations.each do |validation|
+          args = [self, input]
+          validation.call(*args.take(validation.arity))
+        end
       end
 
       private

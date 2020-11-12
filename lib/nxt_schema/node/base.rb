@@ -56,10 +56,6 @@ module NxtSchema
         @omnipresent
       end
 
-      def presence?
-        @presence
-      end
-
       def default(value = NxtSchema::MissingInput.new, &block)
         value = value.is_a?(NxtSchema::MissingInput) ? block : value
         condition = ->(input) { input.is_a?(NxtSchema::MissingInput) || input.nil? }
