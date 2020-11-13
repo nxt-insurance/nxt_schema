@@ -12,7 +12,7 @@ module NxtSchema
         keys.each do |key|
           sub_node = sub_nodes[key]
           value = input.key?(key) ? input[key] : MissingInput.new
-          current_application = sub_node.apply(value, nil, self, key)
+          current_application = sub_node.apply(value, nil, self, nil)
           next if current_application.local_errors?
 
           output[key] = current_application.output

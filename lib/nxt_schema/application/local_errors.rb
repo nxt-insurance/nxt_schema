@@ -1,22 +1,18 @@
 module NxtSchema
   module Application
-    class LocalErrors
+    class LocalErrors < ::Hash
       def initialize(application)
+        super()
         @application = application
-        @schema_errors = []
-        @validation_errors = []
+        self[:schema_errors] = []
+        self[:validation_errors] = []
       end
 
-      attr_reader :application, :schema_errors, :validation_errors
+      attr_reader :application
 
-      def all
-        {
-          schema_errors: schema_errors,
-          validation_errors: validation_errors
-        }
+      def any?
+        schema_errors.any? || validation_errors.any?
       end
-
-      alias to_h all
 
       def add_schema_error(error)
         schema_errors << error
@@ -26,8 +22,12 @@ module NxtSchema
         validation_errors << error
       end
 
-      def any?
-        schema_errors.any? || validation_errors.any?
+      def schema_errors
+        self[:schema_errors]
+      end
+
+      def validation_errors
+        self[:validation_errors]
       end
     end
   end

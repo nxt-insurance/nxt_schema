@@ -107,7 +107,7 @@ module NxtSchema
 
       def resolve_error_key(key)
         parts = [parent&.error_key].compact
-        parts << (key.present? ? "#{node.name}##{key}" : node.name)
+        parts << (key.present? ? "#{node.name}[#{key}]" : node.name)
         @error_key = parts.join('.')
       end
     end
