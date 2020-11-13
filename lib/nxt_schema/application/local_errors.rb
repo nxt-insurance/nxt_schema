@@ -1,6 +1,6 @@
 module NxtSchema
   module Application
-    class Errors
+    class LocalErrors
       def initialize(application)
         @application = application
         @schema_errors = []

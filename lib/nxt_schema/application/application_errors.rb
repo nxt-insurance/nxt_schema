@@ -22,13 +22,13 @@ module NxtSchema
       end
 
       def add_schema_error(application, error)
-        schema_errors[application.nested_error_key] ||= []
-        schema_errors[application.nested_error_key] << error
+        schema_errors[application.error_key] ||= []
+        schema_errors[application.error_key] << error
       end
 
       def add_validation_error(application, error)
-        validation_errors[application.nested_error_key] ||= []
-        validation_errors[application.nested_error_key] << error
+        validation_errors[application.error_key] ||= []
+        validation_errors[application.error_key] << error
       end
     end
   end

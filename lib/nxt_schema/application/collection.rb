@@ -4,20 +4,17 @@ module NxtSchema
       def call
         coerce_input
         validate_filled
-        return self unless valid?
+        return self if local_errors?
         return self if maybe_evaluator_applies?
 
         input.each_with_index do |item, index|
           current_application = apply_item(item, index)
+          next if current_application.local_errors?
 
-          if current_application.errors.any?
-            merge_schema_errors(current_application)
-          else
-            output[index] = current_application.output
-          end
+          output[index] = current_application.output
         end
 
-        register_as_applied if valid?
+        register_as_applied unless local_errors?
         self
       end
 

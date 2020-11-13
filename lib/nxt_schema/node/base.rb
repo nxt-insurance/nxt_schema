@@ -33,7 +33,7 @@ module NxtSchema
         attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations, :root
 
       # TODO: Can we male this not work with keyword args?!
-      def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = Application::Errors::DEFAULT_ERROR_KEY)
+      def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
         application_class.new(
           node: self,
           input: input,

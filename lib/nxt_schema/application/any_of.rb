@@ -7,22 +7,14 @@ module NxtSchema
 
       def call
         # TODO: We should check that this is not empty!
-
-        if valid?
-          self.output = valid_application.output
-        else
-          applications.each do |application|
-            merge_schema_errors(application)
-          end
-        end
-
+        self.output = valid_application.output if no_local_errors?
         self
       end
 
       private
 
       def valid_application
-        applications.find(&:valid?)
+        applications.find(&:no_local_errors?)
       end
 
       def applications

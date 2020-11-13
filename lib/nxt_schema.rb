@@ -41,7 +41,7 @@ require_relative 'nxt_schema/node/schema'
 require_relative 'nxt_schema/node/leaf'
 
 require_relative 'nxt_schema/application/application_errors'
-require_relative 'nxt_schema/application/errors'
+require_relative 'nxt_schema/application/local_errors'
 require_relative 'nxt_schema/application/base'
 require_relative 'nxt_schema/application/any_of'
 require_relative 'nxt_schema/application/leaf'
