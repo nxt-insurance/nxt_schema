@@ -36,7 +36,7 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct schema errors' do
-        expect(subject.schema_errors).to eq(
+        expect(subject.errors).to eq(
           0 => {
             itself: ["The following keys are missing: [:first_name, :last_name, :female]"],
             first_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],

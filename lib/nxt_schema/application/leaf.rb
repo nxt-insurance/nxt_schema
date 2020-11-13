@@ -3,7 +3,7 @@ module NxtSchema
     class Leaf < Application::Base
       def call
         coerce_input
-        register_as_applied if local_errors?
+        register_if_applied
         self
       end
     end

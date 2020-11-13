@@ -59,7 +59,7 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it do
-        expect(subject.schema_errors).to eq(
+        expect(subject.errors).to eq(
           good_combinations: {
             3 => {
               good_combo: {

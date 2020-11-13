@@ -18,7 +18,7 @@ module NxtSchema
           output[key] = current_application.output
         end
 
-        register_as_applied unless local_errors?
+        register_if_applied
         self
       end
 

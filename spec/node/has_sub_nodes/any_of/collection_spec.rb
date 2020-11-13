@@ -29,7 +29,7 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct schema errors' do
-        expect(subject.schema_errors).to eq(
+        expect(subject.errors).to eq(
           {
             3 => {
               integer: ["0.4e1 violates constraints (type?(Integer, 0.4e1) failed)"],

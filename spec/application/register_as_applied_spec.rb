@@ -31,6 +31,11 @@ RSpec.describe NxtSchema do
   end
 
   it 'returns only nodes that could be applied without schema errors' do
-    expect(subject.applied_nodes.map(&:input)).to match_array(%w[Andy Superman Superstar])
+    expect(subject.applied_nodes.map(&:error_key)).to match_array([
+      'person.first_name',
+      'person.nick_names',
+      'person.nick_names.nick_name[0]',
+      'person.nick_names.nick_name[1]'
+    ])
   end
 end

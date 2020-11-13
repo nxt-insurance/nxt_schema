@@ -3,12 +3,18 @@ module NxtSchema
     class GlobalErrors < ::Hash
       def add_schema_error(application, error)
         self[application.error_key] ||= []
-        self[application.error_key] << NxtSchema::Application::Errors::SchemaError.new(application: application, message: error)
+        self[application.error_key] << NxtSchema::Application::Errors::SchemaError.new(
+          application: application,
+          message: error
+        )
       end
 
       def add_validation_error(application, error)
         self[application.error_key] ||= []
-        self[application.error_key] << NxtSchema::Application::Errors::ValidationError.new(application: application, message: error)
+        self[application.error_key] << NxtSchema::Application::Errors::ValidationError.new(
+          application: application,
+          message: error
+        )
       end
 
       def schema_errors
