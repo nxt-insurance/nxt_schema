@@ -130,13 +130,13 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct errors' do
-        expect(subject.errors[:schema_errors]).to eq(
+        expect(subject.errors).to eq(
           'person' => ['The following keys are missing: [:name]'],
           'person.houses.house[0]' => ['The following keys are missing: [:zip_code]'],
           'person.houses.house[0].zip_code' => ['NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)'],
           'person.houses.house[1].street' => ['nil violates constraints (type?(String, nil) failed)'],
           'person.houses.house[2].street' => ['1 violates constraints (type?(String, 1) failed)'],
-          'person.houses.house[2].zip_code' => ['\'67661\' violates constraints (type?(Integer, \'67661\') failed)'],
+          'person.houses.house[2].zip_code' => ["\"67661\" violates constraints (type?(Integer, \"67661\") failed)"],
           'person.name' => ['NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)']
         )
       end
