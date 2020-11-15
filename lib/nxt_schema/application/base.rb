@@ -12,14 +12,13 @@ module NxtSchema
         @applied_nodes = parent&.applied_nodes || []
         @is_root = parent.nil?
         @root = parent.nil? ? self : parent.root
+        @errors = ErrorStore.new(self)
 
-        initialize_error_stores
-        resolve_nested_error_key # TODO: Remove this!
         resolve_error_key(error_key)
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :errors, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root, :local_errors
+      attr_reader :parent, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root, :errors
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
@@ -36,11 +35,11 @@ module NxtSchema
       end
 
       def add_error(error)
-        local_errors.add_validation_error(error)
+        errors.add_validation_error(message: error)
       end
 
       def add_schema_error(error)
-        local_errors.add_schema_error(error)
+        errors.add_schema_error(message: error)
       end
 
       def merge_errors(application)
@@ -58,7 +57,7 @@ module NxtSchema
 
       private
 
-      attr_writer :applied
+      attr_writer :applied, :root
 
       def coerce_input
         apply_on_evaluators
@@ -87,30 +86,9 @@ module NxtSchema
         end
       end
 
-      def resolve_nested_error_key
-        parts = []
-
-        if parent
-          parts << parent.nested_error_key
-        else
-          parts << name
-        end
-
-        parts << node.name if error_key.is_a?(Integer) && error_key != node.name
-        parts << error_key
-        parts.compact!
-        parts.reject! { |part| part == Application::Errors::DEFAULT_ERROR_KEY }
-        @nested_error_key = parts.join('.')
-      end
-
       def register_as_applied
         self.applied = true
         applied_nodes << self
-      end
-
-      def initialize_error_stores
-        @errors = GlobalErrorStore.new if root?
-        @local_errors = LocalErrorStore.new(self)
       end
 
       def resolve_error_key(key)

@@ -29,7 +29,7 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it do
-        expect(subject.flat_schema_errors).to eq(
+        expect(subject.errors).to eq(
           'developers' => ['The following keys are missing: [:last_name]'],
           'developers.last_name' => ['nil violates constraints (type?(String, nil) failed)']
         )
@@ -61,7 +61,7 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it do
-        expect(subject.flat_schema_errors).to eq(
+        expect(subject.errors).to eq(
           'developers.last_name' => ['nil violates constraints (type?(String, nil) failed)']
         )
       end

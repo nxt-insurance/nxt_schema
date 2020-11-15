@@ -1,7 +1,14 @@
 module NxtSchema
   module Application
-    class GlobalErrorStore < ::Hash
-      def add_schema_error(application:, message:)
+    class ErrorStore < ::Hash
+      def initialize(application)
+        super()
+        @application = application
+      end
+
+      attr_reader :application
+
+      def add_schema_error(message:)
         add_error(
           application,
           NxtSchema::Application::Errors::SchemaError.new(
@@ -11,7 +18,7 @@ module NxtSchema
         )
       end
 
-      def add_validation_error(application:, message:)
+      def add_validation_error(message:)
         add_error(
           application,
           NxtSchema::Application::Errors::ValidationError.new(
@@ -22,9 +29,7 @@ module NxtSchema
       end
 
       def merge_errors(application)
-        application.local_errors.each do |error|
-          add_error(application, error)
-        end
+        merge!(application.errors)
       end
 
       def add_error(application, error)

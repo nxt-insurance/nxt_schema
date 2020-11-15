@@ -32,7 +32,7 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct output' do
-        expect(subject.schema_errors).to eq(:value => ["invalid value for BigDecimal(): \"a lot\""])
+        expect(subject.errors).to eq("company.value"=>["invalid value for BigDecimal(): \"a lot\""])
       end
     end
   end
@@ -74,10 +74,10 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct output' do
-        expect(subject.schema_errors).to eq(
-          itself: ["The following keys are missing: [:address]"],
-          address: ["NxtSchema::MissingInput violates constraints (type?(Hash, NxtSchema::MissingInput) failed)"],
-          customers: ["\"a lot\" violates constraints (type?(Integer, \"a lot\") failed)"]
+        expect(subject.errors).to eq(
+          "company"=>["The following keys are missing: [:address]"],
+          "company.customers"=>["\"a lot\" violates constraints (type?(Integer, \"a lot\") failed)"],
+          "company.address"=>["NxtSchema::MissingInput violates constraints (type?(Hash, NxtSchema::MissingInput) failed)"]
         )
       end
     end
@@ -130,22 +130,14 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct errors' do
-        expect(subject.schema_errors).to eq(
-          {
-            itself: ["The following keys are missing: [:name]"],
-            name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-            houses: {
-              0 => {
-                itself: ["The following keys are missing: [:zip_code]"],
-                zip_code: ["NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)"]
-              },
-              1 => { street: ["nil violates constraints (type?(String, nil) failed)"] },
-              2 => {
-                street: ["1 violates constraints (type?(String, 1) failed)"],
-                zip_code: ["\"67661\" violates constraints (type?(Integer, \"67661\") failed)"]
-              }
-            }
-          }
+        expect(subject.errors).to eq(
+          "person"=>["The following keys are missing: [:name]"],
+          "person.name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
+          "person.houses.house[0]"=>["The following keys are missing: [:zip_code]"],
+          "person.houses.house[0].zip_code"=>["NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)"],
+          "person.houses.house[1].street"=>["nil violates constraints (type?(String, nil) failed)"],
+          "person.houses.house[2].street"=>["1 violates constraints (type?(String, 1) failed)"],
+          "person.houses.house[2].zip_code"=>["\"67661\" violates constraints (type?(Integer, \"67661\") failed)"]
         )
       end
     end

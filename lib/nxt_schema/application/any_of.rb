@@ -22,11 +22,11 @@ module NxtSchema
       private
 
       def valid_application
-        applications.find { |a| a.local_errors.empty? }
+        applications.find(&:valid?)
       end
 
       def applications
-        @applications ||= nodes.map { |node| node.apply(input, context, self, node.name) }
+        @applications ||= nodes.map { |node| node.apply(input, context, self) }
       end
 
       def nodes

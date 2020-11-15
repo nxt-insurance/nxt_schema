@@ -28,14 +28,11 @@ RSpec.describe NxtSchema do
     end
 
     it 'adds the correct errors' do
-      expect(subject.schema_errors).to eq(
-        {
-          itself: ["Additional keys are not allowed: [:description]"],
-          sub_tasks: {
-            1 => ["Additional keys are not allowed: [:estimate]"]
-          }
-        }
+      expect(subject.errors).to eq(
+        "task"=>["Additional keys are not allowed: [:description]"],
+        "task.sub_tasks.sub_task[1]"=>["Additional keys are not allowed: [:estimate]"]
       )
+
     end
   end
 end

@@ -1,8 +1,15 @@
-class NxtSchema::Application::Errors::SchemaError < ::String
-  def initialize(application:, message:)
-    super(message)
-    @application = application
-  end
+module NxtSchema
+  module Application
+    module Errors
+      class SchemaError < ::String
+        def initialize(application:, message:)
+          super(message)
+          @application = application
+        end
 
-  attr_reader :application
+        attr_reader :application
+      end
+    end
+  end
 end
+

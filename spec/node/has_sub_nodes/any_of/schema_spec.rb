@@ -36,18 +36,15 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct schema errors' do
-        expect(subject.schema_errors).to eq(
-          0 => {
-            itself: ["The following keys are missing: [:first_name, :last_name, :female]"],
-            first_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-            last_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-            female: ["NxtSchema::MissingInput violates constraints (type?(FalseClass, NxtSchema::MissingInput) failed)"]},
-          1 => {
-            itself: ["The following keys are missing: [:first_name, :last_name, :male]"],
-            first_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-            last_name: ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-            male: ["NxtSchema::MissingInput violates constraints (type?(FalseClass, NxtSchema::MissingInput) failed)"]
-          }
+        expect(subject.errors).to eq(
+          "contacts.0"=>["The following keys are missing: [:first_name, :last_name, :female]"],
+          "contacts.0.first_name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
+          "contacts.0.last_name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
+          "contacts.0.female"=>["NxtSchema::MissingInput violates constraints (type?(FalseClass, NxtSchema::MissingInput) failed)"],
+          "contacts.1"=>["The following keys are missing: [:first_name, :last_name, :male]"],
+          "contacts.1.first_name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
+          "contacts.1.last_name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
+          "contacts.1.male"=>["NxtSchema::MissingInput violates constraints (type?(FalseClass, NxtSchema::MissingInput) failed)"]
         )
       end
     end

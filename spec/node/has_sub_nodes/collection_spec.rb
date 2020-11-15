@@ -32,14 +32,10 @@ RSpec.describe NxtSchema do
       it 'returns the correct errors' do
         expect(subject).to_not be_valid
 
-        expect(subject.errors.schema_errors).to eq(
-          {
-            5 => ["can't convert Array into Float"],
-            6 => ["can't convert Hash into Float"]
-          }
+        expect(subject.errors).to eq(
+          "developers.dev[5]"=>["can't convert Array into Float"],
+          "developers.dev[6]"=>["can't convert Hash into Float"]
         )
-
-        expect(subject.errors.validation_errors).to be_empty
       end
     end
   end
@@ -84,26 +80,16 @@ RSpec.describe NxtSchema do
       it { expect(subject).to_not be_valid }
 
       it 'returns the correct errors' do
-        expect(subject.schema_errors).to eq(
-          {
-            0 => {
-              0 => {
-                itself: ["The following keys are missing: [:name]"],
-                name: ['NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)']
-              }
-            },
-            2 => {
-              0 => {
-                itself: ["The following keys are missing: [:name, :age]"],
-                name: ['NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)'],
-                age: ['NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)']
-              },
-              1 => ['"invalid" violates constraints (type?(Hash, "invalid") failed)'],
-              2 => ['1 violates constraints (type?(Hash, 1) failed)'],
-              3 => ['2 violates constraints (type?(Hash, 2) failed)']
-            },
-            3 => ['is not allowed to be empty']
-          }
+        expect(subject.errors).to eq(
+          "developers.frontend_devs[0].frontend_dev[0]"=>["The following keys are missing: [:name]"],
+          "developers.frontend_devs[0].frontend_dev[0].name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
+          "developers.frontend_devs[2].frontend_dev[0]"=>["The following keys are missing: [:name, :age]"],
+          "developers.frontend_devs[2].frontend_dev[0].name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
+          "developers.frontend_devs[2].frontend_dev[0].age"=>["NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)"],
+          "developers.frontend_devs[2].frontend_dev[1]"=>["\"invalid\" violates constraints (type?(Hash, \"invalid\") failed)"],
+          "developers.frontend_devs[2].frontend_dev[2]"=>["1 violates constraints (type?(Hash, 1) failed)"],
+          "developers.frontend_devs[2].frontend_dev[3]"=>["2 violates constraints (type?(Hash, 2) failed)"],
+          "developers.frontend_devs[3]"=>["is not allowed to be empty"]
         )
       end
     end
