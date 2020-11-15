@@ -21,7 +21,7 @@ module NxtSchema
           end
         end
 
-        register_as_applied if valid?
+        register_as_applied_when_valid
         run_validations
         self
       end
