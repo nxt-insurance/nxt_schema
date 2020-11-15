@@ -94,7 +94,9 @@ module NxtSchema
         end
       end
 
-      def register_as_applied
+      def register_as_applied_when_valid
+        return unless valid?
+
         self.applied = true
         applied_nodes << self
       end

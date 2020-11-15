@@ -1,6 +1,6 @@
 module NxtSchema
   module Validators
-    class Optionalapplication < Validator
+    class OptionalNode < Validator
       def initialize(conditional, missing_key)
         @conditional = conditional
         @missing_key = missing_key
@@ -16,7 +16,13 @@ module NxtSchema
           if conditional.call(*args.take(conditional.arity))
             true
           else
-            message = ErrorMessages.resolve(application.locale, :required_key_missing, key: missing_key, target: application.value)
+            message = ErrorMessages.resolve(
+              application.locale,
+              :required_key_missing,
+              key: missing_key,
+              target: application.value
+            )
+
             application.add_error(message)
           end
         end
