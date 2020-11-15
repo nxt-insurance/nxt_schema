@@ -83,7 +83,7 @@ module NxtSchema
           validator = validator(key, *args)
         elsif key.respond_to?(:call)
           validator = key
-        elsif block_given?
+        elsif block_given? # TODO: Not sure if this is cool?
           validator = block
         else
           raise ArgumentError, "Don't know how to resolve validator from: #{key}"

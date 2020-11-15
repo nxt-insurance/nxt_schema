@@ -23,8 +23,10 @@ RSpec.describe NxtSchema do
   context 'when the input is not valid' do
     let(:input) { { first_name: 'Andy', last_name: 'Super Hero' } }
 
-    it do
-      expect(subject).to_not be_valid
+    it { expect(subject).to_not be_valid }
+
+    it 'returns the correct errors' do
+      expect(subject.errors).to eq("person.last_name"=>["Super Hero does not equal Superstar"])
     end
   end
 end
