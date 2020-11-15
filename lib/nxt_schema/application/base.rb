@@ -13,7 +13,8 @@ module NxtSchema
         @applied_nodes = parent&.applied_nodes || []
 
         initialize_error_stores
-        resolve_nested_error_key
+        resolve_nested_error_key # TODO: Remove this!
+        resolve_error_key(error_key)
       end
 
       attr_accessor :output, :node, :input
@@ -100,6 +101,17 @@ module NxtSchema
       def register_as_applied
         self.applied = true
         applied_nodes << self
+      end
+
+      def initialize_error_stores
+        # @errors = GlobalErrors.new if root?
+        # @local_errors = LocalErrors.new(self)
+      end
+
+      def resolve_error_key(key)
+        parts = [parent&.error_key].compact
+        parts << (key.present? ? "#{node.name}[#{key}]" : node.name)
+        @error_key = parts.join('.')
       end
     end
   end
