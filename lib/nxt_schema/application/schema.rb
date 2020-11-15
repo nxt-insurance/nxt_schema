@@ -2,16 +2,14 @@ module NxtSchema
   module Application
     class Schema < Application::Base
       def call
+        apply_on_evaluators
+        return self if maybe_evaluator_applies?
+
         coerce_input
         return self unless valid?
-        return self if maybe_evaluator_applies?
 
         flag_missing_keys
         apply_additional_keys_strategy
-
-        keys.each do |key|
-          build_child_application(key)
-        end
 
         child_applications.each do |key, child|
           current_application = child.call
@@ -81,7 +79,12 @@ module NxtSchema
       end
 
       def child_applications
-        @child_applications ||= {}
+        @child_applications ||= begin
+          keys.inject({}) do |acc, key|
+            acc[key] = build_child_application(key)
+            acc
+          end
+        end
       end
 
       delegate :[], to: :child_applications
@@ -91,8 +94,7 @@ module NxtSchema
       def build_child_application(key)
         sub_node = sub_nodes[key]
         value = input.key?(key) ? input[key] : MissingInput.new
-        child = sub_node.build_application(value, nil, self)
-        child_applications[key] = child
+        sub_node.build_application(value, nil, self)
       end
     end
   end

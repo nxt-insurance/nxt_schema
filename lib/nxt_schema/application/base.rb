@@ -70,14 +70,8 @@ module NxtSchema
       attr_writer :applied, :root
 
       def coerce_input
-        apply_on_evaluators
-
-        if maybe_evaluator_applies?
-          self.output = input
-        else
-          output = input.is_a?(MissingInput) && node.omnipresent? ? input : type[input]
-          self.output = output
-        end
+        output = input.is_a?(MissingInput) && node.omnipresent? ? input : type[input]
+        self.output = output
 
       rescue Dry::Types::ConstraintError, Dry::Types::CoercionError => error
         add_schema_error(error.message)
@@ -90,9 +84,13 @@ module NxtSchema
       def maybe_evaluator_applies?
         @maybe_evaluator_applies ||= maybe_evaluators.inject(false) do |acc, evaluator|
           result = (acc || evaluator.call(input, self, context))
-          break true if result
 
-          result
+          if result
+            self.output = input
+            break true
+          else
+            false
+          end
         end
       end
 
