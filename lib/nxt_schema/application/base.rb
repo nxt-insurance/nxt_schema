@@ -12,6 +12,7 @@ module NxtSchema
         @applied = false
         @applied_nodes = parent&.applied_nodes || []
 
+        initialize_error_stores
         resolve_nested_error_key
       end
 
