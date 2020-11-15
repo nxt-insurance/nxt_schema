@@ -104,7 +104,7 @@ module NxtSchema
       end
 
       def initialize_error_stores
-        # @errors = GlobalErrors.new if root?
+        # @errors = GlobalErrorStore.new if root?
         @local_errors = LocalErrorStore.new(self)
       end
 

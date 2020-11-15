@@ -16,13 +16,13 @@ module NxtSchema
         self << NxtSchema::Application::Errors::ValidationError.new(application: application, message: error)
       end
 
-      def schema_errors
-        select { |error| error.is_a?(NxtSchema::Application::Errors::SchemaError) }
-      end
-
-      def validation_errors
-        select { |error| error.is_a?(NxtSchema::Application::Errors::ValidationError) }
-      end
+      # def schema_errors
+      #   select { |error| error.is_a?(NxtSchema::Application::Errors::SchemaError) }
+      # end
+      #
+      # def validation_errors
+      #   select { |error| error.is_a?(NxtSchema::Application::Errors::ValidationError) }
+      # end
     end
   end
 end
