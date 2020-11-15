@@ -26,7 +26,9 @@ module NxtSchema
         self
       end
 
-      # TODO: Make private what should be private
+      delegate :[], to: :child_applications
+
+      private
 
       def keys
         sub_nodes.reject { |key, _| optional_and_not_given_key?(key) }.keys
@@ -86,10 +88,6 @@ module NxtSchema
           end
         end
       end
-
-      delegate :[], to: :child_applications
-
-      private
 
       def build_child_application(key)
         sub_node = sub_nodes[key]
