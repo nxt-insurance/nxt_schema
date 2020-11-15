@@ -28,6 +28,7 @@
 - Introduce Coercible error that wraps dry errors
     - Should we allow anything callable as types?
 - Does it make sense to differentiate between execution and build context?
+- Get rid of delegation of methods from application to node
 
 ## Installation
 
