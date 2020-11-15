@@ -10,7 +10,7 @@ module NxtSchema
       end
 
       def translate_error(locale, **options)
-        NxtSchema::ErrorMessages.resolve(locale, key, **options)
+        NxtSchema::Validators::ErrorMessages.resolve(locale, key, **options)
       end
     end
   end

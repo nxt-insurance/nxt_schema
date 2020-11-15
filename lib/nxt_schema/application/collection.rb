@@ -18,6 +18,8 @@ module NxtSchema
         end
 
         register_as_applied if valid?
+        run_validations
+
         self
       end
 

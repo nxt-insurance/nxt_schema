@@ -13,12 +13,13 @@ module NxtSchema
         @is_root = parent.nil?
         @root = parent.nil? ? self : parent.root
         @errors = ErrorStore.new(self)
+        @locale = 'en'
 
         resolve_error_key(error_key)
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root, :errors
+      attr_reader :parent, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root, :errors, :locale
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
@@ -49,7 +50,7 @@ module NxtSchema
       def run_validations
         return false unless applied?
 
-        validatations.each do |validation|
+        validations.each do |validation|
           args = [self, input]
           validation.call(*args.take(validation.arity))
         end
@@ -95,6 +96,10 @@ module NxtSchema
         parts = [parent&.error_key].compact
         parts << (key.present? ? "#{node.name}[#{key}]" : node.name)
         @error_key = parts.join('.')
+      end
+
+      def applied?
+        @applied
       end
     end
   end
