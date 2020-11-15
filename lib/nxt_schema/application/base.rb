@@ -11,6 +11,8 @@ module NxtSchema
         @context = context || parent&.context
         @applied = false
         @applied_nodes = parent&.applied_nodes || []
+        @is_root = parent.nil?
+        @root = parent.nil? ? self : parent.root
 
         initialize_error_stores
         resolve_nested_error_key # TODO: Remove this!
@@ -18,7 +20,7 @@ module NxtSchema
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :errors, :context, :error_key, :nested_error_key, :applied, :applied_nodes
+      attr_reader :parent, :errors, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
@@ -33,6 +35,10 @@ module NxtSchema
         to: :errors
 
       delegate_missing_to :node
+
+      def root?
+        @is_root
+      end
 
       def valid?
         !errors.any?
