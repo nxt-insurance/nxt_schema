@@ -3,7 +3,7 @@ module NxtSchema
     class Schema < Application::Base
       def call
         coerce_input
-        return self unless valid?
+        return self if local_errors.any?
         return self if maybe_evaluator_applies?
 
         flag_missing_keys
@@ -14,14 +14,14 @@ module NxtSchema
           value = input.key?(key) ? input[key] : MissingInput.new
           current_application = sub_node.apply(value, nil, self, key)
 
-          if current_application.errors.any?
-            merge_schema_errors(current_application)
+          if current_application.local_errors.any?
+            merge_errors(current_application)
           else
             output[key] = current_application.output
           end
         end
 
-        register_as_applied if valid?
+        register_as_applied if local_errors.empty?
         self
       end
 

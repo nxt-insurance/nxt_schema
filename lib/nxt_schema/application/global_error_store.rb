@@ -1,20 +1,35 @@
 module NxtSchema
   module Application
     class GlobalErrorStore < ::Hash
-      def add_schema_error(application, error)
-        self[application.error_key] ||= []
-        self[application.error_key] << NxtSchema::Application::Errors::SchemaError.new(
-          application: application,
-          message: error
+      def add_schema_error(application:, message:)
+        add_error(
+          application,
+          NxtSchema::Application::Errors::SchemaError.new(
+            application: application,
+            message: message
+          )
         )
       end
 
-      def add_validation_error(application, error)
-        self[application.error_key] ||= []
-        self[application.error_key] << NxtSchema::Application::Errors::ValidationError.new(
-          application: application,
-          message: error
+      def add_validation_error(application:, message:)
+        add_error(
+          application,
+          NxtSchema::Application::Errors::ValidationError.new(
+            application: application,
+            message: message
+          )
         )
+      end
+
+      def merge_errors(application)
+        application.local_errors.each do |error|
+          add_error(application, error)
+        end
+      end
+
+      def add_error(application, error)
+        self[application.error_key] ||= []
+        self[application.error_key] << error
       end
 
       # def schema_errors

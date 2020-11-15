@@ -12,7 +12,7 @@ module NxtSchema
           self.output = valid_application.output
         else
           applications.each do |application|
-            merge_schema_errors(application)
+            merge_errors(application)
           end
         end
 
@@ -22,7 +22,7 @@ module NxtSchema
       private
 
       def valid_application
-        applications.find(&:valid?)
+        applications.find { |a| a.local_errors.empty? }
       end
 
       def applications

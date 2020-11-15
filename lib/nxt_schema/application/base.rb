@@ -7,7 +7,6 @@ module NxtSchema
         @parent = parent
         @output = nil
         @error_key = error_key
-        @errors = Errors.new(application: self, node: node)
         @context = context || parent&.context
         @applied = false
         @applied_nodes = parent&.applied_nodes || []
@@ -20,19 +19,11 @@ module NxtSchema
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :errors, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root
+      attr_reader :parent, :errors, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root, :local_errors
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
       end
-
-      delegate :schema_errors,
-        :flat_schema_errors,
-        :validation_errors,
-        :add_schema_error,
-        :add_validation_error,
-        :merge_schema_errors,
-        to: :errors
 
       delegate_missing_to :node
 
@@ -41,11 +32,19 @@ module NxtSchema
       end
 
       def valid?
-        !errors.any?
+        errors.empty?
       end
 
       def add_error(error)
-        add_validation_error(error)
+        local_errors.add_validation_error(error)
+      end
+
+      def add_schema_error(error)
+        local_errors.add_schema_error(error)
+      end
+
+      def merge_errors(application)
+        errors.merge_errors(application)
       end
 
       def run_validations
@@ -110,7 +109,7 @@ module NxtSchema
       end
 
       def initialize_error_stores
-        # @errors = GlobalErrorStore.new if root?
+        @errors = GlobalErrorStore.new if root?
         @local_errors = LocalErrorStore.new(self)
       end
 
