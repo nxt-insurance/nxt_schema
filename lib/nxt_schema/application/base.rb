@@ -13,7 +13,7 @@ module NxtSchema
         @is_root = parent.nil?
         @root = parent.nil? ? self : parent.root
         @errors = ErrorStore.new(self)
-        @locale = 'en'
+        @locale = options.fetch(:locale) { parent&.locale || 'en' }.to_s
 
         resolve_error_key(error_key)
       end

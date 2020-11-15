@@ -78,15 +78,19 @@ module NxtSchema
         self
       end
 
-      def validate(key, *args, &block)
-        if key.is_a?(Symbol)
-          validator = validator(key, *args)
+      def validate(key = NxtSchema::MissingInput.new, *args, &block)
+        validator = if key.is_a?(Symbol)
+          validator(key, *args)
         elsif key.respond_to?(:call)
-          validator = key
-        elsif block_given? # TODO: Not sure if this is cool?
-          validator = block
+          key
+        elsif block_given?
+          if key.is_a?(NxtSchema::MissingInput)
+            block
+          else
+            configure(&block)
+          end
         else
-          raise ArgumentError, "Don't know how to resolve validator from: #{key}"
+          raise ArgumentError, "Don't know how to resolve validator from: #{key} with: #{args} #{block}"
         end
 
         register_validator(validator)
