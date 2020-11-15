@@ -56,6 +56,15 @@ module NxtSchema
         end
       end
 
+      def up(levels = 1)
+        0.upto(levels - 1).inject(self) do |acc, _|
+          parent = acc.send(:parent)
+          break acc unless parent
+
+          parent
+        end
+      end
+
       private
 
       attr_writer :applied, :root

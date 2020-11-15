@@ -10,9 +10,11 @@ module NxtSchema
         apply_additional_keys_strategy
 
         keys.each do |key|
-          sub_node = sub_nodes[key]
-          value = input.key?(key) ? input[key] : MissingInput.new
-          current_application = sub_node.apply(value, nil, self)
+          build_child_application(key)
+        end
+
+        child_applications.each do |key, child|
+          current_application = child.call
 
           if !current_application.valid?
             merge_errors(current_application)
@@ -25,6 +27,8 @@ module NxtSchema
         run_validations
         self
       end
+
+      # TODO: Make private what should be private
 
       def keys
         sub_nodes.reject { |key, _| optional_and_not_given_key?(key) }.keys
@@ -74,6 +78,21 @@ module NxtSchema
 
       def restrict_addition_keys?
         additional_keys_strategy == :restrict
+      end
+
+      def child_applications
+        @child_applications ||= {}
+      end
+
+      delegate :[], to: :child_applications
+
+      private
+
+      def build_child_application(key)
+        sub_node = sub_nodes[key]
+        value = input.key?(key) ? input[key] : MissingInput.new
+        child = sub_node.build_application(value, nil, self)
+        child_applications[key] = child
       end
     end
   end

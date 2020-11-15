@@ -7,11 +7,12 @@ module NxtSchema
 
       def call
         # TODO: We should check that this is not empty!
+        child_applications.map(&:call)
 
         if valid?
           self.output = valid_application.output
         else
-          applications.each do |application|
+          child_applications.each do |application|
             merge_errors(application)
           end
         end
@@ -21,12 +22,14 @@ module NxtSchema
 
       private
 
+      delegate :[], to: :child_applications
+
       def valid_application
-        applications.find(&:valid?)
+        child_applications.find(&:valid?)
       end
 
-      def applications
-        @applications ||= nodes.map { |node| node.apply(input, context, self) }
+      def child_applications
+        @child_applications ||= nodes.map { |node| node.build_application(input, context, self) }
       end
 
       def nodes

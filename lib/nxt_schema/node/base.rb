@@ -44,6 +44,16 @@ module NxtSchema
         ).call
       end
 
+      def build_application(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
+        application_class.new(
+          node: self,
+          input: input,
+          parent: parent,
+          context: context,
+          error_key: error_key
+        )
+      end
+
       def root?
         @is_root
       end
