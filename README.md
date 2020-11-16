@@ -1,7 +1,6 @@
 # NxtSchema
 
 ## TODO:
-- Change root to root node to differentiate between root of applications and nodes
 - Collect nodes when applied in order to validate applied ones
     - Apply validations only when applied 
     - Implement apply! that raises 

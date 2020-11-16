@@ -49,7 +49,6 @@ RSpec.describe NxtSchema do
   end
 
   it do
-    binding.pry
     expect(address_schema.parent_node).to be_nil
     expect(schema[:address].parent_node).to eq(schema)
     expect(schema[:cyphers].parent_node).to eq(schema)

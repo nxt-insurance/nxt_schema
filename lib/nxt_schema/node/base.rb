@@ -5,8 +5,8 @@ module NxtSchema
         @name = name
         @parent_node = parent_node
         @options = options
-        @is_root = parent_node.nil?
-        @root = parent_node.nil? ? self : parent_node.root
+        @is_root_node = parent_node.nil?
+        @root_node = parent_node.nil? ? self : parent_node.root_node
         @path = resolve_path
         @on_evaluators = []
         @maybe_evaluators = []
@@ -27,7 +27,7 @@ module NxtSchema
                     :parent_node,
                     :options,
                     :type,
-                    :root,
+                    :root_node,
                     :additional_keys_strategy
 
       attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations, :configuration
@@ -47,8 +47,8 @@ module NxtSchema
         )
       end
 
-      def root?
-        @is_root
+      def root_node?
+        @is_root_node
       end
 
       def optional?
@@ -114,7 +114,7 @@ module NxtSchema
       end
 
       def resolve_type(name_or_type)
-        @type = root.send(:type_resolver).resolve(type_system, name_or_type)
+        @type = root_node.send(:type_resolver).resolve(type_system, name_or_type)
       end
 
       def resolve_type_system
@@ -123,7 +123,7 @@ module NxtSchema
 
       def type_resolver
         @type_resolver ||= begin
-          root? ? TypeResolver.new : (raise NoMethodError, 'type_resolver is only available on root node')
+          root_node? ? TypeResolver.new : (raise NoMethodError, 'type_resolver is only available on root node')
         end
       end
 
@@ -170,7 +170,7 @@ module NxtSchema
       end
 
       def resolve_path
-        self.path = root? ? name : "#{parent_node.path}.#{name}"
+        self.path = root_node? ? name : "#{parent_node.path}.#{name}"
       end
 
       def resolve_context
