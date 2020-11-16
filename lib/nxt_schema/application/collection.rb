@@ -47,7 +47,7 @@ module NxtSchema
       end
 
       def sub_node
-        @sub_node ||= sub_nodes.values.first
+        @sub_node ||= node.sub_nodes.values.first
       end
 
       def child_applications

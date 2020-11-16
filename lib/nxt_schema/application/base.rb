@@ -13,19 +13,19 @@ module NxtSchema
         @is_root = parent.nil?
         @root = parent.nil? ? self : parent.root
         @errors = ErrorStore.new(self)
-        @locale = options.fetch(:locale) { parent&.locale || 'en' }.to_s
+        @locale = node.options.fetch(:locale) { parent&.locale || 'en' }.to_s
 
         resolve_error_key(error_key)
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :context, :error_key, :nested_error_key, :applied, :applied_nodes, :root, :errors, :locale
+      attr_reader :parent, :context, :error_key, :applied, :applied_nodes, :root, :errors, :locale
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
       end
 
-      delegate_missing_to :node
+      delegate :name, :options, to: :node
 
       def root?
         @is_root
@@ -50,7 +50,7 @@ module NxtSchema
       def run_validations
         return false unless applied?
 
-        validations.each do |validation|
+        node.validations.each do |validation|
           args = [self, input]
           validation.call(*args.take(validation.arity))
         end
@@ -70,7 +70,7 @@ module NxtSchema
       attr_writer :applied, :root
 
       def coerce_input
-        output = input.is_a?(MissingInput) && node.omnipresent? ? input : type[input]
+        output = input.is_a?(MissingInput) && node.omnipresent? ? input : node.type[input]
         self.output = output
 
       rescue Dry::Types::ConstraintError, Dry::Types::CoercionError => error
@@ -78,11 +78,11 @@ module NxtSchema
       end
 
       def apply_on_evaluators
-        on_evaluators.each { |evaluator| self.input = evaluator.call(input, self, context) }
+        node.on_evaluators.each { |evaluator| self.input = evaluator.call(input, self, context) }
       end
 
       def maybe_evaluator_applies?
-        @maybe_evaluator_applies ||= maybe_evaluators.inject(false) do |acc, evaluator|
+        @maybe_evaluator_applies ||= node.maybe_evaluators.inject(false) do |acc, evaluator|
           result = (acc || evaluator.call(input, self, context))
 
           if result

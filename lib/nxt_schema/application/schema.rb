@@ -31,7 +31,7 @@ module NxtSchema
       private
 
       def keys
-        sub_nodes.reject { |key, _| optional_and_not_given_key?(key) }.keys
+        node.sub_nodes.reject { |key, _| optional_and_not_given_key?(key) }.keys
       end
 
       def additional_keys
@@ -39,7 +39,7 @@ module NxtSchema
       end
 
       def optional_and_not_given_key?(key)
-        sub_nodes[key].optional? && !input.key?(key)
+        node.sub_nodes[key].optional? && !input.key?(key)
       end
 
       def additional_keys?
@@ -48,7 +48,7 @@ module NxtSchema
 
       # TODO: Should we raise directly when keys are missing?
       def missing_keys
-        @missing_keys ||= sub_nodes.reject { |_, node| node.omnipresent? || node.optional? }.keys - input.keys
+        @missing_keys ||= node.sub_nodes.reject { |_, node| node.omnipresent? || node.optional? }.keys - input.keys
       end
 
       def apply_additional_keys_strategy
@@ -69,15 +69,15 @@ module NxtSchema
       end
 
       def allow_additional_keys?
-        additional_keys_strategy == :allow
+        node.additional_keys_strategy == :allow
       end
 
       def reject_additional_keys?
-        additional_keys_strategy == :reject
+        node.additional_keys_strategy == :reject
       end
 
       def restrict_addition_keys?
-        additional_keys_strategy == :restrict
+        node.additional_keys_strategy == :restrict
       end
 
       def child_applications
@@ -90,7 +90,7 @@ module NxtSchema
       end
 
       def build_child_application(key)
-        sub_node = sub_nodes[key]
+        sub_node = node.sub_nodes[key]
         value = input.key?(key) ? input[key] : MissingInput.new
         sub_node.build_application(value, nil, self)
       end
