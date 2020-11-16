@@ -1,33 +1,27 @@
 # NxtSchema
 
 ## TODO:
+- Change root to root node to differentiate between root of applications and nodes
 - Collect nodes when applied in order to validate applied ones
     - Apply validations only when applied 
     - Implement apply! that raises 
     - Allow to disable validation when applying 
     - Levels should only be assigned at apply time so that it's correct when merging schemas
         --> Are there other attributes that should be moved to apply time?
-- We have to allow callables for optional options 
-    - Question then is when to evaluate? --> Should be solve in master
-    - We also need to provide navigation methods to access other nodes
     
 - Spec contexts
-
 - Make combinations of validations work with monads kind of implementation
-- Add back validations
-    - Should we have a global and a local registry for validators?
+- Should we have a global and a local registry for validators?
 - How do we want to deal with nil values? 
     --> Probably global option(s) would be nice
     --> Probably should not be ok with nils by default
 
 - Do we need all off in order to combine multiple schemas?
 - transform keys 
-- allow to add meta data
 - Check merging schemas
 - Check how we can use constructors to create structs
 - Introduce Coercible error that wraps dry errors
     - Should we allow anything callable as types?
-- Does it make sense to differentiate between execution and build context?
 - Get rid of delegation of methods from application to node
 
 ## Installation
