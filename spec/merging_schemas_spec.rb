@@ -17,7 +17,8 @@ RSpec.describe NxtSchema do
     NxtSchema.schema(:address) do
       required(:street, :String)
       required(:zip_code, :String)
-      required(:town, :String)
+      required(:town, :String).validate(:equal_to, 'Kaiserslautern')
+      node(:country, :String, optional: ->(node) { node[:town].input == 'Kaiserslautern' })
       required(:cyphers, cyphers)
     end
   end
@@ -48,6 +49,7 @@ RSpec.describe NxtSchema do
   end
 
   it do
+    binding.pry
     expect(address_schema.parent_node).to be_nil
     expect(schema[:address].parent_node).to eq(schema)
     expect(schema[:cyphers].parent_node).to eq(schema)

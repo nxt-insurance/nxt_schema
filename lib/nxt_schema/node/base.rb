@@ -10,7 +10,7 @@ module NxtSchema
         @path = resolve_path
         @on_evaluators = []
         @maybe_evaluators = []
-        @validations = Array(options.fetch(:validate, []))
+        @validations = []
         @configuration = block
 
         resolve_context
