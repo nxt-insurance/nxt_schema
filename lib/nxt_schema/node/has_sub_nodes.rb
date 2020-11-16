@@ -44,7 +44,7 @@ module NxtSchema
 
           node_or_type_of_node.class.new(
             name: name,
-            type: type,
+            type: node_or_type_of_node.type,
             parent_node: self,
             **node_or_type_of_node.options.merge(options), # Does this make sense to merge options here?
             &node_or_type_of_node.configuration
