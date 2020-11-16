@@ -24,24 +24,18 @@ module NxtSchema
       end
 
       attr_accessor :name,
-        :parent_node,
-        :options,
-        :type,
-        :level,
-        :root,
-        :additional_keys_strategy
+                    :parent_node,
+                    :options,
+                    :type,
+                    :level,
+                    :root,
+                    :additional_keys_strategy
 
-        attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations
+      attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations
 
       # TODO: Can we male this not work with keyword args?!
       def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
-        application_class.new(
-          node: self,
-          input: input,
-          parent: parent,
-          context: context,
-          error_key: error_key
-        ).call
+        build_application(input, context, parent, error_key).call
       end
 
       def build_application(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
@@ -90,18 +84,18 @@ module NxtSchema
 
       def validate(key = NxtSchema::MissingInput.new, *args, &block)
         validator = if key.is_a?(Symbol)
-          validator(key, *args)
-        elsif key.respond_to?(:call)
-          key
-        elsif block_given?
-          if key.is_a?(NxtSchema::MissingInput)
-            block
-          else
-            configure(&block)
-          end
-        else
-          raise ArgumentError, "Don't know how to resolve validator from: #{key} with: #{args} #{block}"
-        end
+                      validator(key, *args)
+                    elsif key.respond_to?(:call)
+                      key
+                    elsif block_given?
+                      if key.is_a?(NxtSchema::MissingInput)
+                        block
+                      else
+                        configure(&block)
+                      end
+                    else
+                      raise ArgumentError, "Don't know how to resolve validator from: #{key} with: #{args} #{block}"
+                    end
 
         register_validator(validator)
 
@@ -130,11 +124,7 @@ module NxtSchema
 
       def type_resolver
         @type_resolver ||= begin
-          if root?
-            TypeResolver.new
-          else
-            raise NoMethodError, 'type_resolver is only available on root node'
-          end
+          root? ? TypeResolver.new : (raise NoMethodError, 'type_resolver is only available on root node')
         end
       end
 
@@ -151,7 +141,9 @@ module NxtSchema
       end
 
       def resolve_additional_keys_strategy
-        @additional_keys_strategy = options.fetch(:additional_keys) { parent_node&.send(:additional_keys_strategy) || :allow }
+        @additional_keys_strategy = options.fetch(:additional_keys) do
+          parent_node&.send(:additional_keys_strategy) || :allow
+        end
       end
 
       def resolve_optional_option
@@ -161,7 +153,7 @@ module NxtSchema
 
         if optional.respond_to?(:call)
           # When a node is conditionally optional we make it optional and add a validator to the parent to check
-          # that it's there when the option applies.
+          # that it's there when the option does not apply.
           optional_node_validator = validator(:optional_node, optional, name)
           parent_node.send(:register_validator, optional_node_validator)
           @optional = true
