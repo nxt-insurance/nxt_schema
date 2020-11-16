@@ -46,7 +46,13 @@ module NxtSchema
           # node.parent = self
           # node
         else
-          NxtSchema::Node::Leaf.new(name: name, type: node_or_type_of_node, parent_node: self, **options, &block)
+          NxtSchema::Node::Leaf.new(
+            name: name,
+            type: node_or_type_of_node,
+            parent_node: self,
+            **options,
+            &block
+          )
         end
 
         add_sub_node(node)

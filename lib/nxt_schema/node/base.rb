@@ -5,7 +5,6 @@ module NxtSchema
         @name = name
         @parent_node = parent_node
         @options = options
-        @level = parent_node ? parent_node.level + 1 : 0
         @is_root = parent_node.nil?
         @root = parent_node.nil? ? self : parent_node.root
         @path = resolve_path
@@ -27,7 +26,6 @@ module NxtSchema
                     :parent_node,
                     :options,
                     :type,
-                    :level,
                     :root,
                     :additional_keys_strategy
 
