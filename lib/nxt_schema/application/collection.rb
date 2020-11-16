@@ -42,6 +42,7 @@ module NxtSchema
       end
 
       def build_child_application(item, error_key)
+
         child = sub_node.build_application(item, nil, self, error_key)
         child_applications << child
       end

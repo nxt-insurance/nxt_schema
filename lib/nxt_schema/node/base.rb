@@ -39,12 +39,9 @@ module NxtSchema
 
       def apply!(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
         result = build_application(input, context, parent, error_key).call
+        return result if parent || result.errors.empty?
 
-        if parent
-          result
-        else
-          raise
-        end
+        raise NxtSchema::Errors::Invalid.new(result)
       end
 
       def build_application(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
