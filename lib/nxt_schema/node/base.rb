@@ -61,22 +61,22 @@ module NxtSchema
       end
 
       def default(value = NxtSchema::MissingInput.new, &block)
-        value = value.is_a?(NxtSchema::MissingInput) ? block : value
-        condition = ->(input) { input.is_a?(NxtSchema::MissingInput) || input.nil? }
+        value = missing_input?(value) ? block : value
+        condition = ->(input) { missing_input?(input) || input.nil? }
         on(condition, value)
 
         self
       end
 
       def on(condition, value = NxtSchema::MissingInput.new, &block)
-        value = value.is_a?(NxtSchema::MissingInput) ? block : value
+        value = missing_input?(value) ? block : value
         on_evaluators << OnEvaluator.new(condition: condition, value: value)
 
         self
       end
 
       def maybe(value = NxtSchema::MissingInput.new, &block)
-        value = value.is_a?(NxtSchema::MissingInput) ? block : value
+        value = missing_input?(value) ? block : value
         maybe_evaluators << MaybeEvaluator.new(value: value)
 
         self
@@ -176,6 +176,10 @@ module NxtSchema
 
       def resolve_context
         self.context = options.fetch(:context) { parent_node&.send(:context) }
+      end
+
+      def missing_input?(value)
+        value.is_a? MissingInput
       end
     end
   end
