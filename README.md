@@ -51,7 +51,7 @@ schema = NxtSchema.schema(:company) do
   requires(:name, :String).default('Andy')
 
   requires(:value, :Integer).maybe(nil)  
-  present(:stock_options, :Bool).default(false)
+  omnipresent(:stock_options, :Bool).default(false)
   
   schema(:address) do
     requires(:street, :String)

@@ -59,10 +59,6 @@ module NxtSchema
         node
       end
 
-      def each_node(&block)
-        sub_nodes.each(&block)
-      end
-
       def sub_nodes
         @sub_nodes ||= Node::SubNodes.new
       end
