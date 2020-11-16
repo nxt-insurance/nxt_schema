@@ -89,6 +89,8 @@ module NxtSchema
       end
 
       def validate(key = NxtSchema::MissingInput.new, *args, &block)
+        # TODO: This does not really work with all kinds of chaining combinations yet!
+
         validator = if key.is_a?(Symbol)
                       validator(key, *args)
                     elsif key.respond_to?(:call)
