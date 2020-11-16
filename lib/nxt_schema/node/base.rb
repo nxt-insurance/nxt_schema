@@ -159,9 +159,12 @@ module NxtSchema
         raise Errors::InvalidOptions, 'Optional nodes are only available within schemas' if optional && !parent_node.is_a?(Schema)
         raise Errors::InvalidOptions, "Can't make omnipresent node optional" if optional && omnipresent?
 
-        # TODO: Spec this:
         if optional.respond_to?(:call)
-          register_validator(validator(:optional_node, optional, key))
+          # When a node is conditionally optional we make it optional and add a validator to the parent to check
+          # that it's there when the option applies.
+          optional_node_validator = validator(:optional_node, optional, name)
+          parent_node.send(:register_validator, optional_node_validator)
+          @optional = true
         else
           @optional = optional
         end

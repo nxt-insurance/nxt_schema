@@ -6,7 +6,7 @@ module NxtSchema
         @missing_key = missing_key
       end
 
-      register_as :optional_application
+      register_as :optional_node
       attr_reader :conditional, :missing_key
 
       def build
@@ -20,7 +20,7 @@ module NxtSchema
               application.locale,
               :required_key_missing,
               key: missing_key,
-              target: application.value
+              target: application.input
             )
 
             application.add_error(message)
