@@ -9,6 +9,7 @@ require_relative 'nxt_schema/types'
 require_relative 'nxt_schema/callable'
 require_relative 'nxt_schema/application'
 require_relative 'nxt_schema/missing_input'
+require_relative 'nxt_schema/error'
 require_relative 'nxt_schema/errors/invalid_options'
 
 require_relative 'nxt_schema/validators/registry'

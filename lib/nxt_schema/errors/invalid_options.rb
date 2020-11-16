@@ -1,6 +1,6 @@
 module NxtSchema
   module Errors
-    class InvalidOptions < ArgumentError
+    class InvalidOptions < NxtSchema::Error
     end
   end
 end

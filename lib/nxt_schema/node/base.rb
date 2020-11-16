@@ -37,6 +37,16 @@ module NxtSchema
         build_application(input, context, parent, error_key).call
       end
 
+      def apply!(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
+        result = build_application(input, context, parent, error_key).call
+
+        if parent
+          result
+        else
+          raise
+        end
+      end
+
       def build_application(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
         application_class.new(
           node: self,
