@@ -9,7 +9,6 @@
     - Levels should only be assigned at apply time so that it's correct when merging schemas
         --> Are there other attributes that should be moved to apply time?
     
-- Spec contexts
 - Make combinations of validations work with monads kind of implementation
 - Should we have a global and a local registry for validators?
 - How do we want to deal with nil values? 
@@ -18,11 +17,9 @@
 
 - Do we need all off in order to combine multiple schemas?
 - transform keys 
-- Check merging schemas
 - Check how we can use constructors to create structs
 - Introduce Coercible error that wraps dry errors
     - Should we allow anything callable as types?
-- Get rid of delegation of methods from application to node
 
 ## Installation
 
