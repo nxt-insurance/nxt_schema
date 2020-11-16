@@ -40,11 +40,15 @@ module NxtSchema
 
       def node(name, node_or_type_of_node, **options, &block)
         node = if node_or_type_of_node.is_a?(NxtSchema::Node::Base)
-          # node = type_or_node.clone
-          # node.options.merge!(options)
-          # node.name = name
-          # node.parent = self
-          # node
+          raise ArgumentError, "Can't provide a block along with a node" if block.present?
+
+          node_or_type_of_node.class.new(
+            name: name,
+            type: type,
+            parent_node: self,
+            **node_or_type_of_node.options.merge(options), # Does this make sense to merge options here?
+            &node_or_type_of_node.configuration
+          )
         else
           NxtSchema::Node::Leaf.new(
             name: name,

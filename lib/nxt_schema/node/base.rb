@@ -11,6 +11,7 @@ module NxtSchema
         @on_evaluators = []
         @maybe_evaluators = []
         @validations = Array(options.fetch(:validate, []))
+        @configuration = block
 
         resolve_context
         resolve_optional_option
@@ -29,7 +30,7 @@ module NxtSchema
                     :root,
                     :additional_keys_strategy
 
-      attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations
+      attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations, :configuration
 
       # TODO: Can we male this not work with keyword args?!
       def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
