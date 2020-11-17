@@ -46,7 +46,6 @@ module NxtSchema
         additional_keys.any?
       end
 
-      # TODO: Should we raise directly when keys are missing?
       def missing_keys
         @missing_keys ||= node.sub_nodes.reject { |_, node| node.omnipresent? || node.optional? }.keys - input.keys
       end
