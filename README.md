@@ -1,12 +1,9 @@
 # NxtSchema
 
 ## TODO:
-- Collect nodes when applied in order to validate applied ones
-    - Apply validations only when applied 
-    - Implement apply! that raises 
-    - Allow to disable validation when applying 
-    - Levels should only be assigned at apply time so that it's correct when merging schemas
-        --> Are there other attributes that should be moved to apply time?
+
+- Allow to disable validation when applying 
+    --> Are there attributes that should be moved to apply time?
     
 - Make combinations of validations work with monads kind of implementation
 - Should we have a global and a local registry for validators?
