@@ -3,13 +3,14 @@ module NxtSchema
     class Collection < Application::Base
       def call
         apply_on_evaluators
+        child_applications # build applications here so we can access them even when invalid
         return self if maybe_evaluator_applies?
 
         coerce_input
         validate_filled
         return self unless valid?
 
-        build_child_applications(input).each_with_index do |item, index|
+        child_applications.each_with_index do |item, index|
           current_application = item.call
 
           if !current_application.valid?
@@ -33,26 +34,23 @@ module NxtSchema
         add_schema_error('is not allowed to be empty') if input.blank? && !maybe_evaluator_applies?
       end
 
-      def build_child_applications(input)
-        input.each_with_index do |item, index|
-          build_child_application(item, index)
+      def child_applications
+        @child_applications ||= begin
+          return [] unless input.respond_to?(:each_with_index)
+
+          input.each_with_index.map do |item, index|
+            build_child_application(item, index)
+          end
         end
 
-        child_applications
       end
 
       def build_child_application(item, error_key)
-
-        child = sub_node.build_application(item, nil, self, error_key)
-        child_applications << child
+        sub_node.build_application(item, nil, self, error_key)
       end
 
       def sub_node
         @sub_node ||= node.sub_nodes.values.first
-      end
-
-      def child_applications
-        @child_applications ||= []
       end
     end
   end

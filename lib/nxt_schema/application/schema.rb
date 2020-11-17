@@ -3,6 +3,7 @@ module NxtSchema
     class Schema < Application::Base
       def call
         apply_on_evaluators
+        child_applications # build applications here so we can access them even when invalid
         return self if maybe_evaluator_applies?
 
         coerce_input
@@ -82,7 +83,8 @@ module NxtSchema
       def child_applications
         @child_applications ||= begin
           keys.inject({}) do |acc, key|
-            acc[key] = build_child_application(key)
+            child_application = build_child_application(key)
+            acc[key] = child_application if child_application.present?
             acc
           end
         end
@@ -90,8 +92,14 @@ module NxtSchema
 
       def build_child_application(key)
         sub_node = node.sub_nodes[key]
-        value = input.key?(key) ? input[key] : MissingInput.new
+        return unless sub_node.present?
+
+        value = input_has_key?(input, key) ? input[key] : MissingInput.new
         sub_node.build_application(value, nil, self)
+      end
+
+      def input_has_key?(input, key)
+        input.respond_to?(:key?) && input.key?(key)
       end
     end
   end
