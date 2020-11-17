@@ -54,7 +54,7 @@ module NxtSchema
         return if allow_additional_keys?
         return unless additional_keys?
 
-        if restrict_addition_keys?
+        if restrict_additional_keys?
           add_schema_error("Additional keys are not allowed: #{additional_keys}")
         elsif reject_additional_keys?
           self.output = output.except(*additional_keys)
@@ -75,7 +75,7 @@ module NxtSchema
         node.additional_keys_strategy == :reject
       end
 
-      def restrict_addition_keys?
+      def restrict_additional_keys?
         node.additional_keys_strategy == :restrict
       end
 
