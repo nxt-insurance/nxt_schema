@@ -4,7 +4,8 @@
 
 - Allow to disable validation when applying 
     --> Are there attributes that should be moved to apply time?
-    
+
+- Make index of array nodes available through application    
 - Make combinations of validations work with monads kind of implementation
 - Should we have a global and a local registry for validators?
 - How do we want to deal with nil values? 
