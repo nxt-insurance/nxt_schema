@@ -4,19 +4,12 @@
 
 - Allow to disable validation when applying 
     --> Are there attributes that should be moved to apply time?
-
-- Make index of array nodes available through application    
 - Make combinations of validations work with monads kind of implementation
 - Should we have a global and a local registry for validators?
-- How do we want to deal with nil values? 
-    --> Probably global option(s) would be nice
-    --> Probably should not be ok with nils by default
-
 - Do we need all off in order to combine multiple schemas?
 - transform keys 
 - Check how we can use constructors to create structs
 - Introduce Coercible error that wraps dry errors
-    - Should we allow anything callable as types?
 
 ## Installation
 
@@ -36,7 +29,7 @@ Or install it yourself as:
 
 ## What it is for?
 
-NxtSchema is a type casting and validation framework that allows you to type cast and validate arbitrary nested 
+NxtSchema is a type casting and validation framework that allows you to validate and type cast arbitrary nested 
 structures of data.   
 
 ### Usage
@@ -94,19 +87,38 @@ NxtSchema.schema(:person) do
 end
 ```
 
+#### Combining Schemas
+
+You can also simply reuse a schema by passing it to the node method as the type of a node. When doing so the schema 
+will be cloned with the same options and configuration as the schema passed in. 
+
+```ruby
+ADDRESS = NxtSchema.schema(:address) do
+  required(:street, :String)
+  required(:town, :String)
+  required(:zip_code, :String)
+end 
+
+PERSON = NxtSchema.schema(:person) do
+  required(:first_name, :String)
+  required(:last_name, :String)
+  optional(:address, ADDRESS)
+end
+```
+
 ### Types
 
 The type system is built with dry-types from the amazing https://dry-rb.org eco system. Even though dry-types also
 offers features such as default values for types as well as maybe types, these features are built directly into 
 NxtSchema. 
 
-By the way: Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
-validations explicitly https://dry-rb.org/gems/dry-validation. Feel free to check those out as an alternative to 
-NxtSchema! 
+Please note that Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
+validations explicitly https://dry-rb.org/gems/dry-validation. You should probably go and check those out! 
 
 In NxtSchema every node has a type and you can either provide a symbol that will be resolved 
 through the type system of the schema or you can directly provide an instance of dry type and thus use your 
-custom types.    
+custom types. This means you can basically build any kind of objects such as structs and models from your data and 
+you are not limited to just hashes arrays and primitives.  
 
 #### Default type system
 
@@ -164,34 +176,40 @@ end
 
 ```ruby
 # Define default values as options or with the default method
-required(:test, :String).default(value_or_proc)
-required(:test, :String, default: value_or_proc) do ... end
+required(:test, :DateTime).default(-> { Time.current })
+required(:test, :String, default: 'Andy')
 ```
 
 #### Maybe values 
 
-Allow specific values that are not being coerced
+With maybe you can allow your values to be of a certain type and halt conversion.  
 
 ```ruby
 # Define maybe values (values that do not match the type)
-required(:test, :String).maybe(value_or_proc)
-required(:test, :String, maybe: value_or_proc) do ... end
+required(:test, :String).maybe(:nil?)
+
+nodes(:tests).maybe(:empty?) do # will allow the collection to be empty
+  required(:test, :String)
+end
+
 ```  
 
 ### Validations
 
 NxtSchema comes with a simple validation system and ships with a small set of useful validators. Every node in a schema
 implements the `:validate` method. Similar to ActiveModel::Validations it allows you to simply add errors to a node
-based on some condition. 
+based on some condition. When you the node is yielded to your validation proc you have access to the nodes input with
+`node.input` and `node.index` when the node is within a collection of nodes as well as `node.name`. Furthermore you have 
+access to the context that was passed in when defining the schema or passed to the apply method later.
 
 ```ruby
-  # Simple validation
-  required(:test, :String).validate -> (node, value) { node.add_error("#{value} is not valid") if value == 'not allowed' }
+  # Simple custom validation
+  required(:test, :String).validate(-> (node) { node.add_error("#{node.input} is not valid") if node.input == 'not allowed' })
   # Built in validations
   required(:test, :String).validate(:attribute, :size, ->(s) { s < 7 }) 
-  required(:test, :String).validate(:equality, 'same') 
-  required(:test, :String).validate(:excluded, %w[not_allowed]) # excluded in the target: %w[not_allowed]
-  required(:test, :String).validate(:included, %w[allowed]) # included in the target: %w[allowed]
+  required(:test, :String).validate(:equal_to, 'same') 
+  required(:test, :String).validate(:excluded_in, %w[not_allowed]) # excluded in the target: %w[not_allowed]
+  required(:test, :String).validate(:included_in, %w[allowed]) # included in the target: %w[allowed]
   required(:test, :Array).validate(:excludes, 'excluded') # array value itself must exclude 'excluded' 
   required(:test, :Array).validate(:includes, 'included') # array value itself must include 'included'
   required(:test, :Integer).validate(:greater_than, 1) 
@@ -326,6 +344,15 @@ schema.apply(test: 'getsafe')
 schema.error #  {"root.test"=>["This is always broken"]}
 ```
 
+#### Contexts
+
+# TODO
+
+##### Build time
+
+##### Apply time
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -339,17 +366,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-### TODO:    
-
-- Flatten schema errors like validation errors
-- Conditionally required keys:
-    required bool => required
-    required conditionally => condition applies => required
-    required conditionally => condition does not apply => not allowed 
-    
-- Explain the difference between array nodes and typed array nodes
-- Should we translate coercion errors as well?
-- Test the different scenarios of merging schemas array, hash, ...
-- Structure Errors 
-- NxtSchema::Json => Use json types, maybe even parse Json with Oj
