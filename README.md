@@ -33,133 +33,74 @@ Or install it yourself as:
 
     $ gem install nxt_schema
 
-## Usage
+## What it is for?
+
+NxtSchema is a type casting and validation framework that allows you to type cast and validate arbitrary nested 
+structures.  
+
+### Usage
 
 ```ruby
-# Schema with hash root
-schema = NxtSchema.schema(:company) do
-  requires(:name, :String).on(->(input) { input == nil }, 'Andy')
-    requires(:name, :String).on(:nil?) do
-    end
-  requires(:name, :String).default('Andy')
-
-  requires(:value, :Integer).maybe(nil)  
-  omnipresent(:stock_options, :Bool).default(false)
-  
-  schema(:address) do
-    requires(:street, :String)
-    requires(:street_number, :Integer)
-  end
-
-  # Use nodes to create an array of typed nodes
-  # The following simple means an array of strings 
-  nodes(:products) do
-    node(:product, :String)
-  end
-
-    
-  nodes(:employees).any_of do
-  schema(:employee) do
-    POSITIONS = %w[senior junior intern]
-
-    requires(:first_name, :String)
-    requires(:last_name, :String)
-    optional(:email, :String).validate(:format, /\A.*@.*\z/)
-    requires(:position, NxtSchema::Types::Enums[*POSITIONS])
-    end
-  end
-end
-  
-# Schema with array root
-schema = NxtSchema.roots(:companies) do
-  schema(:company) do
-    requires(:name, :String)  
-    requires(:value, :Integer).maybe(nil)
-  end
-end
-
-schema.apply(your: 'values here')
-schema.errors # { 'name.spaced.key': ['all the errors'] }
-```
-
-### DSL
-
-Create a new schema with `NxtSchema.root { ... }` or in case you have an array node as root, 
-use `NxtSchema.roots { ... }`. Within the schema you can create node simply with the `node(name, type_or_node, **options)` 
-method. Each node requires a name and a type and accepts additional options. Node are required per default. 
-But you can make them optional by providing the optional option.  
-
-#### Nodes
-
-```ruby
-NxtSchema.root do
+PERSON = NxtSchema.schema(:person) do
   node(:first_name, :String)
-  node(:last_name, :String, optional: true)
-  node(:email, :String, presence: true)
+  node(:last_name, :String)
+  node(:email, :String, optional: true).validate(:includes, '@')
 end
-```
 
-In order to make the schema more readable you can make use of several predicate aliases to create required, optional or 
-(omni)present nodes.  
+input = {
+  first_name: 'Andy',
+  last_name: 'Robecke',
+  email: 'andreas@robecke.de'
+}
 
-#### Predicate aliases
+result = PERSON.apply(input)
 
-```ruby
-NxtSchema.root do
-  required(:first_name, :String)
-  optional(:last_name, :String)
-  present(:email, :String)
-end
-```
+result.valid? # => true
+result.output # => input
+```  
 
 ### Nodes
 
-The following types of nodes exist
-
-#### Schema Nodes
+A schema consists of a number of nodes. Every node has a name and an associated type for casting it's input when the 
+schema is applied. Schemas can consist of 4 different kinds of nodes: 
 
 ```ruby
-# Create schema nodes with:
-required(:test, :Schema) do ... end
-schema(:test) do ... end
-schema(:test) do ... end
+NxtSchema::Node::Schema # => Hash of values 
+NxtSchema::Node::Collection # => Array of values
+NxtSchema::Node::AnyOf # => Any of the defined schemas
+NxtSchema::Node::Leaf # => Node without sub nodes
 ```
 
-#### Collection Nodes
+The kind of node dictates how the schema is applied to the input. On the top level the following methods are available
+to create schemas:
 
 ```ruby
-# Create collection (array) nodes with:
-required(:test, :Collection) do ... end
+  NxtSchema.schema { ... } # => Create a schema node 
+  NxtSchema.collection { ... } # => Create an array of nodes
+  NxtSchema.any_of { ... } # => Create a collection of allowed schemas
+```
 
-nodes(:test) do
-  # For type checking of array items you can simply add a node with the expected type. 
-  # As always you need to give it a name. This would result in an array of string items  
-  required(:item, :String) 
+#### Predicate aliases
+
+Of course these nodes can be combined and nested in arbitrary manner. When defining nodes within a schema, nodes are 
+always required per default. You can create nodes with the node method or several useful helper methods. 
+
+```ruby
+NxtSchema.schema(:person) do
+  required(:first_name, :String) # => same as node(:first_name, :String)
+  optional(:last_name, :String) # => same as node(:first_name, :String, optional: true)
+  omnipresent(:email, :String) # => same as node(:first_name, :String, omnipresent: true)
 end
-
-collection(:test) do ... end
-```
-
-#### Leaf Nodes
-
-```ruby
-# Create leaf nodes with a basic type 
-required(:test, :String) do ... end
-```
-
-#### Struct Nodes
-
-```ruby
-# Create structs from hash inputs 
-struct(:test) do ... end  
 ```
 
 ### Types
 
 The type system is built with dry-types from the amazing https://dry-rb.org/ eco system. Even though dry-types also
 offers features such as default values for types as well as maybe types, these features are built directly into 
-NxtSchema. Dry.rb also has a gem for schemas and another one dedicated to validations. You should probably
-check those out! However, in NxtSchema every node has a type and you can either provide a symbol that will be resolved 
+NxtSchema. Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
+validations explicitly https://dry-rb.org/gems/dry-validation. Feel free to check those out! 
+
+In NxtSchema every node has a type and you can either provide a symbol that will be resolved 
 through the type system of the schema. But you can also directly provide an instance of dry type and thus use your 
 custom types.    
 
@@ -168,7 +109,7 @@ custom types.
 You can tell your schema which default type system it should use. Dry-Types comes with a few built in type systems.
 Per default NxtSchema will use nominal types if not specified otherwise. If the type cannot be resolved from the default
 type system that was specified, NxtSchema will again try to fallback to nominal types. In theory you can provide
-a separate type system per node if that's what you want :-D
+a separate type system per node if that's what you need. 
                                
 ```ruby
 NxtSchema.root do
