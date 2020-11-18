@@ -37,7 +37,7 @@ Or install it yourself as:
 ## What it is for?
 
 NxtSchema is a type casting and validation framework that allows you to type cast and validate arbitrary nested 
-structures.  
+structures of data.   
 
 ### Usage
 
@@ -96,20 +96,23 @@ end
 
 ### Types
 
-The type system is built with dry-types from the amazing https://dry-rb.org/ eco system. Even though dry-types also
+The type system is built with dry-types from the amazing https://dry-rb.org eco system. Even though dry-types also
 offers features such as default values for types as well as maybe types, these features are built directly into 
-NxtSchema. Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
-validations explicitly https://dry-rb.org/gems/dry-validation. Feel free to check those out! 
+NxtSchema. 
+
+By the way: Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
+validations explicitly https://dry-rb.org/gems/dry-validation. Feel free to check those out as an alternative to 
+NxtSchema! 
 
 In NxtSchema every node has a type and you can either provide a symbol that will be resolved 
-through the type system of the schema. But you can also directly provide an instance of dry type and thus use your 
+through the type system of the schema or you can directly provide an instance of dry type and thus use your 
 custom types.    
 
 #### Default type system
 
 You can tell your schema which default type system it should use. Dry-Types comes with a few built in type systems.
 Per default NxtSchema will use nominal types if not specified otherwise. If the type cannot be resolved from the default
-type system that was specified, NxtSchema will again try to fallback to nominal types. In theory you can provide
+type system that was specified NxtSchema will always fallback to nominal types. In theory you can provide
 a separate type system per node if that's what you need. 
                                
 ```ruby
@@ -151,7 +154,7 @@ NxtSchema.register_type(
 # once registered you can use the type in your schema
 
 NxtSchema.root(:company) do
-  required(:name, NxtSchema::Types::MyCustomStrippedString)
+  required(:name, :MyCustomStrippedString)
 end
 ```
 

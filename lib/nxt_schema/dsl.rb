@@ -32,5 +32,17 @@ module NxtSchema
         &block
       )
     end
+
+    # schema root with NxtSchema::Types::Params type system
+
+    def params(name = :params, type: NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
+      NxtSchema::Node::Schema.new(
+        name: name,
+        type: type,
+        parent_node: nil,
+        **options.merge(type_system: NxtSchema::Types::Params),
+        &block
+      )
+    end
   end
 end
