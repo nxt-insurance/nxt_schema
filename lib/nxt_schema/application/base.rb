@@ -15,11 +15,12 @@ module NxtSchema
         @errors = ErrorStore.new(self)
         @locale = node.options.fetch(:locale) { parent&.locale || 'en' }.to_s
 
+        @index = error_key
         resolve_error_key(error_key)
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :context, :error_key, :applied, :applied_nodes, :root, :errors, :locale
+      attr_reader :parent, :context, :error_key, :applied, :applied_nodes, :root, :errors, :locale, :index
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'

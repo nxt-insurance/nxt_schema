@@ -4,8 +4,6 @@
 
 - Allow to disable validation when applying 
     --> Are there attributes that should be moved to apply time?
-
-- Make index of array nodes available through application    
 - Make combinations of validations work with monads kind of implementation
 - Should we have a global and a local registry for validators?
 - How do we want to deal with nil values? 
@@ -16,7 +14,6 @@
 - transform keys 
 - Check how we can use constructors to create structs
 - Introduce Coercible error that wraps dry errors
-    - Should we allow anything callable as types?
 
 ## Installation
 
@@ -100,13 +97,13 @@ The type system is built with dry-types from the amazing https://dry-rb.org eco 
 offers features such as default values for types as well as maybe types, these features are built directly into 
 NxtSchema. 
 
-By the way: Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
-validations explicitly https://dry-rb.org/gems/dry-validation. Feel free to check those out as an alternative to 
-NxtSchema! 
+Please note that Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
+validations explicitly https://dry-rb.org/gems/dry-validation. You should probably go and check those out! 
 
 In NxtSchema every node has a type and you can either provide a symbol that will be resolved 
 through the type system of the schema or you can directly provide an instance of dry type and thus use your 
-custom types.    
+custom types. This means you can basically build any kind of objects such as structs and models from your data and 
+you are not limited to just hashes arrays and primitives.  
 
 #### Default type system
 
@@ -164,29 +161,35 @@ end
 
 ```ruby
 # Define default values as options or with the default method
-required(:test, :String).default(value_or_proc)
-required(:test, :String, default: value_or_proc) do ... end
+required(:test, :DateTime).default(-> { Time.current })
+required(:test, :String, default: 'Andy')
 ```
 
 #### Maybe values 
 
-Allow specific values that are not being coerced
+With maybe you can allow your values to be of a certain type and halt conversion.  
 
 ```ruby
 # Define maybe values (values that do not match the type)
-required(:test, :String).maybe(value_or_proc)
-required(:test, :String, maybe: value_or_proc) do ... end
+required(:test, :String).maybe(:nil?)
+
+nodes(:tests).maybe(:empty?) do # will allow the collection to be empty
+  required(:test, :String)
+end
+
 ```  
 
 ### Validations
 
 NxtSchema comes with a simple validation system and ships with a small set of useful validators. Every node in a schema
 implements the `:validate` method. Similar to ActiveModel::Validations it allows you to simply add errors to a node
-based on some condition. 
+based on some condition. When you the node is yielded to your validation proc you have access to the nodes input with
+`node.input` and `node.index` when the node is within a collection of nodes as well as `node.name`. Furthermore you have 
+access to the context that was passed in when defining the schema or passed to the apply method later.
 
 ```ruby
-  # Simple validation
-  required(:test, :String).validate -> (node, value) { node.add_error("#{value} is not valid") if value == 'not allowed' }
+  # Simple custom validation
+  required(:test, :String).validate(-> (node) { node.add_error("#{node.input} is not valid") if node.input == 'not allowed' })
   # Built in validations
   required(:test, :String).validate(:attribute, :size, ->(s) { s < 7 }) 
   required(:test, :String).validate(:equality, 'same') 
