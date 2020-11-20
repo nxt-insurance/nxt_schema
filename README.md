@@ -6,6 +6,8 @@
     --> Are there attributes that should be moved to apply time?
 - Make combinations of validations work with monads kind of implementation
 - Should we have a global and a local registry for validators?
+    --> Would be cool to register things for the schema only
+    --> Would be cool if this was extendable 
 - Do we need all off in order to combine multiple schemas?
 - transform keys 
 - Check how we can use constructors to create structs

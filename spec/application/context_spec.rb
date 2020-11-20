@@ -5,7 +5,7 @@ RSpec.describe NxtSchema do
     schema.apply(input, context)
   end
 
-  context 'when a context is given' do
+  context 'when a context is given at apply time' do
     let(:schema) do
       NxtSchema.schema(:developers) do
         required(:first_name, :String)
