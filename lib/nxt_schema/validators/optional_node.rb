@@ -13,18 +13,17 @@ module NxtSchema
         lambda do |application, value|
           args = [application, value]
 
-          if conditional.call(*args.take(conditional.arity))
-            application.send(:keys).include?(missing_key.to_sym)
-          else
-            message = ErrorMessages.resolve(
-              application.locale,
-              :required_key_missing,
-              key: missing_key,
-              target: application.input
-            )
+          return if conditional.call(*args.take(conditional.arity))
+          return if application.send(:keys).include?(missing_key.to_sym)
 
-            application.add_error(message)
-          end
+          message = ErrorMessages.resolve(
+            application.locale,
+            :required_key_missing,
+            key: missing_key,
+            target: application.input
+          )
+
+          application.add_error(message)
         end
       end
     end

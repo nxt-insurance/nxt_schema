@@ -149,6 +149,9 @@ result.errors # => {}
 result.output # => {:email=>"andreas@robecke.de"}
 ```
 
+##### Conditionally optional nodes
+
+You can also pass a proc as the optional argument. Then the 
 
 #### Combining Schemas
 
