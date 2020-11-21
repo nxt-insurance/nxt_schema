@@ -176,7 +176,8 @@ offers features such as default values for types as well as maybe types, these f
 NxtSchema. 
 
 Please note that Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
-validations explicitly https://dry-rb.org/gems/dry-validation. You should probably go and check those out! 
+validations explicitly https://dry-rb.org/gems/dry-validation. You should probably go and check those out! NxtSchema
+is trying to implement a simpler solution that is easy to understand yet powerful enough for most tasks.  
 
 In NxtSchema every node has a type and you can either provide a symbol that will be resolved 
 through the type system of the schema or you can directly provide an instance of dry type and thus use your 
