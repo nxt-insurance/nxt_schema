@@ -61,8 +61,16 @@ module NxtSchema
     Validators::ErrorMessages.load(paths)
   end
 
+  def register_validator(validator, *keys)
+    keys.each { |key| NxtSchema::Validators::REGISTRY.register(key, validator) }
+  end
+
+  def register_type(key, type)
+    NxtSchema::Types.const_set(key.to_s, type)
+  end
+
   # Load default messages
   Validators::ErrorMessages.load
 
-  module_function :register_error_messages
+  module_function :register_error_messages, :register_validator, :register_type
 end
