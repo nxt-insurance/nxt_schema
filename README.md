@@ -9,7 +9,6 @@
     --> Would be cool to register things for the schema only
     --> Would be cool if this was extendable 
 - Do we need all off in order to combine multiple schemas? 
-- Check how we can use constructors to create structs
 - Introduce Coercible error that wraps dry errors
 - Cloning of nodes would not work without configuration <<- Either makes this mandatory / or clone properly!
 
