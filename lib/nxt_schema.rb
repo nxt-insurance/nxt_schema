@@ -14,6 +14,7 @@ require_relative 'nxt_schema/errors/invalid'
 require_relative 'nxt_schema/errors/invalid_options'
 
 require_relative 'nxt_schema/validators/registry'
+require_relative 'nxt_schema/validators/validate_with_proxy'
 require_relative 'nxt_schema/validators/error_messages'
 require_relative 'nxt_schema/validators/validator'
 require_relative 'nxt_schema/validators/attribute'

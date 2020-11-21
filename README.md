@@ -4,7 +4,6 @@
 
 - Allow to disable validation when applying 
     --> Are there attributes that should be moved to apply time?
-- Make combinations of validations work with monads kind of implementation
 - Should we have a global and a local registry for validators?
     --> Would be cool to register things for the schema only
     --> Would be cool if this was extendable 

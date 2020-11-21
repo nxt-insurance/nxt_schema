@@ -119,6 +119,11 @@ module NxtSchema
         self
       end
 
+      def validate_with(&block)
+        proxy = ->(node) { NxtSchema::Validator::ValidateWithProxy.new(node).validate(&block) }
+        register_validator(proxy)
+      end
+
       private
 
       attr_writer :path, :meta, :context, :on_evaluators, :maybe_evaluators
