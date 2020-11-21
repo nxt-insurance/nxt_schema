@@ -12,6 +12,7 @@
 - transform keys 
 - Check how we can use constructors to create structs
 - Introduce Coercible error that wraps dry errors
+- Cloning of nodes would not work without configuration <<- Either makes this mandatory / or clone properly!
 
 ## Installation
 
