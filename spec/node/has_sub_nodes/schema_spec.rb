@@ -1,5 +1,5 @@
 RSpec.describe NxtSchema do
-  subject { schema.apply(input) }
+  subject { schema.apply(input: input) }
 
   context 'hash with leaf nodes' do
     let(:schema) do

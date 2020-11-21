@@ -1,5 +1,5 @@
 RSpec.describe NxtSchema do
-  subject { schema.apply(input) }
+  subject { schema.apply(input: input) }
 
   context 'any of collections of any of schemas' do
     let(:schema) do

@@ -19,7 +19,7 @@ RSpec.describe NxtSchema::Dsl do
       end
 
       def call(input)
-        SCHEMA.apply(input)
+        SCHEMA.apply(input: input)
       end
     end
   end

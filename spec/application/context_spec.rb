@@ -5,7 +5,7 @@ RSpec.describe NxtSchema do
   let(:last_name) { 'Stoianov' }
 
   context 'when a context is given at apply time' do
-    subject { schema.apply(input, apply_context) }
+    subject { schema.apply(input: input, context: apply_context) }
 
     let(:schema) do
       NxtSchema.schema(:developers) do
@@ -34,7 +34,7 @@ RSpec.describe NxtSchema do
   end
 
   context 'when a context is given at definition time' do
-    subject { schema.apply(input) }
+    subject { schema.apply(input: input) }
 
     let(:schema) do
       NxtSchema.schema(:developers, context: build_context) do

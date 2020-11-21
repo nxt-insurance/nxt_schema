@@ -42,19 +42,18 @@ module NxtSchema
                   :configuration,
                   :key_transformer
 
-      # TODO: Can we male this not work with keyword args?!
-      def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
-        build_application(input, context, parent, error_key).call
+      def apply(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
+        build_application(input: input, context: context, parent: parent, error_key: error_key).call
       end
 
-      def apply!(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
-        result = build_application(input, context, parent, error_key).call
+      def apply!(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
+        result = build_application(input: input, context: context, parent: parent, error_key: error_key).call
         return result if parent || result.errors.empty?
 
         raise NxtSchema::Errors::Invalid.new(result)
       end
 
-      def build_application(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
+      def build_application(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
         application_class.new(
           node: self,
           input: input,

@@ -1,5 +1,5 @@
 RSpec.describe NxtSchema do
-  subject { schema.apply(input) }
+  subject { schema.apply(input: input) }
 
   let(:schema) do
     NxtSchema.schema(:person) do

@@ -103,7 +103,7 @@ module NxtSchema
         return unless sub_node.present?
 
         value = input_has_key?(input, key) ? input[key] : MissingInput.new
-        sub_node.build_application(value, nil, self)
+        sub_node.build_application(input: value, context: context, parent: self)
       end
 
       def input_has_key?(input, key)

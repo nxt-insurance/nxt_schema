@@ -45,7 +45,7 @@ RSpec.describe NxtSchema do
   end
 
   subject do
-    schema.apply(input)
+    schema.apply(input: input)
   end
 
   it do

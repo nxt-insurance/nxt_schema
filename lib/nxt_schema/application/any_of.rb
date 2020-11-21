@@ -29,7 +29,7 @@ module NxtSchema
       end
 
       def child_applications
-        @child_applications ||= nodes.map { |node| node.build_application(input, context, self) }
+        @child_applications ||= nodes.map { |node| node.build_application(input: input, context: context, parent: self) }
       end
 
       def nodes

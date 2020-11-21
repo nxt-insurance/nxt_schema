@@ -49,7 +49,7 @@ input = {
   email: 'andreas@robecke.de'
 }
 
-result = PERSON.apply(input)
+result = PERSON.apply(input: (input)
 
 result.valid? # => true
 result.output # => input
@@ -102,11 +102,11 @@ schema = NxtSchema.schema(:person) do
   optional(:email, :String)
 end
 
-result = schema.apply(email: nil)
+result = schema.apply(input: { email: nil })
 result.errors # => {"person.email"=>["nil violates constraints (type?(String, nil) failed)"]}
 result.output # => {:email=>nil}
 
-result = schema.apply({})
+result = schema.apply(input: {})
 result.errors # => {}
 result.output # => {}
 ```
@@ -116,10 +116,10 @@ schema = NxtSchema.schema(:person) do
   optional(:email, :String).default('andreas@robecke.de')
 end
 
-result = schema.apply(email: nil)
+result = schema.apply(input: { email: nil })
 result.errors # => {}
 
-result = schema.apply({})
+result = schema.apply(input: {})
 result.errors # => {}
 result.output # => {:email=>"andreas@robecke.de"}
 ```
@@ -129,7 +129,7 @@ schema = NxtSchema.schema(:person) do
   omnipresent(:email, :String)
 end
 
-result = schema.apply({})
+result = schema.apply(input: {})
 result.errors # => {}
 result.output # => {:email=>NxtSchema::MissingInput}
 ```
@@ -140,11 +140,11 @@ schema = NxtSchema.schema(:person) do
   omnipresent(:email, :String).default(nil).maybe(:nil?)
 end
 
-result = schema.apply({})
+result = schema.apply(input: {})
 result.errors # => {}
 result.output # => {:email=>nil}
 
-result = schema.apply(email: 'andreas@robecke.de')
+result = schema.apply(input:  { email: 'andreas@robecke.de' })
 result.errors # => {}
 result.output # => {:email=>"andreas@robecke.de"}
 ```
@@ -372,7 +372,7 @@ schema = NxtSchema.root(additional_keys: :allow) do
   required(:test, :String) 
 end
 
-schema.apply(test: 'getsafe', other: 'Heidelberg')
+schema.apply(input: {test: 'getsafe', other: 'Heidelberg'})
 schema.valid? # => true
 schema.value # => { test: 'getsafe', other: 'Heidelberg' }
 ```
@@ -387,8 +387,8 @@ schema = NxtSchema.root(transform_keys: ->(key) { key.to_sym}) do
   required(:test, :String)
 end
 
-schema.apply('test' => 'getsafe') # => {:test=>"getsafe"}
-schema.apply(test: 'getsafe') # => {:test=>"getsafe"}
+schema.apply(input: { 'test' => 'getsafe' }) # => {:test=>"getsafe"}
+schema.apply(input: { test: 'getsafe' }) # => {:test=>"getsafe"}
 ``` 
 
 #### Adding meta data to nodes
@@ -405,7 +405,7 @@ schema = NxtSchema.root do
   required(:test, :String).meta(ERROR_MESSAGES).validate ->(node) { node.add_error(node.meta.fetch(node.name)) }
 end
 
-schema.apply(test: 'getsafe') 
+schema.apply(input: { test: 'getsafe' }) 
 schema.error #  {"root.test"=>["This is always broken"]}
 ```
 

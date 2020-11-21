@@ -6,7 +6,7 @@ RSpec.describe NxtSchema::Node::Base do
     end
   end
 
-  subject { schema.apply!(input) }
+  subject { schema.apply!(input: input) }
 
   describe '#apply!' do
     context 'when the input is valid' do

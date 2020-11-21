@@ -1,6 +1,6 @@
 RSpec.describe NxtSchema do
   subject do
-    schema.apply(input)
+    schema.apply(input: input)
   end
 
   context 'when additional keys are rejected' do
