@@ -64,7 +64,7 @@ NxtSchema::Node::AnyOf # => Any of the defined schemas
 NxtSchema::Node::Leaf # => Node without sub nodes
 ```
 
-The kind of node dictates how the schema is applied to the input. On the top level the following methods are available
+The kind of node dictates how the schema is applied to the input. On the root level the following methods are available
 to create schemas:
 
 ```ruby
@@ -73,7 +73,7 @@ to create schemas:
   NxtSchema.any_of { ... } # => Create a collection of allowed schemas
 ```
 
-#### Predicate aliases
+#### Node predicate aliases
 
 Of course these nodes can be combined and nested in arbitrary manner. When defining nodes within a schema, nodes are 
 always required per default. You can create nodes with the node method or several useful helper methods. 
@@ -163,9 +163,7 @@ result.errors # => {"contact"=>["Required key :email is missing"]}
 
 result = schema.apply(input: { first_name: 'Andy', last_name: 'Robecke' })
 result.errors # => {}
-``` 
-
-You can also pass a proc as the optional argument. Then the 
+```  
 
 #### Combining Schemas
 
@@ -280,7 +278,7 @@ end
 
 NxtSchema comes with a simple validation system and ships with a small set of useful validators. Every node in a schema
 implements the `:validate` method. Similar to ActiveModel::Validations it allows you to simply add errors to a node
-based on some condition. When you the node is yielded to your validation proc you have access to the nodes input with
+based on some condition. When the node is yielded to your validation proc you have access to the nodes input with
 `node.input` and `node.index` when the node is within a collection of nodes as well as `node.name`. Furthermore you have 
 access to the context that was passed in when defining the schema or passed to the apply method later.
 
