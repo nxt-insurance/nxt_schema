@@ -11,7 +11,6 @@
 - Do we need all off in order to combine multiple schemas? 
 - Introduce Coercible error that wraps dry errors
 - Cloning of nodes would not work without configuration <<- Either makes this mandatory / or clone properly!
-- Explain optional node option
 
 ## Installation
 
@@ -150,6 +149,23 @@ result.output # => {:email=>"andreas@robecke.de"}
 ```
 
 ##### Conditionally optional nodes
+
+You can also pass a proc as the optional option. This will add a validator to the parent node that makes sure thar the 
+key is present if the optional condition does not apply.
+
+```ruby
+schema = NxtSchema.schema(:contact) do
+  required(:first_name, :String)
+  required(:last_name, :String)
+  node(:email, :String, optional: ->(node) { node.up[:last_name].input == 'Robecke' })
+end
+
+result = schema.apply(input: { first_name: 'Andy', last_name: 'Other' })
+result.errors # => {"contact"=>["Required key :email is missing"]}
+
+result = schema.apply(input: { first_name: 'Andy', last_name: 'Robecke' })
+result.errors # => {}
+``` 
 
 You can also pass a proc as the optional argument. Then the 
 
