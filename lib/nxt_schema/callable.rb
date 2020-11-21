@@ -13,10 +13,6 @@ module NxtSchema
       target.send(callable, *args_from_arity)
     end
 
-    private
-
-    attr_reader :callable, :target, :args
-
     def method?
       @method ||= callable.class.in?([Symbol, String]) && target.respond_to?(callable)
     end
@@ -28,6 +24,10 @@ module NxtSchema
     def value?
       !method? && !proc?
     end
+
+    private
+
+    attr_reader :callable, :target, :args
 
     def arity
       proc? ? callable.arity : 0

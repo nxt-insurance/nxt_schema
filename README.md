@@ -94,7 +94,60 @@ end
 In other word this means that making a node optional only makes your node optional. When your input contains the key but
 the value is nil, you will still get an error in case there is no default or maybe expression that applies. Omnipresent
 node also only inject the node into the schema but do not inject a default value. In order to inject a key with value 
-into a schema you also have to combine the node predicates with default value method described below.
+into a schema you also have to combine the node predicates with default value method described below. For clarification
+check out the examples below:
+
+```ruby
+schema = NxtSchema.schema(:person) do
+  optional(:email, :String)
+end
+
+result = schema.apply(email: nil)
+result.errors # => {"person.email"=>["nil violates constraints (type?(String, nil) failed)"]}
+result.output # => {:email=>nil}
+
+result = schema.apply({})
+result.errors # => {}
+result.output # => {}
+```
+
+```ruby
+schema = NxtSchema.schema(:person) do
+  optional(:email, :String).default('andreas@robecke.de')
+end
+
+result = schema.apply(email: nil)
+result.errors # => {}
+
+result = schema.apply({})
+result.errors # => {}
+result.output # => {:email=>"andreas@robecke.de"}
+```
+
+```ruby
+schema = NxtSchema.schema(:person) do
+  omnipresent(:email, :String)
+end
+
+result = schema.apply({})
+result.errors # => {}
+result.output # => {:email=>NxtSchema::MissingInput}
+```
+
+```ruby
+schema = NxtSchema.schema(:person) do
+  # make sure a node is always present and at least nil even though the type is String
+  omnipresent(:email, :String).default(nil).maybe(:nil?)
+end
+
+result = schema.apply({})
+result.errors # => {}
+result.output # => {:email=>nil}
+
+result = schema.apply(email: 'andreas@robecke.de')
+result.errors # => {}
+result.output # => {:email=>"andreas@robecke.de"}
+```
 
 
 #### Combining Schemas
@@ -192,7 +245,8 @@ required(:test, :String, default: 'Andy')
 
 #### Maybe values 
 
-With maybe you can allow your values to be of a certain type and halt conversion.  
+With maybe you can allow your values to be of a certain type and halt conversion. **Note: This means that your output
+will simply be set to the input without coercing the value!**
 
 ```ruby
 # Define maybe values (values that do not match the type)

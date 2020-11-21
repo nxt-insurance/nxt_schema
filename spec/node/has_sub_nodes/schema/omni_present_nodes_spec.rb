@@ -4,11 +4,10 @@ RSpec.describe NxtSchema do
   context 'with present nodes' do
     let(:schema) do
       NxtSchema.schema(:person) do |person|
-        person.omnipresent(:first_name, :String)
+        person.omnipresent(:first_name, :String).default('')
         person.omnipresent(:last_name, :String)
       end
     end
-
 
     context 'but the node is given already' do
       let(:input) do
@@ -27,9 +26,28 @@ RSpec.describe NxtSchema do
 
       it do
         expect(subject.output).to match(
-          first_name: instance_of(NxtSchema::MissingInput),
+          first_name: '',
           last_name: instance_of(NxtSchema::MissingInput)
         )
+      end
+    end
+
+    context 'with nil as default value' do
+      let(:schema) do
+        NxtSchema.schema(:person) do |person|
+          person.omnipresent(:first_name, :String).default(nil)
+          person.omnipresent(:last_name, :String)
+        end
+      end
+
+      let(:input) { {} }
+
+      it { expect(subject).to_not be_valid }
+
+      it { expect(subject.errors).to eq("person.first_name"=>["nil violates constraints (type?(String, nil) failed)"]) }
+
+      it 'does not include the node with the default value as it is invalid' do
+        expect(subject.output).to match(last_name: instance_of(NxtSchema::MissingInput))
       end
     end
   end

@@ -31,7 +31,7 @@ RSpec.describe NxtSchema do
       it do
         expect(subject.errors).to eq(
           'developers' => ['The following keys are missing: [:last_name]'],
-          'developers.last_name' => ['nil violates constraints (type?(String, nil) failed)']
+          'developers.last_name' => ["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"]
         )
       end
     end

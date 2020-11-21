@@ -79,7 +79,7 @@ module NxtSchema
       end
 
       def apply_on_evaluators
-        node.on_evaluators.each { |evaluator| self.input = evaluator.call(input, self, context) }
+        node.on_evaluators.each { |evaluator| evaluator.call(input, self, context) { |result| self.input = result } }
       end
 
       def maybe_evaluator_applies?
