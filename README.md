@@ -31,7 +31,7 @@ Or install it yourself as:
 ## What it is for?
 
 NxtSchema is a type casting and validation framework that allows you to validate and type cast arbitrary nested 
-structures of data.   
+structures of data. 
 
 ### Usage
 
@@ -87,6 +87,14 @@ NxtSchema.schema(:person) do
   omnipresent(:email, :String) # => same as node(:first_name, :String, omnipresent: true)
 end
 ```
+
+**NOTE: The methods above only apply to the keys of your schema and do not make any assumptions about values!**
+
+In other word this means that making a node optional only makes your node optional. When your input contains the key but
+the value is nil, you will still get an error in case there is no default or maybe expression that applies. Omnipresent
+node also only inject the node into the schema but do not inject a default value. In order to inject a key with value 
+into a schema you also have to combine the node predicates with default value method described below.
+
 
 #### Combining Schemas
 
