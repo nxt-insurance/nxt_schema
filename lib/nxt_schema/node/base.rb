@@ -2,7 +2,8 @@ module NxtSchema
   module Node
     class Base
       def initialize(name:, type:, parent_node:, **options, &block)
-        @name = name
+        resolve_name(name)
+
         @parent_node = parent_node
         @options = options
         @is_root_node = parent_node.nil?
@@ -201,6 +202,12 @@ module NxtSchema
 
       def resolve_key_transformer
         @key_transformer = options.fetch(:transform_keys) { parent_node&.key_transformer || ->(key) { key.to_sym } }
+      end
+
+      def resolve_name(name)
+        raise ArgumentError, 'Name can either be a symbol or an integer' unless name.class.in?([Symbol, Integer])
+
+        @name = name
       end
     end
   end
