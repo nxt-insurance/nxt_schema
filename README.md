@@ -11,6 +11,7 @@
 - Do we need all off in order to combine multiple schemas? 
 - Introduce Coercible error that wraps dry errors
 - Cloning of nodes would not work without configuration <<- Either makes this mandatory / or clone properly!
+- Do not allow to pass lambdas as optional option but provide present node validation instead!
 
 ## Installation
 
