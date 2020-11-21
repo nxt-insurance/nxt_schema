@@ -14,7 +14,7 @@ module NxtSchema
           args = [application, value]
 
           if conditional.call(*args.take(conditional.arity))
-            true
+            application.send(:keys).include?(missing_key.to_sym)
           else
             message = ErrorMessages.resolve(
               application.locale,
