@@ -22,6 +22,7 @@ module NxtSchema
           end
         end
 
+        transform_keys
         register_as_applied_when_valid
         run_validations
         self
@@ -31,8 +32,15 @@ module NxtSchema
 
       private
 
+      def transform_keys
+        transformer = node.key_transformer
+        return unless transformer && output.respond_to?(:transform_keys!)
+
+        output.transform_keys!(&transformer)
+      end
+
       def keys
-        node.sub_nodes.reject { |key, _| optional_and_not_given_key?(key) }.keys
+        @keys ||= node.sub_nodes.reject { |key, _| optional_and_not_given_key?(key) }.keys
       end
 
       def additional_keys

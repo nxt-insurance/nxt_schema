@@ -13,6 +13,7 @@ module NxtSchema
         @validations = []
         @configuration = block
 
+        resolve_key_transformer
         resolve_context
         resolve_optional_option
         resolve_omnipresent_option
@@ -30,7 +31,15 @@ module NxtSchema
                     :root_node,
                     :additional_keys_strategy
 
-      attr_reader :type_system, :path, :context, :meta, :on_evaluators, :maybe_evaluators, :validations, :configuration
+      attr_reader :type_system,
+                  :path,
+                  :context,
+                  :meta,
+                  :on_evaluators,
+                  :maybe_evaluators,
+                  :validations,
+                  :configuration,
+                  :key_transformer
 
       # TODO: Can we male this not work with keyword args?!
       def apply(input = MissingInput.new, context = self.context, parent = nil, error_key = nil)
@@ -188,6 +197,10 @@ module NxtSchema
 
       def missing_input?(value)
         value.is_a? MissingInput
+      end
+
+      def resolve_key_transformer
+        @key_transformer = options.fetch(:transform_keys) { parent_node&.key_transformer || ->(key) { key.to_sym } }
       end
     end
   end

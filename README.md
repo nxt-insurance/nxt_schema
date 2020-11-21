@@ -8,8 +8,7 @@
 - Should we have a global and a local registry for validators?
     --> Would be cool to register things for the schema only
     --> Would be cool if this was extendable 
-- Do we need all off in order to combine multiple schemas?
-- transform keys 
+- Do we need all off in order to combine multiple schemas? 
 - Check how we can use constructors to create structs
 - Introduce Coercible error that wraps dry errors
 - Cloning of nodes would not work without configuration <<- Either makes this mandatory / or clone properly!
@@ -321,7 +320,7 @@ You may want to transform the keys from your input. Therefore specify the transf
 when you want your schema to return only symbolized keys for example. 
 
 ```ruby
-schema = NxtSchema.root(transform_keys: :to_sym) do
+schema = NxtSchema.root(transform_keys: ->(key) { key.to_sym}) do
   required(:test, :String)
 end
 

@@ -1,6 +1,11 @@
 module NxtSchema
   module Node
     class SubNodes < ::Hash
+      def initialize
+        super
+        transform_keys { |k| k.to_sym }
+      end
+
       def add(node)
         node_name = node.name
         ensure_node_name_free(node_name)
