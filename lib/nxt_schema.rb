@@ -56,7 +56,6 @@ require_relative 'nxt_schema/dsl'
 module NxtSchema
   extend Dsl
 
-  # TODO: Should probably be part of dsl
   def register_error_messages(*paths)
     Validators::ErrorMessages.load(paths)
   end
