@@ -8,6 +8,19 @@
     --> Would be cool to register things for the schema only
     --> Would be cool if this was extendable 
 - Do we need all off in order to combine multiple schemas?
+- Think about a good implementation of params framework for controllers
+
+```ruby
+PARAMS = NxtRegistry::Registry.new do
+      register(:create) do
+        NxtSchema.params do
+
+        end
+      end
+    end
+
+PARAMS.resolve(:create).apply(input: params)
+```
 
 ## Installation
 
