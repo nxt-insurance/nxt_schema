@@ -333,25 +333,24 @@ schema.apply(name: 'lemonade').valid? # => false
 - Add translated errors
 - Interpolate with actual vs. expected 
 
-#### Combining validators with custom logic
+#### Combining validators
 
 `node(:test, String).validate(...)` basically adds a validator to the node. Of course you can add multiple validators.
-But that means that they will all be executed and errors aggregated. If you want your validator to only run in case 
+But that means that they will all be executed. If you want your validator to only run in case 
 another was false, you can use `:validat_with do ... end` in order to combine validators based on custom logic. 
 
  ```ruby
 NxtSchema.root do
   required(:test, :Integer).validate_with do
     validator(:greater_than, 5) &&
-      validator(:greater_than, 6) &&
+      validator(:greater_than, 6) ||
       validator(:greater_than, 7)
   end
 end
 ```
 
-This has one drawback however. Let's say your test value is 4. This would only run your first validator and then exit 
-from the logic since validators are combined with &&. In this example it might not make much sense, but it basically 
-means that you might not have the full validation errors when combining validations with `:validate_with` 
+Note that this will not run subsequent validators once one was valuated to false and thus might not contain all error 
+messages of all validators that would have failed.  
 
 
 ### Schema options
