@@ -19,8 +19,6 @@ module NxtSchema
         super
       end
 
-      # TODO: Maybe overwrite sub node methods to not have to provide a name here and use node count instead
-
       def on(*args)
         raise NotImplementedError
       end
