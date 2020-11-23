@@ -1,27 +1,5 @@
 # NxtSchema
 
-## TODO:
-
-- Allow to disable validation when applying 
-    --> Are there attributes that should be moved to apply time?
-- Should we have a global and a local registry for validators?
-    --> Would be cool to register things for the schema only
-    --> Would be cool if this was extendable 
-- Do we need all off in order to combine multiple schemas?
-- Think about a good implementation of params framework for controllers
-
-```ruby
-PARAMS = NxtRegistry::Registry.new do
-      register(:create) do
-        NxtSchema.params do
-
-        end
-      end
-    end
-
-PARAMS.resolve(:create).apply(input: params)
-```
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -444,7 +422,6 @@ schema.error #  {"root.test"=>["This is always broken"]}
 
 ##### Apply time
 
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -458,3 +435,25 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/getand
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## TODO:
+
+- Allow to disable validation when applying 
+    --> Are there attributes that should be moved to apply time?
+- Should we have a global and a local registry for validators?
+    --> Would be cool to register things for the schema only
+    --> Would be cool if this was extendable 
+- Do we need all off in order to combine multiple schemas?
+- Think about a good implementation of params framework for controllers
+
+```ruby
+PARAMS = NxtRegistry::Registry.new do
+      register(:create) do
+        NxtSchema.params do
+
+        end
+      end
+    end
+
+PARAMS.resolve(:create).apply(input: params)
+```
