@@ -6,7 +6,6 @@ module NxtSchema
       end
 
       def call
-        # TODO: We should check that this is not empty!
         child_applications.map(&:call)
 
         if valid?

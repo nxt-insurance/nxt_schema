@@ -76,6 +76,12 @@ module NxtSchema
       def [](key)
         sub_nodes[key]
       end
+
+      def ensure_sub_nodes_present
+        return if sub_nodes.any?
+
+        raise NxtSchema::Errors::InvalidOptions, "#{self.class.name} must have sub nodes"
+      end
     end
   end
 end

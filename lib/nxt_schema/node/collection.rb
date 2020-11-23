@@ -7,6 +7,7 @@ module NxtSchema
 
       def initialize(name:, type: DEFAULT_TYPE, parent_node:, **options, &block)
         super
+        ensure_sub_nodes_present
       end
 
       private

@@ -105,10 +105,11 @@ end
 
 result = schema.apply(input: { email: nil })
 result.errors # => {}
+result.output # => {:email=>"andreas@robecke.de"}
 
 result = schema.apply(input: {})
 result.errors # => {}
-result.output # => {:email=>"andreas@robecke.de"}
+result.output # => {}
 ```
 
 ```ruby
@@ -122,8 +123,9 @@ result.output # => {:email=>NxtSchema::MissingInput}
 ```
 
 ```ruby
+# make sure a node is always present and at least nil even though the type is String by combining a default with a 
+# maybe expression
 schema = NxtSchema.schema(:person) do
-  # make sure a node is always present and at least nil even though the type is String
   omnipresent(:email, :String).default(nil).maybe(:nil?)
 end
 
@@ -131,15 +133,16 @@ result = schema.apply(input: {})
 result.errors # => {}
 result.output # => {:email=>nil}
 
-result = schema.apply(input:  { email: 'andreas@robecke.de' })
+result = schema.apply(input: { email: 'andreas@robecke.de' })
 result.errors # => {}
 result.output # => {:email=>"andreas@robecke.de"}
 ```
 
 ##### Conditionally optional nodes
 
-You can also pass a proc as the optional option. This will add a validator to the parent node that makes sure thar the 
-key is present if the optional condition does not apply.
+You can also pass a proc as the optional option. This is a shortcut for adding a validation to the parent node 
+that will result in a validation error in case the optional condition does not apply and the parent node does not 
+contain a sub node with that name (here contact schema not including an email node). 
 
 ```ruby
 schema = NxtSchema.schema(:contact) do

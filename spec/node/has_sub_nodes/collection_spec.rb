@@ -94,4 +94,8 @@ RSpec.describe NxtSchema do
       end
     end
   end
+
+  context 'without sub nodes' do
+    it { expect { NxtSchema.collection {} }.to raise_error NxtSchema::Errors::InvalidOptions }
+  end
 end

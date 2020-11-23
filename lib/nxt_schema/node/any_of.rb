@@ -5,6 +5,7 @@ module NxtSchema
 
       def initialize(name:, type: nil, parent_node:, **options, &block)
         super
+        ensure_sub_nodes_present
       end
 
       def collection(name = sub_nodes.count, type = NxtSchema::Node::Collection::DEFAULT_TYPE, **options, &block)
