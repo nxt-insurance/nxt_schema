@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nxt_schema (0.1.1)
+    nxt_schema (1.0.0)
       activesupport
       dry-types
       nxt_init
