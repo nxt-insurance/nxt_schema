@@ -200,11 +200,11 @@ type system that was specified NxtSchema will always fallback to nominal types. 
 a separate type system per node if that's what you need. 
                                
 ```ruby
-NxtSchema.root do
+NxtSchema.schema do
   required(:test, :String) # The :String will resolve to NxtSchema::Types::Nominal::String
 end
 
-NxtSchema.root(type_system: NxtSchema::Types::JSON) do
+NxtSchema.schema(type_system: NxtSchema::Types::JSON) do
   required(:test, :Date) # The :Date will resolve to NxtSchema::Types::JSON::Date
   # When the type does not exist in the default type system (there is non JSON::String) we fallback to nominal types
   required(:test, :String) 
@@ -237,7 +237,7 @@ NxtSchema.register_type(
 
 # once registered you can use the type in your schema
 
-NxtSchema.root(:company) do
+NxtSchema.schema(:company) do
   required(:name, :MyCustomStrippedString)
 end
 ```
@@ -323,7 +323,7 @@ end
 NxtSchema.register_validator(MyCustomExclusionValidator, :my_custom_exclusion_validator)
 
 # and then simply reference it with the key you've registered it
-schema = NxtSchema.root(:company) do
+schema = NxtSchema.schema(:company) do
   requires(:name, :String).validate(:my_custom_exclusion_validator, %w[lemonade])
 end
 
@@ -343,7 +343,7 @@ But that means that they will all be executed. If you want your validator to onl
 another was false, you can use `:validat_with do ... end` in order to combine validators based on custom logic. 
 
  ```ruby
-NxtSchema.root do
+NxtSchema.schema do
   required(:test, :Integer).validate_with do
     validator(:greater_than, 5) &&
       validator(:greater_than, 6) ||
@@ -365,17 +365,17 @@ You can change this behaviour by providing a strategy for the `:additional_keys`
 
 ```ruby
 # This will simply ignore any other key except test 
-NxtSchema.root(additional_keys: :ignore) do
+NxtSchema.schema(additional_keys: :ignore) do
   required(:test, :String) 
 end
 
 # This would give you an error in case you apply anything other than { test: '...' }
-NxtSchema.root(additional_keys: :restrict) do
+NxtSchema.schema(additional_keys: :restrict) do
   required(:test, :String) 
 end
 
 # This will merge other keys into your output
-schema = NxtSchema.root(additional_keys: :allow) do
+schema = NxtSchema.schema(additional_keys: :allow) do
   required(:test, :String) 
 end
 
@@ -390,7 +390,7 @@ You may want to transform the keys from your input. Therefore specify the transf
 when you want your schema to return only symbolized keys for example. 
 
 ```ruby
-schema = NxtSchema.root(transform_keys: ->(key) { key.to_sym}) do
+schema = NxtSchema.schema(transform_keys: ->(key) { key.to_sym}) do
   required(:test, :String)
 end
 
@@ -404,7 +404,7 @@ You want to give nodes an ID or some other meta data? You can use the meta metho
 information onto any node.  
 
 ```ruby
-schema = NxtSchema.root do
+schema = NxtSchema.schema do
   ERROR_MESSAGES = {
     test: 'This is always broken'
   }
