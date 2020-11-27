@@ -418,11 +418,41 @@ schema.error #  {"root.test"=>["This is always broken"]}
 
 #### Contexts
 
-# TODO
+When defining a schema it is possible to pass in a context option. This can be anything that you would like to access
+during building your schema. A context could provide custom validators for instance.  
 
 ##### Build time
 
+```ruby
+context = OpenStruct.new(email_validator: ->(node) { node.input && node.input.includes?('@') }) 
+
+NxtSchema.schema(:developers, context: context) do
+  required(:first_name, :String)
+  required(:last_name, :String)
+  required(:email, :String).validate(context.email_validator)
+end
+```
+
 ##### Apply time
+
+You can also pass in a context at apply time. If you do not pass in a specific 
+context at apply time you can still access the context passed in at build time. 
+Basically passing in a context at apply time will overwrite the context from before. You can access it simply through
+the node.  
+
+```ruby
+build_context = OpenStruct.new(email_validator: ->(node) { node.input && node.input.includes?('@') })
+apply_context = OpenStruct.new(default_role: 'BOSS')
+
+schema = NxtSchema.schema(:developers, context: build_context) do
+  # context at build time
+  required(:email, :String).validate(context.email_validator) # 
+  # access the context at apply time through the node 
+  required(:role, :String).default { |_, node| node.context.default_role }
+end
+
+schema.apply(input: input, context: apply_context)
+```
 
 ## Development
 
