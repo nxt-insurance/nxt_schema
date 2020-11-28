@@ -470,6 +470,10 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## TODO:
 
+- Explain node interface
+    - Rename applied in coerced? 
+    - Introduce blocks for coerced? do ... end
+- Rename Application in Node and Node in Template
 - Allow to disable validation when applying 
     --> Are there attributes that should be moved to apply time?
 - Should we have a global and a local registry for validators?
