@@ -18,8 +18,10 @@ Or install it yourself as:
 
 ## What it is for?
 
-NxtSchema is a type casting and validation framework that allows you to validate and type cast arbitrary nested 
-structures of data. 
+NxtSchema is a type coercion and validation framework that allows you to coerce and validate arbitrary nested 
+structures of data. It is highly inspired by https://dry-rb.org/gems/dry-schema and https://dry-rb.org/gems/dry-validation 
+from the amazing dry.rb eco system. In contrast to dry-schema, NxtSchema aims to be a simpler solution that is easier to 
+understand and ships with some handy features that do not exist in dry-schema). 
 
 ### Usage
 
@@ -182,10 +184,6 @@ end
 The type system is built with dry-types from the amazing https://dry-rb.org eco system. Even though dry-types also
 offers features such as default values for types as well as maybe types, these features are built directly into 
 NxtSchema. 
-
-Please note that Dry.rb also has a gem for schemas: https://dry-rb.org/gems/dry-schema and another one dedicated to 
-validations explicitly https://dry-rb.org/gems/dry-validation. You should probably go and check those out! NxtSchema
-is trying to implement a simpler solution that is easy to understand yet powerful enough for most tasks.  
 
 In NxtSchema every node has a type and you can either provide a symbol that will be resolved 
 through the type system of the schema or you can directly provide an instance of dry type and thus use your 
