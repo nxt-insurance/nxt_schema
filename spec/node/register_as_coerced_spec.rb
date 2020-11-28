@@ -30,7 +30,7 @@ RSpec.describe NxtSchema do
     }
   end
 
-  it 'returns only nodes that could be applied without schema errors' do
-    expect(subject.applied_nodes.map(&:input)).to match_array(%w[Andy Superman Superstar])
+  it 'returns only nodes that could be coerced without errors' do
+    expect(subject.coerced_nodes.map(&:input)).to match_array(%w[Andy Superman Superstar])
   end
 end

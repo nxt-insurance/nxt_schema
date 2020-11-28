@@ -16,12 +16,13 @@ Or install it yourself as:
 
     $ gem install nxt_schema
 
-## What it is for?
+## What is it for?
 
 NxtSchema is a type coercion and validation framework that allows you to coerce and validate arbitrary nested 
-structures of data. It is highly inspired by https://dry-rb.org/gems/dry-schema and https://dry-rb.org/gems/dry-validation 
-from the amazing dry.rb eco system. In contrast to dry-schema, NxtSchema aims to be a simpler solution that is easier to 
-understand and ships with some handy features that do not exist in dry-schema). 
+structures of data. The original idea is taken from https://dry-rb.org/gems/dry-schema and 
+https://dry-rb.org/gems/dry-validation from the amazing dry.rb eco system. In contrast to dry-schema, 
+NxtSchema aims to be a simpler solution that hopefully is easier to understand and debug. 
+It also ships with some handy features that dry-schema does not implement. 
 
 ### Usage
 
@@ -33,7 +34,7 @@ PERSON = NxtSchema.schema(:person) do
 end
 
 input = {
-  first_name: 'Andy',
+  first_name: 'Ändy',
   last_name: 'Robecke',
   email: 'andreas@robecke.de'
 }
@@ -87,6 +88,8 @@ into a schema you also have to combine the node predicates with default value me
 check out the examples below:
 
 ```ruby
+# Optional node without default value
+
 schema = NxtSchema.schema(:person) do
   optional(:email, :String)
 end
@@ -101,6 +104,8 @@ result.output # => {}
 ```
 
 ```ruby
+# Optional node with default value
+
 schema = NxtSchema.schema(:person) do
   optional(:email, :String).default('andreas@robecke.de')
 end
@@ -115,6 +120,8 @@ result.output # => {}
 ```
 
 ```ruby
+# Omnipresent node without default value
+
 schema = NxtSchema.schema(:person) do
   omnipresent(:email, :String)
 end
@@ -125,8 +132,8 @@ result.output # => {:email=>NxtSchema::MissingInput}
 ```
 
 ```ruby
-# make sure a node is always present and at least nil even though the type is String by combining a default with a 
-# maybe expression
+# Omnipresent node with default value and maybe expression to allow default value to break type contract.
+
 schema = NxtSchema.schema(:person) do
   omnipresent(:email, :String).default(nil).maybe(:nil?)
 end
@@ -245,21 +252,21 @@ end
 #### Default values
 
 ```ruby
-# Define default values as options or with the default method
+# Define default values with the default method
+required(:test, :DateTime).default(nil)
 required(:test, :DateTime).default(-> { Time.current })
-required(:test, :String, default: 'Andy')
 ```
 
 #### Maybe values 
 
-With maybe you can allow your values to be of a certain type and halt conversion. **Note: This means that your output
-will simply be set to the input without coercing the value!**
+With maybe expressions you can halt coercion and allow your values to break the type contract. 
+**Note: This means that your output will simply be set to the input without coercing the value!**
 
 ```ruby
 # Define maybe values (values that do not match the type)
 required(:test, :String).maybe(:nil?)
 
-nodes(:tests).maybe(:empty?) do # will allow the collection to be empty
+nodes(:tests).maybe(:empty?) do # will allow the collection to be empty and thus not contain strings
   required(:test, :String)
 end
 
@@ -272,6 +279,8 @@ implements the `:validate` method. Similar to ActiveModel::Validations it allows
 based on some condition. When the node is yielded to your validation proc you have access to the nodes input with
 `node.input` and `node.index` when the node is within a collection of nodes as well as `node.name`. Furthermore you have 
 access to the context that was passed in when defining the schema or passed to the apply method later.
+
+**NOTE: Validations only run when no maybe expression applies and the node input could be coerced successfully**
 
 ```ruby
   # Simple custom validation
@@ -417,7 +426,8 @@ schema.error #  {"root.test"=>["This is always broken"]}
 #### Contexts
 
 When defining a schema it is possible to pass in a context option. This can be anything that you would like to access
-during building your schema. A context could provide custom validators for instance.  
+during building your schema. A context could provide custom validators or default values depending of the name of your
+nodes for instance.  
 
 ##### Build time
 
@@ -439,7 +449,7 @@ Basically passing in a context at apply time will overwrite the context from bef
 the node.  
 
 ```ruby
-build_context = OpenStruct.new(email_validator: ->(node) { node.input && node.input.includes?('@') })
+build_context = OpenStruct.new(email_validator: ->(node) { node.input.includes?('@') })
 apply_context = OpenStruct.new(default_role: 'BOSS')
 
 schema = NxtSchema.schema(:developers, context: build_context) do
@@ -469,9 +479,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## TODO:
 
 - Explain node interface
-    - Rename applied in coerced? 
-    - Introduce blocks for coerced? do ... end
-- Rename Application in Node and Node in Template
+- Add apply! method to readme
 - Allow to disable validation when applying 
     --> Are there attributes that should be moved to apply time?
 - Should we have a global and a local registry for validators?

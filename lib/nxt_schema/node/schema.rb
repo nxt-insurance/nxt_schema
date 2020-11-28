@@ -23,7 +23,7 @@ module NxtSchema
         end
 
         transform_keys
-        register_as_applied_when_valid
+        register_as_coerced_when_no_errors
         run_validations
         self
       end

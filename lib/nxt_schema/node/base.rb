@@ -8,8 +8,8 @@ module NxtSchema
         @output = nil
         @error_key = error_key
         @context = context || parent&.context
-        @applied = false
-        @applied_nodes = parent&.applied_nodes || []
+        @coerced = false
+        @coerced_nodes = parent&.coerced_nodes || []
         @is_root = parent.nil?
         @root = parent.nil? ? self : parent.root
         @errors = ErrorStore.new(self)
@@ -20,7 +20,7 @@ module NxtSchema
       end
 
       attr_accessor :output, :node, :input
-      attr_reader :parent, :context, :error_key, :applied, :applied_nodes, :root, :errors, :locale, :index
+      attr_reader :parent, :context, :error_key, :coerced, :coerced_nodes, :root, :errors, :locale, :index
 
       def call
         raise NotImplementedError, 'Implement this in our sub class'
@@ -49,7 +49,7 @@ module NxtSchema
       end
 
       def run_validations
-        return false unless applied?
+        return false unless coerced?
 
         node.validations.each do |validation|
           args = [self, input]
@@ -68,7 +68,7 @@ module NxtSchema
 
       private
 
-      attr_writer :applied, :root
+      attr_writer :coerced, :root
 
       def coerce_input
         output = input.is_a?(MissingInput) && node.omnipresent? ? input : node.type[input]
@@ -95,11 +95,11 @@ module NxtSchema
         end
       end
 
-      def register_as_applied_when_valid
+      def register_as_coerced_when_no_errors
         return unless valid?
 
-        self.applied = true
-        applied_nodes << self
+        self.coerced = true
+        coerced_nodes << self
       end
 
       def resolve_error_key(key)
@@ -108,8 +108,9 @@ module NxtSchema
         @error_key = parts.join('.')
       end
 
-      def applied?
-        @applied
+      def coerced?(&block)
+        block.call(self) if @coerced && block_given?
+        @coerced
       end
     end
   end
