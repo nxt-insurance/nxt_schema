@@ -60,9 +60,9 @@ The kind of node dictates how the schema is applied to the input. On the root le
 to create schemas:
 
 ```ruby
-  NxtSchema.schema { ... } # => Create a schema node 
-  NxtSchema.collection { ... } # => Create an array of nodes
-  NxtSchema.any_of { ... } # => Create a collection of allowed schemas
+  NxtSchema.schema { ... } # => Creates a schema node 
+  NxtSchema.collection { ... } # => Creates an array of nodes
+  NxtSchema.any_of { ... } # => Creates a collection of allowed schemas
 ```
 
 #### Node predicate aliases

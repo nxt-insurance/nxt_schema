@@ -1,5 +1,5 @@
 module NxtSchema
-  module Node
+  module Template
     class MaybeEvaluator
       def initialize(value:)
         @value = value

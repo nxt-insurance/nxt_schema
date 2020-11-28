@@ -1,5 +1,5 @@
 module NxtSchema
-  module Node
+  module Template
     class TypeSystemResolver
       include NxtInit
       attr_init :node

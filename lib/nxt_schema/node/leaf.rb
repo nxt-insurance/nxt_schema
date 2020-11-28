@@ -1,12 +1,14 @@
 module NxtSchema
   module Node
     class Leaf < Node::Base
-      def initialize(name:, type: :String, parent_node:, **options, &block)
-        super
-      end
+      def call
+        apply_on_evaluators
+        return self if maybe_evaluator_applies?
 
-      def leaf?
-        true
+        coerce_input
+        register_as_applied_when_valid
+        run_validations
+        self
       end
     end
   end

@@ -1,5 +1,5 @@
 module NxtSchema
-  module Application
+  module Node
     module Errors
       class SchemaError < ::String
         def initialize(application:, message:)

@@ -1,4 +1,4 @@
-RSpec.describe NxtSchema::Node::Base do
+RSpec.describe NxtSchema::Template::Base do
   let(:schema) do
     NxtSchema.nodes(:numbers) do
       validate(:attribute, :size, ->(s) { s > 3 })

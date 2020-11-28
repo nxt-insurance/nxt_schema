@@ -1,5 +1,5 @@
 module NxtSchema
-  module Node
+  module Template
     class TypeResolver
       def resolve(type_system, type)
         @resolve ||= {}

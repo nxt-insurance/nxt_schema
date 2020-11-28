@@ -1,5 +1,5 @@
 module NxtSchema
-  module Node
+  module Template
     class OnEvaluator
       def initialize(condition:, value:)
         @condition = condition

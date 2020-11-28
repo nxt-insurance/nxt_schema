@@ -1,5 +1,5 @@
 module NxtSchema
-  module Application
+  module Node
 
   end
 end

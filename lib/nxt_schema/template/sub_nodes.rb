@@ -1,5 +1,5 @@
 module NxtSchema
-  module Node
+  module Template
     class SubNodes < ::Hash
       def initialize
         super

@@ -1,49 +1,38 @@
 module NxtSchema
   module Node
-    class AnyOf < Base
-      include HasSubNodes
-
-      def initialize(name:, type: nil, parent_node:, **options, &block)
-        super
-        ensure_sub_nodes_present
+    class AnyOf < Node::Base
+      def valid?
+        valid_application.present?
       end
 
-      def collection(name = sub_nodes.count, type = NxtSchema::Node::Collection::DEFAULT_TYPE, **options, &block)
-        super
-      end
+      def call
+        child_applications.map(&:call)
 
-      def schema(name = sub_nodes.count, type = NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
-        super
-      end
+        if valid?
+          self.output = valid_application.output
+        else
+          child_applications.each do |application|
+            merge_errors(application)
+          end
+        end
 
-      def node(name = sub_nodes.count, node_or_type_of_node = nil, **options, &block)
-        super
-      end
-
-      def on(*args)
-        raise NotImplementedError
-      end
-
-      def maybe(*args)
-        raise NotImplementedError
+        self
       end
 
       private
 
-      def resolve_type(name_or_type)
-        nil
+      delegate :[], to: :child_applications
+
+      def valid_application
+        child_applications.find(&:valid?)
       end
 
-      def resolve_optional_option
-        return unless options.key?(:optional)
-
-        raise InvalidOptions, "The optional option is not available for nodes of type #{self.class.name}"
+      def child_applications
+        @child_applications ||= nodes.map { |node| node.build_application(input: input, context: context, parent: self) }
       end
 
-      def resolve_omnipresent_option
-        return unless options.key?(:omnipresent)
-
-        raise InvalidOptions, "The omnipresent option is not available for nodes of type #{self.class.name}"
+      def nodes
+        @nodes ||= node.sub_nodes.values
       end
     end
   end

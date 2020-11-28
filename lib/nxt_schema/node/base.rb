@@ -1,217 +1,115 @@
 module NxtSchema
   module Node
     class Base
-      def initialize(name:, type:, parent_node:, **options, &block)
-        resolve_name(name)
+      def initialize(node:, input: MissingInput.new, parent:, context:, error_key:)
+        @node = node
+        @input = input
+        @parent = parent
+        @output = nil
+        @error_key = error_key
+        @context = context || parent&.context
+        @applied = false
+        @applied_nodes = parent&.applied_nodes || []
+        @is_root = parent.nil?
+        @root = parent.nil? ? self : parent.root
+        @errors = ErrorStore.new(self)
+        @locale = node.options.fetch(:locale) { parent&.locale || 'en' }.to_s
 
-        @parent_node = parent_node
-        @options = options
-        @is_root_node = parent_node.nil?
-        @root_node = parent_node.nil? ? self : parent_node.root_node
-        @path = resolve_path
-        @on_evaluators = []
-        @maybe_evaluators = []
-        @validations = []
-        @configuration = block
-
-        resolve_key_transformer
-        resolve_context
-        resolve_optional_option
-        resolve_omnipresent_option
-        resolve_type_system
-        resolve_type(type)
-        resolve_additional_keys_strategy
-        application_class # memoize
-        configure(&block) if block_given?
+        @index = error_key
+        resolve_error_key(error_key)
       end
 
-      attr_accessor :name,
-                    :parent_node,
-                    :options,
-                    :type,
-                    :root_node,
-                    :additional_keys_strategy
+      attr_accessor :output, :node, :input
+      attr_reader :parent, :context, :error_key, :applied, :applied_nodes, :root, :errors, :locale, :index
 
-      attr_reader :type_system,
-                  :path,
-                  :context,
-                  :meta,
-                  :on_evaluators,
-                  :maybe_evaluators,
-                  :validations,
-                  :configuration,
-                  :key_transformer
-
-      def apply(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
-        build_application(input: input, context: context, parent: parent, error_key: error_key).call
+      def call
+        raise NotImplementedError, 'Implement this in our sub class'
       end
 
-      def apply!(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
-        result = build_application(input: input, context: context, parent: parent, error_key: error_key).call
-        return result if parent || result.errors.empty?
+      delegate :name, :options, to: :node
 
-        raise NxtSchema::Errors::Invalid.new(result)
+      def root?
+        @is_root
       end
 
-      def build_application(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
-        application_class.new(
-          node: self,
-          input: input,
-          parent: parent,
-          context: context,
-          error_key: error_key
-        )
+      def valid?
+        errors.empty?
       end
 
-      def root_node?
-        @is_root_node
+      def add_error(error)
+        errors.add_validation_error(message: error)
       end
 
-      def optional?
-        @optional
+      def add_schema_error(error)
+        errors.add_schema_error(message: error)
       end
 
-      def omnipresent?
-        @omnipresent
+      def merge_errors(application)
+        errors.merge_errors(application)
       end
 
-      def default(value = NxtSchema::MissingInput.new, &block)
-        value = missing_input?(value) ? block : value
-        condition = ->(input) { missing_input?(input) || input.nil? }
-        on(condition, value)
+      def run_validations
+        return false unless applied?
 
-        self
+        node.validations.each do |validation|
+          args = [self, input]
+          validation.call(*args.take(validation.arity))
+        end
       end
 
-      def on(condition, value = NxtSchema::MissingInput.new, &block)
-        value = missing_input?(value) ? block : value
-        on_evaluators << OnEvaluator.new(condition: condition, value: value)
+      def up(levels = 1)
+        0.upto(levels - 1).inject(self) do |acc, _|
+          parent = acc.send(:parent)
+          break acc unless parent
 
-        self
-      end
-
-      def maybe(value = NxtSchema::MissingInput.new, &block)
-        value = missing_input?(value) ? block : value
-        maybe_evaluators << MaybeEvaluator.new(value: value)
-
-        self
-      end
-
-      def validate(key = NxtSchema::MissingInput.new, *args, &block)
-        # TODO: This does not really work with all kinds of chaining combinations yet!
-
-        validator = if key.is_a?(Symbol)
-                      validator(key, *args)
-                    elsif key.respond_to?(:call)
-                      key
-                    elsif block_given?
-                      if key.is_a?(NxtSchema::MissingInput)
-                        block
-                      else
-                        configure(&block)
-                      end
-                    else
-                      raise ArgumentError, "Don't know how to resolve validator from: #{key} with: #{args} #{block}"
-                    end
-
-        register_validator(validator)
-
-        self
-      end
-
-      def validate_with(&block)
-        proxy = ->(node) { NxtSchema::Validator::ValidateWithProxy.new(node).validate(&block) }
-        register_validator(proxy)
+          parent
+        end
       end
 
       private
 
-      attr_writer :path, :meta, :context, :on_evaluators, :maybe_evaluators
+      attr_writer :applied, :root
 
-      def validator(key, *args)
-        Validators::REGISTRY.resolve!(key).new(*args).build
+      def coerce_input
+        output = input.is_a?(MissingInput) && node.omnipresent? ? input : node.type[input]
+        self.output = output
+
+      rescue Dry::Types::CoercionError => error
+        add_schema_error(error.message)
       end
 
-      def register_validator(validator)
-        validations << validator
+      def apply_on_evaluators
+        node.on_evaluators.each { |evaluator| evaluator.call(input, self, context) { |result| self.input = result } }
       end
 
-      def resolve_type(name_or_type)
-        @type = root_node.send(:type_resolver).resolve(type_system, name_or_type)
-      end
+      def maybe_evaluator_applies?
+        @maybe_evaluator_applies ||= node.maybe_evaluators.inject(false) do |acc, evaluator|
+          result = (acc || evaluator.call(input, self, context))
 
-      def resolve_type_system
-        @type_system = TypeSystemResolver.new(node: self).call
-      end
-
-      def type_resolver
-        @type_resolver ||= begin
-          root_node? ? TypeResolver.new : (raise NoMethodError, 'type_resolver is only available on root node')
+          if result
+            self.output = input
+            break true
+          else
+            false
+          end
         end
       end
 
-      def application_class
-        @application_class ||= "NxtSchema::Application::#{self.class.name.demodulize}".constantize
+      def register_as_applied_when_valid
+        return unless valid?
+
+        self.applied = true
+        applied_nodes << self
       end
 
-      def configure(&block)
-        if block.arity == 1
-          block.call(self)
-        else
-          instance_exec(&block)
-        end
+      def resolve_error_key(key)
+        parts = [parent&.error_key].compact
+        parts << (key.present? ? "#{node.name}[#{key}]" : node.name)
+        @error_key = parts.join('.')
       end
 
-      def resolve_additional_keys_strategy
-        @additional_keys_strategy = options.fetch(:additional_keys) do
-          parent_node&.send(:additional_keys_strategy) || :allow
-        end
-      end
-
-      def resolve_optional_option
-        optional = options.fetch(:optional, false)
-        raise Errors::InvalidOptions, 'Optional nodes are only available within schemas' if optional && !parent_node.is_a?(Schema)
-        raise Errors::InvalidOptions, "Can't make omnipresent node optional" if optional && omnipresent?
-
-        if optional.respond_to?(:call)
-          # When a node is conditionally optional we make it optional and add a validator to the parent to check
-          # that it's there when the option does not apply.
-          optional_node_validator = validator(:optional_node, optional, name)
-          parent_node.send(:register_validator, optional_node_validator)
-          @optional = true
-        else
-          @optional = optional
-        end
-      end
-
-      def resolve_omnipresent_option
-        omnipresent = options.fetch(:omnipresent, false)
-        raise Errors::InvalidOptions, 'Omnipresent nodes are only available within schemas' if omnipresent && !parent_node.is_a?(Schema)
-        raise Errors::InvalidOptions, "Can't make omnipresent node optional" if optional? && omnipresent
-
-        @omnipresent = omnipresent
-      end
-
-      def resolve_path
-        self.path = root_node? ? name : "#{parent_node.path}.#{name}"
-      end
-
-      def resolve_context
-        self.context = options.fetch(:context) { parent_node&.send(:context) }
-      end
-
-      def missing_input?(value)
-        value.is_a? MissingInput
-      end
-
-      def resolve_key_transformer
-        @key_transformer = options.fetch(:transform_keys) { parent_node&.key_transformer || ->(key) { key.to_sym } }
-      end
-
-      def resolve_name(name)
-        raise ArgumentError, 'Name can either be a symbol or an integer' unless name.class.in?([Symbol, Integer])
-
-        @name = name
+      def applied?
+        @applied
       end
     end
   end

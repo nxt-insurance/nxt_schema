@@ -1,8 +1,8 @@
 module NxtSchema
-  module Node
+  module Template
     module HasSubNodes
-      def collection(name, type = NxtSchema::Node::Collection::DEFAULT_TYPE, **options, &block)
-        node = NxtSchema::Node::Collection.new(
+      def collection(name, type = NxtSchema::Template::Collection::DEFAULT_TYPE, **options, &block)
+        node = NxtSchema::Template::Collection.new(
           name: name,
           type: type,
           parent_node: self,
@@ -15,8 +15,8 @@ module NxtSchema
 
       alias nodes collection
 
-      def schema(name, type = NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
-        node = NxtSchema::Node::Schema.new(
+      def schema(name, type = NxtSchema::Template::Schema::DEFAULT_TYPE, **options, &block)
+        node = NxtSchema::Template::Schema.new(
           name: name,
           type: type,
           parent_node: self,
@@ -28,7 +28,7 @@ module NxtSchema
       end
 
       def any_of(name, **options, &block)
-        node = NxtSchema::Node::AnyOf.new(
+        node = NxtSchema::Template::AnyOf.new(
           name: name,
           parent_node: self,
           **options,
@@ -39,7 +39,7 @@ module NxtSchema
       end
 
       def node(name, node_or_type_of_node, **options, &block)
-        node = if node_or_type_of_node.is_a?(NxtSchema::Node::Base)
+        node = if node_or_type_of_node.is_a?(NxtSchema::Template::Base)
           raise ArgumentError, "Can't provide a block along with a node" if block.present?
 
           node_or_type_of_node.class.new(
@@ -50,7 +50,7 @@ module NxtSchema
             &node_or_type_of_node.configuration
           )
         else
-          NxtSchema::Node::Leaf.new(
+          NxtSchema::Template::Leaf.new(
             name: name,
             type: node_or_type_of_node,
             parent_node: self,
@@ -70,7 +70,7 @@ module NxtSchema
       end
 
       def sub_nodes
-        @sub_nodes ||= Node::SubNodes.new
+        @sub_nodes ||= Template::SubNodes.new
       end
 
       def [](key)

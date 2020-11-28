@@ -1,5 +1,5 @@
 module NxtSchema
-  module Application
+  module Node
     class ErrorStore < ::Hash
       def initialize(application)
         super()
@@ -11,7 +11,7 @@ module NxtSchema
       def add_schema_error(message:)
         add_error(
           application,
-          NxtSchema::Application::Errors::SchemaError.new(
+          NxtSchema::Node::Errors::SchemaError.new(
             application: application,
             message: message
           )
@@ -21,7 +21,7 @@ module NxtSchema
       def add_validation_error(message:)
         add_error(
           application,
-          NxtSchema::Application::Errors::ValidationError.new(
+          NxtSchema::Node::Errors::ValidationError.new(
             application: application,
             message: message
           )
@@ -39,7 +39,7 @@ module NxtSchema
 
       # def schema_errors
       #   inject({}) do |acc, (k, v)|
-      #     errors = v.select { |e| e.is_a?(NxtSchema::Application::Errors::SchemaError) }
+      #     errors = v.select { |e| e.is_a?(NxtSchema::Node::Errors::SchemaError) }
       #     acc[k] = errors if errors.any?
       #     acc
       #   end
@@ -47,7 +47,7 @@ module NxtSchema
       #
       # def validation_errors
       #   inject({}) do |acc, (k, v)|
-      #     errors = v.select { |e| e.is_a?(NxtSchema::Application::Errors::ValidationError) }
+      #     errors = v.select { |e| e.is_a?(NxtSchema::Node::Errors::ValidationError) }
       #     acc[k] = errors if errors.any?
       #     acc
       #   end

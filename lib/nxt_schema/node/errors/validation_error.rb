@@ -1,5 +1,5 @@
 module NxtSchema
-  module Application
+  module Node
     module Errors
       class ValidationError < ::String
         def initialize(application:, message:)

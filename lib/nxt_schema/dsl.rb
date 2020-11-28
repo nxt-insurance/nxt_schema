@@ -2,8 +2,8 @@ module NxtSchema
   module Dsl
     DEFAULT_OPTIONS = { type_system: NxtSchema::Types }.freeze
 
-    def collection(name = :root, type: NxtSchema::Node::Collection::DEFAULT_TYPE, **options, &block)
-      NxtSchema::Node::Collection.new(
+    def collection(name = :root, type: NxtSchema::Template::Collection::DEFAULT_TYPE, **options, &block)
+      NxtSchema::Template::Collection.new(
         name: name,
         type: type,
         parent_node: nil,
@@ -14,8 +14,8 @@ module NxtSchema
 
     alias nodes collection
 
-    def schema(name = :roots, type: NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
-      NxtSchema::Node::Schema.new(
+    def schema(name = :roots, type: NxtSchema::Template::Schema::DEFAULT_TYPE, **options, &block)
+      NxtSchema::Template::Schema.new(
         name: name,
         type: type,
         parent_node: nil,
@@ -25,7 +25,7 @@ module NxtSchema
     end
 
     def any_of(name = :roots, **options, &block)
-      NxtSchema::Node::AnyOf.new(
+      NxtSchema::Template::AnyOf.new(
         name: name,
         parent_node: nil,
         **DEFAULT_OPTIONS.merge(options),
@@ -35,8 +35,8 @@ module NxtSchema
 
     # schema root with NxtSchema::Types::Params type system
 
-    def params(name = :params, type: NxtSchema::Node::Schema::DEFAULT_TYPE, **options, &block)
-      NxtSchema::Node::Schema.new(
+    def params(name = :params, type: NxtSchema::Template::Schema::DEFAULT_TYPE, **options, &block)
+      NxtSchema::Template::Schema.new(
         name: name,
         type: type,
         parent_node: nil,
