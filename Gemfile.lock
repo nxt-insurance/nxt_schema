@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nxt_schema (1.0.0)
+    nxt_schema (1.0.1)
       activesupport
       dry-types
       nxt_init
@@ -50,7 +50,7 @@ GEM
     minitest (5.14.2)
     nxt_init (0.1.5)
       activesupport
-    nxt_registry (0.3.2)
+    nxt_registry (0.3.3)
       activesupport
     pry (0.13.1)
       coderay (~> 1.1)
@@ -72,7 +72,7 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.8)
       thread_safe (~> 0.1)
-    zeitwerk (2.4.1)
+    zeitwerk (2.4.2)
 
 PLATFORMS
   ruby
