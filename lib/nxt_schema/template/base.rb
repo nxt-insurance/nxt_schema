@@ -21,7 +21,7 @@ module NxtSchema
         resolve_type_system
         resolve_type(type)
         resolve_additional_keys_strategy
-        application_class # memoize
+        node_class # memoize
         configure(&block) if block_given?
       end
 
@@ -43,18 +43,18 @@ module NxtSchema
                   :key_transformer
 
       def apply(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
-        build_application(input: input, context: context, parent: parent, error_key: error_key).call
+        build_node(input: input, context: context, parent: parent, error_key: error_key).call
       end
 
       def apply!(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
-        result = build_application(input: input, context: context, parent: parent, error_key: error_key).call
+        result = build_node(input: input, context: context, parent: parent, error_key: error_key).call
         return result if parent || result.errors.empty?
 
         raise NxtSchema::Errors::Invalid.new(result)
       end
 
-      def build_application(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
-        application_class.new(
+      def build_node(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
+        node_class.new(
           node: self,
           input: input,
           parent: parent,
@@ -150,8 +150,8 @@ module NxtSchema
         end
       end
 
-      def application_class
-        @application_class ||= "NxtSchema::Node::#{self.class.name.demodulize}".constantize
+      def node_class
+        @node_class ||= "NxtSchema::Node::#{self.class.name.demodulize}".constantize
       end
 
       def configure(&block)
