@@ -2,17 +2,17 @@ module NxtSchema
   module Node
     class AnyOf < Node::Base
       def valid?
-        valid_application.present?
+        valid_node.present?
       end
 
       def call
-        child_applications.map(&:call)
+        child_nodes.map(&:call)
 
         if valid?
-          self.output = valid_application.output
+          self.output = valid_node.output
         else
-          child_applications.each do |application|
-            merge_errors(application)
+          child_nodes.each do |node|
+            merge_errors(node)
           end
         end
 
@@ -21,14 +21,14 @@ module NxtSchema
 
       private
 
-      delegate :[], to: :child_applications
+      delegate :[], to: :child_nodes
 
-      def valid_application
-        child_applications.find(&:valid?)
+      def valid_node
+        child_nodes.find(&:valid?)
       end
 
-      def child_applications
-        @child_applications ||= nodes.map { |node| node.build_node(input: input, context: context, parent: self) }
+      def child_nodes
+        @child_nodes ||= nodes.map { |node| node.build_node(input: input, context: context, parent: self) }
       end
 
       def nodes

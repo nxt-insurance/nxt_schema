@@ -9,12 +9,12 @@ module NxtSchema
       attr_reader :target
 
       def build
-        lambda do |application, value|
+        lambda do |node, value|
           if target.include?(value)
             true
           else
-            message = translate_error(application.locale, value: value, target: target)
-            application.add_error(message)
+            message = translate_error(node.locale, value: value, target: target)
+            node.add_error(message)
           end
         end
       end

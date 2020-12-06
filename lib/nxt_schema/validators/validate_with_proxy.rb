@@ -1,14 +1,14 @@
 module NxtSchema
   module Validator
     class ValidateWithProxy
-      def initialize(application)
-        @application = application
+      def initialize(node)
+        @node = node
         @aggregated_errors = []
       end
 
-      attr_reader :application
+      attr_reader :node
 
-      delegate_missing_to :application
+      delegate_missing_to :node
 
       def validate(&block)
         result = instance_exec(&block)
@@ -24,7 +24,7 @@ module NxtSchema
 
       def copy_aggregated_errors_to_node
         aggregated_errors.each do |error|
-          application.add_error(error)
+          node.add_error(error)
         end
       end
 
@@ -33,8 +33,8 @@ module NxtSchema
       attr_reader :aggregated_errors
 
       def validator(key, *args)
-        validator = application.node.send(:validator, key, *args)
-        validator.call(self, application.input)
+        validator = node.node.send(:validator, key, *args)
+        validator.call(self, node.input)
       end
     end
   end

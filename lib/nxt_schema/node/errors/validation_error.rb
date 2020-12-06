@@ -2,12 +2,12 @@ module NxtSchema
   module Node
     module Errors
       class ValidationError < ::String
-        def initialize(application:, message:)
+        def initialize(node:, message:)
           super(message)
-          @application = application
+          @node = node
         end
 
-        attr_reader :application
+        attr_reader :node
       end
     end
   end

@@ -10,20 +10,20 @@ module NxtSchema
       attr_reader :conditional, :missing_key
 
       def build
-        lambda do |application, value|
-          args = [application, value]
+        lambda do |node, value|
+          args = [node, value]
 
           return if conditional.call(*args.take(conditional.arity))
-          return if application.send(:keys).include?(missing_key.to_sym)
+          return if node.send(:keys).include?(missing_key.to_sym)
 
           message = ErrorMessages.resolve(
-            application.locale,
+            node.locale,
             :required_key_missing,
             key: missing_key,
-            target: application.input
+            target: node.input
           )
 
-          application.add_error(message)
+          node.add_error(message)
         end
       end
     end

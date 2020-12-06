@@ -9,12 +9,12 @@ module NxtSchema
       attr_reader :pattern
 
       def build
-        lambda do |application, value|
+        lambda do |node, value|
           if value.match(pattern)
             true
           else
-            message = translate_error(application.locale, value: value, pattern: pattern)
-            application.add_error(message)
+            message = translate_error(node.locale, value: value, pattern: pattern)
+            node.add_error(message)
             false
           end
         end

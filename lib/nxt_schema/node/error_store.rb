@@ -1,18 +1,18 @@
 module NxtSchema
   module Node
     class ErrorStore < ::Hash
-      def initialize(application)
+      def initialize(node)
         super()
-        @application = application
+        @node = node
       end
 
-      attr_reader :application
+      attr_reader :node
 
       def add_schema_error(message:)
         add_error(
-          application,
+          node,
           NxtSchema::Node::Errors::SchemaError.new(
-            application: application,
+            node: node,
             message: message
           )
         )
@@ -20,38 +20,22 @@ module NxtSchema
 
       def add_validation_error(message:)
         add_error(
-          application,
+          node,
           NxtSchema::Node::Errors::ValidationError.new(
-            application: application,
+            node: node,
             message: message
           )
         )
       end
 
-      def merge_errors(application)
-        merge!(application.errors)
+      def merge_errors(node)
+        merge!(node.errors)
       end
 
-      def add_error(application, error)
-        self[application.error_key] ||= []
-        self[application.error_key] << error
+      def add_error(node, error)
+        self[node.error_key] ||= []
+        self[node.error_key] << error
       end
-
-      # def schema_errors
-      #   inject({}) do |acc, (k, v)|
-      #     errors = v.select { |e| e.is_a?(NxtSchema::Node::Errors::SchemaError) }
-      #     acc[k] = errors if errors.any?
-      #     acc
-      #   end
-      # end
-      #
-      # def validation_errors
-      #   inject({}) do |acc, (k, v)|
-      #     errors = v.select { |e| e.is_a?(NxtSchema::Node::Errors::ValidationError) }
-      #     acc[k] = errors if errors.any?
-      #     acc
-      #   end
-      # end
     end
   end
 end

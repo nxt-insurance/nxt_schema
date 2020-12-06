@@ -12,15 +12,15 @@ module NxtSchema
       # Query for equality validator(:eql, -> { 3 * 3 * 60 })
 
       def build
-        lambda do |application, value|
+        lambda do |node, value|
           expected_value = Callable.new(expectation, nil, value).call
 
           if value == expected_value
             true
           else
-            application.add_error(
+            node.add_error(
               translate_error(
-                application.locale,
+                node.locale,
                 actual: value,
                 expected: expected_value
               )

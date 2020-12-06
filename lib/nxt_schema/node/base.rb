@@ -44,8 +44,8 @@ module NxtSchema
         errors.add_schema_error(message: error)
       end
 
-      def merge_errors(application)
-        errors.merge_errors(application)
+      def merge_errors(node)
+        errors.merge_errors(node)
       end
 
       def run_validations

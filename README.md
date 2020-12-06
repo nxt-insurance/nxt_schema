@@ -487,6 +487,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
     --> Would be cool if this was extendable 
 - Do we need all off in order to combine multiple schemas?
 - Think about a good implementation of params framework for controllers
+- Allow custom errors
 
 ```ruby
 PARAMS = NxtRegistry::Registry.new do

@@ -3,7 +3,7 @@ module NxtSchema
     class Schema < Node::Base
       def call
         apply_on_evaluators
-        child_applications # build applications here so we can access them even when invalid
+        child_nodes # build nodes here so we can access them even when invalid
         return self if maybe_evaluator_applies?
 
         coerce_input
@@ -12,13 +12,13 @@ module NxtSchema
         flag_missing_keys
         apply_additional_keys_strategy
 
-        child_applications.each do |key, child|
-          current_application = child.call
+        child_nodes.each do |key, child|
+          current_node = child.call
 
-          if !current_application.valid?
-            merge_errors(current_application)
+          if !current_node.valid?
+            merge_errors(current_node)
           else
-            output[key] = current_application.output
+            output[key] = current_node.output
           end
         end
 
@@ -28,7 +28,7 @@ module NxtSchema
         self
       end
 
-      delegate :[], to: :child_applications
+      delegate :[], to: :child_nodes
 
       private
 
@@ -88,17 +88,17 @@ module NxtSchema
         node.additional_keys_strategy == :restrict
       end
 
-      def child_applications
-        @child_applications ||= begin
+      def child_nodes
+        @child_nodes ||= begin
           keys.inject({}) do |acc, key|
-            child_application = build_child_application(key)
-            acc[key] = child_application if child_application.present?
+            child_node = build_child_node(key)
+            acc[key] = child_node if child_node.present?
             acc
           end
         end
       end
 
-      def build_child_application(key)
+      def build_child_node(key)
         sub_node = node.sub_nodes[key]
         return unless sub_node.present?
 

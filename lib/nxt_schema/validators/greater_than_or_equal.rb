@@ -9,12 +9,12 @@ module NxtSchema
       attr_reader :threshold
 
       def build
-        lambda do |application, value|
+        lambda do |node, value|
           if value >= threshold
             true
           else
-            message = translate_error(application.locale, value: value, threshold: threshold)
-            application.add_error(message)
+            message = translate_error(node.locale, value: value, threshold: threshold)
+            node.add_error(message)
           end
         end
       end
