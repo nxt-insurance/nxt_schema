@@ -26,21 +26,21 @@ module NxtSchema
       end
 
       attr_accessor :name,
-                    :parent_node,
-                    :options,
-                    :type,
-                    :root_node,
-                    :additional_keys_strategy
+        :parent_node,
+        :options,
+        :type,
+        :root_node,
+        :additional_keys_strategy
 
       attr_reader :type_system,
-                  :path,
-                  :context,
-                  :meta,
-                  :on_evaluators,
-                  :maybe_evaluators,
-                  :validations,
-                  :configuration,
-                  :key_transformer
+        :path,
+        :context,
+        :meta,
+        :on_evaluators,
+        :maybe_evaluators,
+        :validations,
+        :configuration,
+        :key_transformer
 
       def apply(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
         build_node(input: input, context: context, parent: parent, error_key: error_key).call
@@ -48,9 +48,11 @@ module NxtSchema
 
       def apply!(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
         result = build_node(input: input, context: context, parent: parent, error_key: error_key).call
-        return result if parent || result.errors.empty?
+        return result if parent
 
-        raise NxtSchema::Errors::Invalid.new(result)
+        raise NxtSchema::Errors::Invalid.new(result) if result.errors.any?
+
+        result.output
       end
 
       def build_node(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
@@ -101,18 +103,18 @@ module NxtSchema
         # TODO: This does not really work with all kinds of chaining combinations yet!
 
         validator = if key.is_a?(Symbol)
-                      validator(key, *args)
-                    elsif key.respond_to?(:call)
-                      key
-                    elsif block_given?
-                      if key.is_a?(NxtSchema::MissingInput)
-                        block
-                      else
-                        configure(&block)
-                      end
-                    else
-                      raise ArgumentError, "Don't know how to resolve validator from: #{key} with: #{args} #{block}"
-                    end
+          validator(key, *args)
+        elsif key.respond_to?(:call)
+          key
+        elsif block_given?
+          if key.is_a?(NxtSchema::MissingInput)
+            block
+          else
+            configure(&block)
+          end
+        else
+          raise ArgumentError, "Don't know how to resolve validator from: #{key} with: #{args} #{block}"
+        end
 
         register_validator(validator)
 

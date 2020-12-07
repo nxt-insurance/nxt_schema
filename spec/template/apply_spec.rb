@@ -12,8 +12,8 @@ RSpec.describe NxtSchema::Template::Base do
     context 'when the input is valid' do
       let(:input) { [1, 2, 3, 4] }
 
-      it 'returns the application' do
-        expect(subject).to be_valid
+      it 'returns the output' do
+        expect(subject).to eq(input)
       end
     end
 
