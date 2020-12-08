@@ -74,7 +74,7 @@ module NxtSchema
         output = input.is_a?(MissingInput) && node.omnipresent? ? input : node.type[input]
         self.output = output
 
-      rescue Dry::Types::CoercionError => error
+      rescue Dry::Types::CoercionError, NxtSchema::Errors::CoercionError => error
         add_schema_error(error.message)
       end
 
