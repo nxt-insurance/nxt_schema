@@ -71,7 +71,7 @@ module NxtSchema
       attr_writer :coerced, :root
 
       def coerce_input
-        output = input.is_a?(MissingInput) && node.omnipresent? ? input : node.type[input]
+        output = input.is_a?(MissingInput) && node.omnipresent? ? input : node.type.call(input)
         self.output = output
 
       rescue Dry::Types::CoercionError, NxtSchema::Errors::CoercionError => error
