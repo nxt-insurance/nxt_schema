@@ -66,7 +66,7 @@ module NxtSchema
   end
 
   def register_type(key, type)
-    NxtSchema::Types.const_set(key.to_s, type)
+    NxtSchema::Types.registry(:types).register(key, type)
   end
 
   # Load default messages

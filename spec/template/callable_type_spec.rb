@@ -9,6 +9,7 @@ RSpec.describe NxtSchema::Template::Base do
 
       required(:multiply, multiply_type)
       required(:name, :StrippedString)
+      required(:dry_type, NxtSchema::Types::Strict::String.constructor(->(string) { string&.upcase }))
     end
   end
 
@@ -16,15 +17,15 @@ RSpec.describe NxtSchema::Template::Base do
     let(:subject) { schema.apply!(input: input) }
 
     context 'when the type can be applied' do
-      let(:input) { { multiply: 12, name: 'Andy ' } }
+      let(:input) { { multiply: 12, name: 'Andy ', dry_type: 'upcase' } }
 
       it 'uses the proc as type' do
-        expect(subject).to eq(multiply: 144, name: 'Andy')
+        expect(subject).to eq(multiply: 144, name: 'Andy', dry_type: 'UPCASE')
       end
     end
 
     context 'when the type cannot be applied' do
-      let(:input) { { multiply: 12.to_d, name: 'Andy ' } }
+      let(:input) { { multiply: 12.to_d, name: 'Andy ', dry_type: 'upcase' } }
 
       it 'raises an error' do
         expect { subject }.to raise_error NxtSchema::Errors::Invalid, '{"roots.multiply"=>["12.0 must be an integer"]}'
