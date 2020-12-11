@@ -1,10 +1,13 @@
 module NxtSchema
   module Types
     include Dry.Types()
+    extend NxtRegistry
 
-    StrippedString = Strict::String.constructor(->(string) { string&.strip })
-    LengthyStrippedString = StrippedString.constrained(min_size: 1)
-    Enum = -> (*values) { Strict::String.enum(*values) } # Use as NxtSchema::Types::Enum[*ROLES]
-    SymbolizedEnum = -> (*values) { Coercible::Symbol.enum(*values) } # Use as NxtSchema::Types::SymboleEnums[*ROLES]
+    registry(:types, call: false) do
+      register(:StrippedString, Strict::String.constructor(->(string) { string&.strip }))
+      register(:LengthyStrippedString, resolve!(:StrippedString).constrained(min_size: 1))
+      register(:Enum, -> (*values) { Strict::String.enum(*values) })
+      register(:SymbolizedEnum, -> (*values) { Coercible::Symbol.enum(*values) })
+    end
   end
 end
