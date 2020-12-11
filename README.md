@@ -490,6 +490,13 @@ The gem is available as open source under the terms of the [MIT License](https:/
 - Allow custom errors
 
 ```ruby
+nxt_params.register(:create, NxtSchema.params {
+
+}) 
+
+nxt_params.apply!(:create, params)
+
+
 PARAMS = NxtRegistry::Registry.new do
       register(:create) do
         NxtSchema.params do
