@@ -231,13 +231,14 @@ end
 
 #### NxtSchema::Registry
 
-NxtSchema also comes with a little helper to easily register and apply schemas in controllers to validate params: 
+To make use of NxtSchema.params in your controller you can simply include the `NxtSchema::Registry` to easily register 
+and apply schemas: 
 
 ```ruby
 class UsersController < ApplicationController
   include NxtSchema::Registry
   
-  # register a schema
+  # register the schema for the :create action
   schemas.register(
     :create, 
     NxtSchema.params do
@@ -253,6 +254,7 @@ class UsersController < ApplicationController
   private
 
   def create_params
+    # apply the registered schema  
     schemas.apply!(:create, params.fetch(:user))
   end
 end
