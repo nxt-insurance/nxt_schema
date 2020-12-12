@@ -40,7 +40,6 @@ RSpec.describe NxtSchema::Params do
     end
   end
 
-
   context 'apply' do
     before do
       test_class.nxt_params.register(
@@ -79,6 +78,26 @@ RSpec.describe NxtSchema::Params do
           last_name: 'Robecke'
         )
       end
+    end
+  end
+
+  context 'inheritance' do
+    let(:child_class) do
+      Class.new(test_class)
+    end
+
+    before do
+      test_class.nxt_params.register(
+        :create,
+        NxtSchema.params do
+          required(:first_name, :String)
+          required(:last_name, :String)
+        end
+      )
+    end
+
+    it do
+      binding.pry
     end
   end
 end
