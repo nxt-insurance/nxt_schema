@@ -96,8 +96,10 @@ RSpec.describe NxtSchema::Params do
       )
     end
 
-    it do
-      binding.pry
+    it 'inherits the schemas to the subclass' do
+      test_class.nxt_params.each do |key, schema|
+        expect(child_class.nxt_params.resolve(key)).to eq(schema)
+      end
     end
   end
 end
