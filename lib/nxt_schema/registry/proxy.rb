@@ -1,5 +1,5 @@
 module NxtSchema
-  module Params
+  module Registry
     class Proxy
       def initialize(namespace)
         @registry = ::NxtRegistry::Registry.new(namespace, call: false)

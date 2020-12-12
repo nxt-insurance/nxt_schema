@@ -1,13 +1,13 @@
-RSpec.describe NxtSchema::Params do
+RSpec.describe NxtSchema::Registry do
   let(:test_class) do
     Class.new do
-      include(NxtSchema::Params)
+      include(NxtSchema::Registry)
     end
   end
 
   context 'register' do
     before do
-      test_class.nxt_params.register(
+      test_class.schemas.register(
         :create,
         NxtSchema.params do
           required(:first_name, :String)
@@ -18,14 +18,14 @@ RSpec.describe NxtSchema::Params do
 
     describe '#register' do
       it 'registers the schema' do
-        expect(test_class.nxt_params.resolve!(:create)).to be_a(NxtSchema::Template::Schema)
-        expect(test_class.nxt_params.resolve!(:create).sub_nodes.keys).to match_array([:first_name, :last_name])
+        expect(test_class.schemas.resolve!(:create)).to be_a(NxtSchema::Template::Schema)
+        expect(test_class.schemas.resolve!(:create).sub_nodes.keys).to match_array([:first_name, :last_name])
       end
     end
 
     describe '#register!' do
       before do
-        test_class.nxt_params.register!(
+        test_class.schemas.register!(
           :create,
           NxtSchema.params do
             required(:first_name, :String)
@@ -34,15 +34,15 @@ RSpec.describe NxtSchema::Params do
       end
 
       it 'overwrites the previous schema' do
-        expect(test_class.nxt_params.resolve!(:create)).to be_a(NxtSchema::Template::Schema)
-        expect(test_class.nxt_params.resolve!(:create).sub_nodes.keys).to match_array([:first_name])
+        expect(test_class.schemas.resolve!(:create)).to be_a(NxtSchema::Template::Schema)
+        expect(test_class.schemas.resolve!(:create).sub_nodes.keys).to match_array([:first_name])
       end
     end
   end
 
   context 'apply' do
     before do
-      test_class.nxt_params.register(
+      test_class.schemas.register(
         :create,
         NxtSchema.params do
           required(:first_name, :String)
@@ -53,10 +53,10 @@ RSpec.describe NxtSchema::Params do
 
     describe '#apply' do
       it 'registers the schema' do
-        expect(test_class.nxt_params.apply(:create, { first_name: 'Andy' })).to be_a(NxtSchema::Node::Schema)
+        expect(test_class.schemas.apply(:create, { first_name: 'Andy' })).to be_a(NxtSchema::Node::Schema)
 
         expect(
-          test_class.nxt_params.apply!(
+          test_class.schemas.apply!(
             :create,
             { first_name: 'Andy', last_name: 'Robecke' })
         ).to eq(
@@ -69,7 +69,7 @@ RSpec.describe NxtSchema::Params do
     describe '#apply!' do
       it 'applies the input' do
         expect(
-          test_class.nxt_params.apply!(
+          test_class.new.schemas.apply!(
             :create,
             { first_name: 'Andy', last_name: 'Robecke' }
           )
@@ -87,7 +87,7 @@ RSpec.describe NxtSchema::Params do
     end
 
     before do
-      test_class.nxt_params.register(
+      test_class.schemas.register(
         :create,
         NxtSchema.params do
           required(:first_name, :String)
@@ -97,8 +97,8 @@ RSpec.describe NxtSchema::Params do
     end
 
     it 'inherits the schemas to the subclass' do
-      test_class.nxt_params.each do |key, schema|
-        expect(child_class.nxt_params.resolve(key)).to eq(schema)
+      test_class.schemas.each do |key, schema|
+        expect(child_class.new.schemas.resolve(key)).to eq(schema)
       end
     end
   end

@@ -225,8 +225,38 @@ This is suitable to validate and coerce your query params.
 NxtSchema.params do
   required(:effective_at, :DateTime) # would resolve to Types::Params::DateTime 
   required(:test, :String) # The :String will resolve to NxtSchema::Types::Nominal::String
-  required(:advanced, NxtSchema::Types::Params::Bool) # long version of required(:advanced, :Bool)
+  required(:advanced, NxtSchema::Types::Registry::Bool) # long version of required(:advanced, :Bool)
 end
+```
+
+#### NxtSchema::Registry
+
+NxtSchema also comes with a little helper to easily register and apply schemas in controllers to validate params: 
+
+```ruby
+class UsersController < ApplicationController
+  include NxtSchema::Registry
+  
+  # register a schema
+  schemas.register(
+    :create, 
+    NxtSchema.params do
+      required(:first_name, :String)
+      required(:last_name, :String)
+    end
+  )
+  
+  def create
+    User.create!(**create_params) 
+  end
+  
+  private
+
+  def create_params
+    schemas.apply!(:create, params.fetch(:user))
+  end
+end
+
 ```
 
 #### Custom types
