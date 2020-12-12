@@ -5,12 +5,7 @@ module NxtSchema
         @resolve ||= {}
         @resolve[type] ||= begin
           if type.is_a?(Symbol)
-            classified_type = type.to_s.classify
-
-            return type_system.const_get(classified_type) if type_system.const_defined?(classified_type)
-            return NxtSchema::Types::Nominal.const_get(classified_type) if NxtSchema::Types::Nominal.const_defined?(classified_type)
-
-            NxtSchema::Types.registry(:types).resolve!(type)
+            resolve_type_from_symbol(type, type_system)
           elsif type.respond_to?(:call)
             type
           else
@@ -22,6 +17,19 @@ module NxtSchema
       end
 
       private
+
+      def resolve_type_from_symbol(type, type_system)
+        classified_type = type.to_s.classify
+
+        return type_system.const_get(classified_type) if type_defined_in_type_system?(type, type_system)
+        return NxtSchema::Types::Nominal.const_get(classified_type) if type_defined_in_type_system?(type, NxtSchema::Types::Nominal)
+
+        NxtSchema::Types.registry(:types).resolve!(type)
+      end
+
+      def type_defined_in_type_system?(type, type_system)
+        type_system.constants.include?(type)
+      end
 
       def raise_type_not_resolvable_error(type)
         raise ArgumentError, "Can't resolve type: #{type}"

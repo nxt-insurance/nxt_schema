@@ -53,6 +53,8 @@ require_relative 'nxt_schema/node/leaf'
 require_relative 'nxt_schema/node/collection'
 require_relative 'nxt_schema/node/schema'
 require_relative 'nxt_schema/dsl'
+require_relative 'nxt_schema/params/proxy'
+require_relative 'nxt_schema/params'
 
 module NxtSchema
   extend Dsl
