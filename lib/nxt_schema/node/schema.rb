@@ -102,7 +102,7 @@ module NxtSchema
         sub_node = node.sub_nodes[key]
         return unless sub_node.present?
 
-        value = input_has_key?(input, key) ? input[key] : MissingInput.new
+        value = input_has_key?(input, key) ? input[key] : Undefined.new
         sub_node.build_node(input: value, context: context, parent: self)
       end
 

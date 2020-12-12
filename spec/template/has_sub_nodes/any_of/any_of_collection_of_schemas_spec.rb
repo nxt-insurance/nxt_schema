@@ -61,15 +61,15 @@ RSpec.describe NxtSchema do
       it do
         expect(subject.errors).to eq(
           "possible_combinations.good_combinations.allowed_good_combinations[3].good_combo"=>["The following keys are missing: [:color, :code]"],
-          "possible_combinations.good_combinations.allowed_good_combinations[3].good_combo.color"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-          "possible_combinations.good_combinations.allowed_good_combinations[3].good_combo.code"=>["NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)"],
+          "possible_combinations.good_combinations.allowed_good_combinations[3].good_combo.color"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
+          "possible_combinations.good_combinations.allowed_good_combinations[3].good_combo.code"=>["NxtSchema::Undefined violates constraints (type?(Integer, NxtSchema::Undefined) failed)"],
           "possible_combinations.good_combinations.allowed_good_combinations[3].other_good_combo"=>["The following keys are missing: [:length]"],
-          "possible_combinations.good_combinations.allowed_good_combinations[3].other_good_combo.length"=>["NxtSchema::MissingInput violates constraints (type?(BigDecimal, NxtSchema::MissingInput) failed)"],
+          "possible_combinations.good_combinations.allowed_good_combinations[3].other_good_combo.length"=>["NxtSchema::Undefined violates constraints (type?(BigDecimal, NxtSchema::Undefined) failed)"],
           "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo"=>["The following keys are missing: [:color, :code]"],
-          "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo.color"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-          "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo.code"=>["NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)"],
+          "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo.color"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
+          "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo.code"=>["NxtSchema::Undefined violates constraints (type?(Integer, NxtSchema::Undefined) failed)"],
           "possible_combinations.bad_combinations.allowed_bad_combinations[2].other_bad_combo"=>["The following keys are missing: [:height]"],
-          "possible_combinations.bad_combinations.allowed_bad_combinations[2].other_bad_combo.height"=>["NxtSchema::MissingInput violates constraints (type?(BigDecimal, NxtSchema::MissingInput) failed)"]
+          "possible_combinations.bad_combinations.allowed_bad_combinations[2].other_bad_combo.height"=>["NxtSchema::Undefined violates constraints (type?(BigDecimal, NxtSchema::Undefined) failed)"]
         )
       end
     end

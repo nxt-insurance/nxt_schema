@@ -38,13 +38,13 @@ RSpec.describe NxtSchema do
       it 'returns the correct schema errors' do
         expect(subject.errors).to eq(
           "contacts.0"=>["The following keys are missing: [:first_name, :last_name, :female]"],
-          "contacts.0.first_name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-          "contacts.0.last_name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-          "contacts.0.female"=>["NxtSchema::MissingInput violates constraints (type?(FalseClass, NxtSchema::MissingInput) failed)"],
+          "contacts.0.first_name"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
+          "contacts.0.last_name"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
+          "contacts.0.female"=>["NxtSchema::Undefined violates constraints (type?(FalseClass, NxtSchema::Undefined) failed)"],
           "contacts.1"=>["The following keys are missing: [:first_name, :last_name, :male]"],
-          "contacts.1.first_name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-          "contacts.1.last_name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-          "contacts.1.male"=>["NxtSchema::MissingInput violates constraints (type?(FalseClass, NxtSchema::MissingInput) failed)"]
+          "contacts.1.first_name"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
+          "contacts.1.last_name"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
+          "contacts.1.male"=>["NxtSchema::Undefined violates constraints (type?(FalseClass, NxtSchema::Undefined) failed)"]
         )
       end
     end

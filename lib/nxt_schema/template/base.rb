@@ -42,11 +42,11 @@ module NxtSchema
         :configuration,
         :key_transformer
 
-      def apply(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
+      def apply(input: Undefined.new, context: self.context, parent: nil, error_key: nil)
         build_node(input: input, context: context, parent: parent, error_key: error_key).call
       end
 
-      def apply!(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
+      def apply!(input: Undefined.new, context: self.context, parent: nil, error_key: nil)
         result = build_node(input: input, context: context, parent: parent, error_key: error_key).call
         return result if parent
 
@@ -55,7 +55,7 @@ module NxtSchema
         result.output
       end
 
-      def build_node(input: MissingInput.new, context: self.context, parent: nil, error_key: nil)
+      def build_node(input: Undefined.new, context: self.context, parent: nil, error_key: nil)
         node_class.new(
           node: self,
           input: input,
@@ -77,7 +77,7 @@ module NxtSchema
         @omnipresent
       end
 
-      def default(value = NxtSchema::MissingInput.new, &block)
+      def default(value = NxtSchema::Undefined.new, &block)
         value = missing_input?(value) ? block : value
         condition = ->(input) { missing_input?(input) || input.nil? }
         on(condition, value)
@@ -85,21 +85,21 @@ module NxtSchema
         self
       end
 
-      def on(condition, value = NxtSchema::MissingInput.new, &block)
+      def on(condition, value = NxtSchema::Undefined.new, &block)
         value = missing_input?(value) ? block : value
         on_evaluators << OnEvaluator.new(condition: condition, value: value)
 
         self
       end
 
-      def maybe(value = NxtSchema::MissingInput.new, &block)
+      def maybe(value = NxtSchema::Undefined.new, &block)
         value = missing_input?(value) ? block : value
         maybe_evaluators << MaybeEvaluator.new(value: value)
 
         self
       end
 
-      def validate(key = NxtSchema::MissingInput.new, *args, &block)
+      def validate(key = NxtSchema::Undefined.new, *args, &block)
         # TODO: This does not really work with all kinds of chaining combinations yet!
 
         validator = if key.is_a?(Symbol)
@@ -107,7 +107,7 @@ module NxtSchema
         elsif key.respond_to?(:call)
           key
         elsif block_given?
-          if key.is_a?(NxtSchema::MissingInput)
+          if key.is_a?(NxtSchema::Undefined)
             block
           else
             configure(&block)
@@ -203,7 +203,7 @@ module NxtSchema
       end
 
       def missing_input?(value)
-        value.is_a? MissingInput
+        value.is_a? Undefined
       end
 
       def resolve_key_transformer

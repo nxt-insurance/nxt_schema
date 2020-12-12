@@ -31,7 +31,7 @@ RSpec.describe NxtSchema do
       it do
         expect(subject.errors).to eq(
           'developers' => ['The following keys are missing: [:last_name]'],
-          'developers.last_name' => ['NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)']
+          'developers.last_name' => ['NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)']
         )
       end
     end
@@ -42,7 +42,7 @@ RSpec.describe NxtSchema do
       NxtSchema.schema(:developers) do
         required(:first_name, :String)
         omnipresent(:last_name, :String).maybe do |input|
-          input.is_a?(NxtSchema::MissingInput)
+          input.is_a?(NxtSchema::Undefined)
         end
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe NxtSchema do
           subject.output
         ).to match(
           first_name: 'Andy',
-          last_name: instance_of(NxtSchema::MissingInput)
+          last_name: instance_of(NxtSchema::Undefined)
         )
       end
     end

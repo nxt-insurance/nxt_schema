@@ -128,7 +128,7 @@ end
 
 result = schema.apply(input: {})
 result.errors # => {}
-result.output # => {:email=>NxtSchema::MissingInput}
+result.output # => {:email=>NxtSchema::Undefined}
 ```
 
 ```ruby

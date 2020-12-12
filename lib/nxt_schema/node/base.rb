@@ -1,7 +1,7 @@
 module NxtSchema
   module Node
     class Base
-      def initialize(node:, input: MissingInput.new, parent:, context:, error_key:)
+      def initialize(node:, input: Undefined.new, parent:, context:, error_key:)
         @node = node
         @input = input
         @parent = parent
@@ -71,7 +71,7 @@ module NxtSchema
       attr_writer :coerced, :root
 
       def coerce_input
-        output = input.is_a?(MissingInput) && node.omnipresent? ? input : node.type.call(input)
+        output = input.is_a?(Undefined) && node.omnipresent? ? input : node.type.call(input)
         self.output = output
 
       rescue Dry::Types::CoercionError, NxtSchema::Errors::CoercionError => error

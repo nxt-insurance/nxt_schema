@@ -27,7 +27,7 @@ RSpec.describe NxtSchema do
       it do
         expect(subject.output).to match(
           first_name: '',
-          last_name: instance_of(NxtSchema::MissingInput)
+          last_name: instance_of(NxtSchema::Undefined)
         )
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe NxtSchema do
       it { expect(subject.errors).to eq("person.first_name"=>["nil violates constraints (type?(String, nil) failed)"]) }
 
       it 'does not include the node with the default value as it is invalid' do
-        expect(subject.output).to match(last_name: instance_of(NxtSchema::MissingInput))
+        expect(subject.output).to match(last_name: instance_of(NxtSchema::Undefined))
       end
     end
   end

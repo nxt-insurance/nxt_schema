@@ -52,10 +52,10 @@ RSpec.describe NxtSchema do
       expect(subject.errors).to eq(
         "possible_combinations.good_combinations"=>["[{:color=>\"blue\", :code=>1}, {:color=>\"black\", :code=>2}, {:length=>0.12e2}] has invalid size attribute of 3"],
         "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo"=>["The following keys are missing: [:color, :code]"],
-        "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo.color"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-        "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo.code"=>["NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)"],
+        "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo.color"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
+        "possible_combinations.bad_combinations.allowed_bad_combinations[2].bad_combo.code"=>["NxtSchema::Undefined violates constraints (type?(Integer, NxtSchema::Undefined) failed)"],
         "possible_combinations.bad_combinations.allowed_bad_combinations[2].other_bad_combo"=>["The following keys are missing: [:height]"],
-        "possible_combinations.bad_combinations.allowed_bad_combinations[2].other_bad_combo.height"=>["NxtSchema::MissingInput violates constraints (type?(BigDecimal, NxtSchema::MissingInput) failed)"]
+        "possible_combinations.bad_combinations.allowed_bad_combinations[2].other_bad_combo.height"=>["NxtSchema::Undefined violates constraints (type?(BigDecimal, NxtSchema::Undefined) failed)"]
       )
     end
   end

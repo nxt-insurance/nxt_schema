@@ -1,5 +1,5 @@
 module NxtSchema
-  class MissingInput
+  class Undefined
     def inspect
       self.class.name
     end

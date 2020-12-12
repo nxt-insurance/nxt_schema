@@ -82,10 +82,10 @@ RSpec.describe NxtSchema do
       it 'returns the correct errors' do
         expect(subject.errors).to eq(
           "developers.frontend_devs[0].frontend_dev[0]"=>["The following keys are missing: [:name]"],
-          "developers.frontend_devs[0].frontend_dev[0].name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
+          "developers.frontend_devs[0].frontend_dev[0].name"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
           "developers.frontend_devs[2].frontend_dev[0]"=>["The following keys are missing: [:name, :age]"],
-          "developers.frontend_devs[2].frontend_dev[0].name"=>["NxtSchema::MissingInput violates constraints (type?(String, NxtSchema::MissingInput) failed)"],
-          "developers.frontend_devs[2].frontend_dev[0].age"=>["NxtSchema::MissingInput violates constraints (type?(Integer, NxtSchema::MissingInput) failed)"],
+          "developers.frontend_devs[2].frontend_dev[0].name"=>["NxtSchema::Undefined violates constraints (type?(String, NxtSchema::Undefined) failed)"],
+          "developers.frontend_devs[2].frontend_dev[0].age"=>["NxtSchema::Undefined violates constraints (type?(Integer, NxtSchema::Undefined) failed)"],
           "developers.frontend_devs[2].frontend_dev[1]"=>["\"invalid\" violates constraints (type?(Hash, \"invalid\") failed)"],
           "developers.frontend_devs[2].frontend_dev[2]"=>["1 violates constraints (type?(Hash, 1) failed)"],
           "developers.frontend_devs[2].frontend_dev[3]"=>["2 violates constraints (type?(Hash, 2) failed)"],
