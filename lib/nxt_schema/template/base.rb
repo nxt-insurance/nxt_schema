@@ -16,7 +16,7 @@ module NxtSchema
 
         resolve_key_transformer
         resolve_context
-        resolve_optional_option
+        resolve_required_or_optional_option
         resolve_omnipresent_option
         resolve_type_system
         resolve_type(type)
@@ -167,6 +167,32 @@ module NxtSchema
       def resolve_additional_keys_strategy
         @additional_keys_strategy = options.fetch(:additional_keys) do
           parent_node&.send(:additional_keys_strategy) || :allow
+        end
+      end
+
+      def resolve_required_or_optional_option
+        has_required_option = options.key?(:required)
+        has_optional_option = options.key?(:optional)
+
+        raise Errors::InvalidOptions, "Can't make a node optional and required in the same time" if has_required_option && has_optional_option
+
+        resolve_required_option if has_required_option
+        resolve_optional_option if has_optional_option
+      end
+
+      def resolve_required_option
+        required = options.fetch(:required, false)
+        raise Errors::InvalidOptions, 'Required nodes are only available within schemas' if required && !parent_node.is_a?(Schema)
+        raise Errors::InvalidOptions, "Can't make omnipresent node conditionally required" if required && omnipresent?
+
+        if required.respond_to?(:call)
+          # When a node is conditionally required we make it optional and add a validator to the parent to check
+          # that it's there when the option apply.
+          required_node_validator = validator(:conditionally_required_node, required, name)
+          parent_node.send(:register_validator, required_node_validator)
+          @optional = true
+        else
+          @optional = !required
         end
       end
 
