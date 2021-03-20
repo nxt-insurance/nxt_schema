@@ -425,7 +425,7 @@ schema.value # => { test: 'getsafe', other: 'Heidelberg' }
 
 #### Transform keys
 
-You may want to transform the keys from your input. Therefore specify the transform_keys option. This might be useful
+To transform the keys of your output simply specify the transform_keys option. This might be useful
 when you want your schema to return only symbolized keys for example. 
 
 ```ruby
