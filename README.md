@@ -429,7 +429,7 @@ To transform the keys of your output simply specify the transform_keys option. T
 when you want your schema to return only symbolized keys for example. 
 
 ```ruby
-schema = NxtSchema.schema(transform_keys: ->(key) { key.to_sym}) do
+schema = NxtSchema.schema(transform_keys: ->(key) { key.to_sym }) do
   required(:test, :String)
 end
 
