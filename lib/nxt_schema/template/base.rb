@@ -14,6 +14,7 @@ module NxtSchema
         @validations = []
         @configuration = block
 
+        resolve_input_preprocessor
         resolve_output_keys_transformer
         resolve_context
         resolve_optional_option
@@ -208,7 +209,13 @@ module NxtSchema
       end
 
       def resolve_input_preprocessor
-        @input_preprocessor = options.fetch(:preprocess_input) { parent_node&.input_preprocessor }
+        @input_preprocessor ||= begin
+          if root_node?
+            options.key?(:preprocess_input) ? options.fetch(:preprocess_input) : default_input_preprocessor
+          else
+            options.key?(:preprocess_input) ? options.fetch(:preprocess_input) : parent_node&.input_preprocessor
+          end
+        end
       end
 
       def resolve_output_keys_transformer
@@ -224,6 +231,13 @@ module NxtSchema
       def preprocess_input(input)
         return input unless input_preprocessor.present?
         input_preprocessor.call(input, self)
+      end
+
+      def default_input_preprocessor
+        ->(input, node) do
+          return input unless node.is_a?(NxtSchema::Template::Schema) && input.respond_to?(:transform_keys)
+          input.transform_keys(&:to_sym)
+        end
       end
     end
   end
