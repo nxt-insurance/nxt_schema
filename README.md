@@ -425,11 +425,11 @@ schema.value # => { test: 'getsafe', other: 'Heidelberg' }
 
 #### Transform keys
 
-To transform the keys of your output simply specify the transform_keys option. This might be useful
+To transform the keys of your output simply specify the transform_output_keys option. This might be useful
 when you want your schema to return only symbolized keys for example. 
 
 ```ruby
-schema = NxtSchema.schema(transform_keys: ->(key) { key.to_sym }) do
+schema = NxtSchema.schema(transform_output_keys: ->(key) { key.to_sym }) do
   required(:test, :String)
 end
 

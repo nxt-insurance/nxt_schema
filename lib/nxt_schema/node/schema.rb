@@ -22,7 +22,7 @@ module NxtSchema
           end
         end
 
-        transform_keys
+        transform_output_keys
         register_as_coerced_when_no_errors
         run_validations
         self
@@ -32,8 +32,8 @@ module NxtSchema
 
       private
 
-      def transform_keys
-        transformer = node.key_transformer
+      def transform_output_keys
+        transformer = node.output_keys_transformer
         return unless transformer && output.respond_to?(:transform_keys!)
 
         output.transform_keys!(&transformer)
