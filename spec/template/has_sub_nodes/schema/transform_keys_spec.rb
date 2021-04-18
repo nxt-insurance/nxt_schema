@@ -3,7 +3,7 @@ RSpec.describe NxtSchema do
 
   context 'when some nodes are optional' do
     let(:schema) do
-      NxtSchema.schema(:person, transform_keys: ->(key) { key.to_s.upcase }) do |person|
+      NxtSchema.schema(:person, transform_output_keys: ->(key) { key.to_s.upcase }) do |person|
         person.node(:first_name, :String)
         person.node(:last_name, :String)
 

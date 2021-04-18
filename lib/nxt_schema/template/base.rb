@@ -14,7 +14,7 @@ module NxtSchema
         @validations = []
         @configuration = block
 
-        resolve_key_transformer
+        resolve_output_keys_transformer
         resolve_context
         resolve_optional_option
         resolve_omnipresent_option
@@ -40,7 +40,8 @@ module NxtSchema
         :maybe_evaluators,
         :validations,
         :configuration,
-        :key_transformer
+        :output_keys_transformer,
+        :input_preprocessor
 
       def apply(input: Undefined.new, context: self.context, parent: nil, error_key: nil)
         build_node(input: input, context: context, parent: parent, error_key: error_key).call
@@ -58,7 +59,7 @@ module NxtSchema
       def build_node(input: Undefined.new, context: self.context, parent: nil, error_key: nil)
         node_class.new(
           node: self,
-          input: input,
+          input: preprocess_input(input),
           parent: parent,
           context: context,
           error_key: error_key
@@ -206,14 +207,23 @@ module NxtSchema
         value.is_a? Undefined
       end
 
-      def resolve_key_transformer
-        @key_transformer = options.fetch(:transform_keys) { parent_node&.key_transformer || ->(key) { key.to_sym } }
+      def resolve_input_preprocessor
+        @input_preprocessor = options.fetch(:preprocess_input) { parent_node&.input_preprocessor }
+      end
+
+      def resolve_output_keys_transformer
+        @output_keys_transformer = options.fetch(:transform_output_keys) { parent_node&.output_keys_transformer || ->(key) { key.to_sym } }
       end
 
       def resolve_name(name)
         raise ArgumentError, 'Name can either be a symbol or an integer' unless name.class.in?([Symbol, Integer])
 
         @name = name
+      end
+
+      def preprocess_input(input)
+        return input unless input_preprocessor.present?
+        input_preprocessor.call(input, self)
       end
     end
   end
