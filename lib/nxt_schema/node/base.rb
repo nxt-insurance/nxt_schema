@@ -66,6 +66,10 @@ module NxtSchema
         end
       end
 
+      def access(path)
+        Navigator.new(path, self).call
+      end
+
       private
 
       attr_writer :coerced, :root
