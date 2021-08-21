@@ -79,6 +79,12 @@ module NxtSchema
         @omnipresent
       end
 
+      def typed(type)
+        resolve_type(type)
+
+        self
+      end
+
       def default(value = NxtSchema::Undefined.new, &block)
         value = missing_input?(value) ? block : value
         condition = ->(input) { missing_input?(input) || input.nil? }

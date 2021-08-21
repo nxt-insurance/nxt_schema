@@ -38,7 +38,7 @@ module NxtSchema
         add_sub_node(node)
       end
 
-      def node(name, node_or_type_of_node, **options, &block)
+      def node(name, node_or_type_of_node = ->(val) { val }, **options, &block)
         node = if node_or_type_of_node.is_a?(NxtSchema::Template::Base)
           raise ArgumentError, "Can't provide a block along with a node" if block.present?
 

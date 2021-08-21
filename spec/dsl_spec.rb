@@ -15,7 +15,7 @@ RSpec.describe NxtSchema::Dsl do
         extend Helpers
 
         required(:first_name, :String)
-        required(:last_name, :String).default(default_value)
+        required(:last_name).typed(:String).default(default_value)
       end
 
       def call(input)

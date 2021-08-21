@@ -135,7 +135,7 @@ result.output # => {:email=>NxtSchema::Undefined}
 # Omnipresent node with default value and maybe expression to allow default value to break type contract.
 
 schema = NxtSchema.schema(:person) do
-  omnipresent(:email, :String).default(nil).maybe(:nil?)
+  omnipresent(:email).typed(:String).default(nil).maybe(:nil?)
 end
 
 result = schema.apply(input: {})
