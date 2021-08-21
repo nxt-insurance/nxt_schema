@@ -1,7 +1,7 @@
 module NxtSchema
   module Template
     class Base
-      def initialize(name:, type:, parent_node:, **options, &block)
+      def initialize(name:, parent_node:, type: ->(val) { val }, **options, &block)
         resolve_name(name)
 
         @parent_node = parent_node
