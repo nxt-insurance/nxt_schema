@@ -3,11 +3,11 @@
 RSpec.describe NxtSchema do
   let(:address_schema) do
     NxtSchema.schema(:address) do
-      required(:street, :String)
-      required(:street_number, :String)
-      required(:city, :String)
-      required(:zip_code, :String)
-      required(:country, :String).validate(:included_in, %w[Germany, France, UK])
+      required(:street).typed(:String)
+      required(:street_number).typed(:String)
+      required(:city).typed(:String)
+      required(:zip_code).typed(:String)
+      required(:country).typed(:String).validate(:included_in, %w[Germany, France, UK])
     end
   end
 
@@ -16,19 +16,19 @@ RSpec.describe NxtSchema do
 
     NxtSchema.collection(:people) do
       schema(:person) do
-        required(:first_name, :String)
-        required(:last_name, :String)
-        required(:birthdate, :Date)
-        required(:age, :Integer)
-        required(:email, :String).validate(:pattern, /\A.*@.*\z/)
-        required(:language, :String).validate(:included_in, %w[de en fr])
+        required(:first_name).typed(:String)
+        required(:last_name).typed(:String)
+        required(:birthdate).typed(:Date)
+        required(:age).typed(:Integer)
+        required(:email).typed(:String).validate(:pattern, /\A.*@.*\z/)
+        required(:language).typed(:String).validate(:included_in, %w[de en fr])
 
-        required(:address, address)
+        required(:address, type: address) # TODO: This is not the best DSL - maybe replace with another method or use a proxy for building?
 
         schema(:company) do
-          required(:name, :String)
-          required(:position, :String)
-          required(:address, address)
+          required(:name).typed(:String)
+          required(:position).typed(:String)
+          required(:address, type: address)
         end
       end
     end

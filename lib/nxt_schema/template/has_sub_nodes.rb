@@ -38,21 +38,23 @@ module NxtSchema
         add_sub_node(node)
       end
 
-      def node(name, node_or_type_of_node: nil, **options, &block)
-        node = if node_or_type_of_node.is_a?(NxtSchema::Template::Base)
+      def node(name, type: Undefined.new, **options, &block)
+        node = if type.is_a?(NxtSchema::Template::Base)
           raise ArgumentError, "Can't provide a block along with a node" if block.present?
 
-          node_or_type_of_node.class.new(
+          # TODO: To get the same interface when referencing schemas we could use a proxy for building these nodes
+          # Not sure how to make sure the proxy has been executed and the node has been built and typed properly
+          type.class.new(
             name: name,
-            type: node_or_type_of_node.type,
+            type: type.type,
             parent_node: self,
-            **node_or_type_of_node.options.merge(options),
-            &node_or_type_of_node.configuration
+            **type.options.merge(options),
+            &type.configuration
           )
         else
           NxtSchema::Template::Leaf.new(
             name: name,
-            type: node_or_type_of_node,
+            type: type,
             parent_node: self,
             **options,
             &block

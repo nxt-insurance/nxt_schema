@@ -9,8 +9,8 @@ RSpec.describe NxtSchema do
 
     let(:schema) do
       NxtSchema.schema(:developers) do
-        required(:first_name, :String)
-        required(:last_name, :String).default do |_, node|
+        required(:first_name).typed(:String)
+        required(:last_name).typed(:String).default do |_, node|
           node.context.default_last_name
         end
       end
@@ -38,8 +38,8 @@ RSpec.describe NxtSchema do
 
     let(:schema) do
       NxtSchema.schema(:developers, context: build_context) do
-        required(:first_name, :String)
-        required(:last_name, :String).validate(context.validate_last_name)
+        required(:first_name).typed(:String)
+        required(:last_name).typed(:String).validate(context.validate_last_name)
       end
     end
 

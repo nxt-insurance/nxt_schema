@@ -8,8 +8,8 @@ RSpec.describe NxtSchema do
   context 'with a method as condition' do
     let(:schema) do
       NxtSchema.schema(:developers) do
-        required(:first_name, :String)
-        required(:last_name, :String).on(:nil?, 'missing')
+        required(:first_name).typed(:String)
+        required(:last_name).typed(:String).on(:nil?, 'missing')
       end
     end
 
@@ -41,7 +41,10 @@ RSpec.describe NxtSchema do
     let(:schema) do
       NxtSchema.schema(:developers) do
         required(:first_name, :String)
-        omnipresent(:last_name, :String).on(->(input) { input.is_a?(NxtSchema::Undefined) }, ->(_input, application) { application.name.to_s } )
+        omnipresent(:last_name).typed(:String).on(
+          ->(input) { input.is_a?(NxtSchema::Undefined) },
+          ->(_input, application) { application.name.to_s }
+        )
       end
     end
 
@@ -71,8 +74,8 @@ RSpec.describe NxtSchema do
   context 'when passing a block as value' do
     let(:schema) do
       NxtSchema.schema(:developers) do
-        required(:first_name, :String)
-        required(:last_name, :String).on(true) do |_, application|
+        required(:first_name).typed(:String)
+        required(:last_name).typed(:String).on(true) do |_, application|
           "#{application.name} was not given"
         end
       end

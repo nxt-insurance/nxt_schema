@@ -8,8 +8,8 @@ RSpec.describe NxtSchema do
   context 'with a method' do
     let(:schema) do
       NxtSchema.schema(:developers) do
-        required(:first_name, :String)
-        required(:last_name, :String).maybe(:blank?)
+        required(:first_name).typed(:String)
+        required(:last_name).typed(:String).maybe(:blank?)
       end
     end
 
@@ -40,10 +40,8 @@ RSpec.describe NxtSchema do
   context 'with a proc' do
     let(:schema) do
       NxtSchema.schema(:developers) do
-        required(:first_name, :String)
-        omnipresent(:last_name, :String).maybe do |input|
-          input.is_a?(NxtSchema::Undefined)
-        end
+        required(:first_name).typed(:String)
+        omnipresent(:last_name).typed(:String).maybe { |input| input.is_a?(NxtSchema::Undefined) }
       end
     end
 
@@ -78,8 +76,8 @@ RSpec.describe NxtSchema do
   context 'when passing a simple value' do
     let(:schema) do
       NxtSchema.schema(:developers) do
-        required(:first_name, :String)
-        required(:last_name, :String).maybe(1)
+        required(:first_name).typed(:String)
+        required(:last_name).typed(:String).maybe(1)
       end
     end
 
