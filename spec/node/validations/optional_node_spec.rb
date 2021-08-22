@@ -7,9 +7,13 @@ RSpec.describe NxtSchema do
 
   let(:schema) do
     NxtSchema.schema(:contact) do
-      required(:first_name, :String)
-      required(:last_name, :String)
-      node(:email, :String, optional: ->(node) { node.up[:last_name].input == 'Superstar' })
+      required(:first_name).typed(:String)
+      required(:last_name).typed(:String)
+      node(
+        :email,
+        type: :String,
+        optional: ->(node) { node.up[:last_name].input == 'Superstar' }
+      )
     end
   end
 

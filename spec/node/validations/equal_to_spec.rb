@@ -7,8 +7,8 @@ RSpec.describe NxtSchema do
 
   let(:schema) do
     NxtSchema.schema(:person) do
-      required(:first_name, :String)
-      required(:last_name, :String).validate(:equal_to, 'Superstar')
+      required(:first_name, type: :String)
+      required(:last_name, type: :String).validate(:equal_to, 'Superstar')
     end
   end
 

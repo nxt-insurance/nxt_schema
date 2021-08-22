@@ -42,8 +42,6 @@ module NxtSchema
         node = if type.is_a?(NxtSchema::Template::Base)
           raise ArgumentError, "Can't provide a block along with a node" if block.present?
 
-          # TODO: To get the same interface when referencing schemas we could use a proxy for building these nodes
-          # Not sure how to make sure the proxy has been executed and the node has been built and typed properly
           type.class.new(
             name: name,
             type: type.type,

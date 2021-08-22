@@ -12,12 +12,12 @@ RSpec.describe NxtSchema do
 
         any_of(:allowed_good_combinations) do
           schema(:good_combo) do
-            required(:color, :String)
-            required(:code, :Integer)
+            required(:color).typed(:String)
+            required(:code).typed(:Integer)
           end
 
           schema(:other_good_combo) do
-            required(:length, :Decimal)
+            required(:length).typed(:Decimal)
           end
         end
       end
@@ -25,12 +25,12 @@ RSpec.describe NxtSchema do
       collection(:bad_combinations) do
         any_of(:allowed_bad_combinations) do
           schema(:bad_combo) do
-            required(:color, :String)
-            required(:code, :Integer)
+            required(:color).typed(:String)
+            required(:code).typed(:Integer)
           end
 
           schema(:other_bad_combo) do
-            required(:height, :Decimal)
+            required(:height).typed(:Decimal)
           end
         end
       end

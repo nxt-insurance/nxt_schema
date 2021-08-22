@@ -8,15 +8,15 @@ module NxtSchema
         ensure_sub_nodes_present
       end
 
-      def collection(name = sub_nodes.count, type = NxtSchema::Template::Collection::DEFAULT_TYPE, **options, &block)
+      def collection(name = sub_nodes.count, type: NxtSchema::Template::Collection::DEFAULT_TYPE, **options, &block)
         super
       end
 
-      def schema(name = sub_nodes.count, type = NxtSchema::Template::Schema::DEFAULT_TYPE, **options, &block)
+      def schema(name = sub_nodes.count, type: NxtSchema::Template::Schema::DEFAULT_TYPE, **options, &block)
         super
       end
 
-      def node(name = sub_nodes.count, node_or_type_of_node = nil, **options, &block)
+      def node(name = sub_nodes.count, node_or_type_of_node: Undefined.new, **options, &block)
         super
       end
 
@@ -29,6 +29,10 @@ module NxtSchema
       end
 
       private
+
+      def typed?
+        true # we do not have to type this
+      end
 
       def resolve_type(name_or_type)
         nil

@@ -2,7 +2,7 @@ RSpec.describe NxtSchema::Template::Base do
   let(:schema) do
     NxtSchema.nodes(:numbers) do
       validate(:attribute, :size, ->(s) { s > 3 })
-      required(:number, :Integer)
+      required(:number, type: :Integer)
     end
   end
 

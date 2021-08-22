@@ -23,7 +23,7 @@ RSpec.describe NxtSchema do
         required(:email).typed(:String).validate(:pattern, /\A.*@.*\z/)
         required(:language).typed(:String).validate(:included_in, %w[de en fr])
 
-        required(:address, type: address) # TODO: This is not the best DSL - maybe replace with another method or use a proxy for building?
+        required(:address, type: address)
 
         schema(:company) do
           required(:name).typed(:String)

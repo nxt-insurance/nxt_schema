@@ -8,7 +8,7 @@ RSpec.describe NxtSchema do
   context 'array of leaf nodes' do
     let(:schema) do
       NxtSchema.collection(:developers) do |devs|
-        devs.node(:dev, NxtSchema::Types::Strict::String | NxtSchema::Types::Coercible::Float)
+        devs.node(:dev, type: (NxtSchema::Types::Strict::String | NxtSchema::Types::Coercible::Float))
       end
     end
 
@@ -45,8 +45,8 @@ RSpec.describe NxtSchema do
       NxtSchema.collection(:developers) do |developers|
         developers.nodes(:frontend_devs) do |frontend_devs|
           frontend_devs.schema(:frontend_dev) do |frontend_dev|
-            frontend_dev.node(:name, :String)
-            frontend_dev.node(:age, :Integer)
+            frontend_dev.node(:name, type: :String)
+            frontend_dev.node(:age, type: :Integer)
           end
         end
       end

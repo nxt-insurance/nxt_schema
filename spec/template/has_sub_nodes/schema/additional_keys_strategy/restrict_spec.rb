@@ -6,11 +6,11 @@ RSpec.describe NxtSchema do
   context 'when additional keys are restricted' do
     let(:schema) do
       NxtSchema.schema(:task, additional_keys: :restrict) do |task|
-        task.node(:name, :String)
+        task.node(:name, type: :String)
         task.collection(:sub_tasks) do |sub_tasks|
           sub_tasks.schema(:sub_task) do |sub_task|
-            sub_task.node(:name, :String)
-            sub_task.node(:description, :String)
+            sub_task.node(:name, type: :String)
+            sub_task.node(:description, type: :String)
           end
         end
       end

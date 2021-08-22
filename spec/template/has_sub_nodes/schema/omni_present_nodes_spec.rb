@@ -4,8 +4,8 @@ RSpec.describe NxtSchema do
   context 'with present nodes' do
     let(:schema) do
       NxtSchema.schema(:person) do |person|
-        person.omnipresent(:first_name, :String).default('')
-        person.omnipresent(:last_name, :String)
+        person.omnipresent(:first_name, type: :String).default('')
+        person.omnipresent(:last_name, type: :String)
       end
     end
 
@@ -35,8 +35,8 @@ RSpec.describe NxtSchema do
     context 'with nil as default value' do
       let(:schema) do
         NxtSchema.schema(:person) do |person|
-          person.omnipresent(:first_name, :String).default(nil)
-          person.omnipresent(:last_name, :String)
+          person.omnipresent(:first_name, type: :String).default(nil)
+          person.omnipresent(:last_name, type: :String)
         end
       end
 

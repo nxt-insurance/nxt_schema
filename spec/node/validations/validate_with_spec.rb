@@ -7,8 +7,8 @@ RSpec.describe NxtSchema do
 
   let(:schema) do
     NxtSchema.schema(:contact) do
-      required(:first_name, :String)
-      required(:age, :Integer).validate_with do
+      required(:first_name).typed(:String)
+      required(:age).typed(:Integer).validate_with do
         validator(:greater_than, 18) &&
           validator(:greater_than, 19) &&
           validator(:less_than, 21)

@@ -4,8 +4,8 @@ RSpec.describe NxtSchema do
   context 'hash with leaf nodes' do
     let(:schema) do
       NxtSchema.schema(:company, type_system: NxtSchema::Types::Coercible) do |company|
-        company.node(:name, :String)
-        company.node(:value, :Decimal)
+        company.node(:name, type: :String)
+        company.node(:value, type: :Decimal)
       end
     end
 
@@ -40,12 +40,12 @@ RSpec.describe NxtSchema do
   context 'hash with hash nodes' do
     let(:schema) do
       NxtSchema.schema(:company) do |company|
-        company.node(:name, :String)
-        company.node(:customers, :Integer)
+        company.node(:name, type: :String)
+        company.node(:customers, type: :Integer)
         company.schema(:address) do |address|
-          address.node(:street, :String)
-          address.node(:street_number, :Integer)
-          address.node(:zip_code, :Integer)
+          address.node(:street, type: :String)
+          address.node(:street_number, type: :Integer)
+          address.node(:zip_code, type: :Integer)
         end
       end
     end
@@ -86,12 +86,12 @@ RSpec.describe NxtSchema do
   context 'hash with array of nodes' do
     let(:schema) do
       NxtSchema.schema(:person) do |person|
-        person.node(:name, :String)
+        person.node(:name, type: :String)
         person.collection(:houses) do |houses|
           houses.schema(:house) do |address|
-            address.node(:street, :String)
-            address.node(:street_number, :Integer)
-            address.node(:zip_code, :Integer)
+            address.node(:street, type: :String)
+            address.node(:street_number, type: :Integer)
+            address.node(:zip_code, type: :Integer)
           end
         end
       end

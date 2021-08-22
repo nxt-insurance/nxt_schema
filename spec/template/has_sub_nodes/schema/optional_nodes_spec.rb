@@ -4,13 +4,13 @@ RSpec.describe NxtSchema do
   context 'when some nodes are optional' do
     let(:schema) do
       NxtSchema.schema(:person) do |person|
-        person.node(:first_name, :String)
-        person.node(:last_name, :String)
+        person.node(:first_name, type: :String)
+        person.node(:last_name, type: :String)
         person.schema(:address, optional: true) do |address|
-          address.node(:street, :String)
-          address.node(:town, :String)
+          address.node(:street, type: :String)
+          address.node(:town, type: :String)
         end
-        person.optional(:phone, :String)
+        person.optional(:phone, type: :String)
       end
     end
 
@@ -53,11 +53,11 @@ RSpec.describe NxtSchema do
   context 'when all nodes within a schema are optional' do
     let(:schema) do
       NxtSchema.schema(:person) do |person|
-        person.optional(:first_name, :String)
-        person.optional(:last_name, :String)
+        person.optional(:first_name, type: :String)
+        person.optional(:last_name, type: :String)
         person.schema(:address, optional: true) do |address|
-          address.node(:street, :String)
-          address.node(:town, :String)
+          address.node(:street, type: :String)
+          address.node(:town, type: :String)
         end
       end
     end

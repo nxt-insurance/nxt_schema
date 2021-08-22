@@ -7,8 +7,8 @@ RSpec.describe NxtSchema do
     let(:schema) do
       NxtSchema.schema(:scores) do
         any_of(:score) do
-          node(:integer, :Integer)
-          node(:string, :String)
+          node(:integer, type: :Integer)
+          node(:string, type: :String)
         end
       end
     end

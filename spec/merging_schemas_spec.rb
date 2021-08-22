@@ -4,10 +4,10 @@ RSpec.describe NxtSchema do
     cyphers = cyphers_schema
 
     NxtSchema.schema(:person) do
-      required(:first_name, :String)
-      required(:last_name, :String)
-      required(:address, address)
-      required(:cyphers, cyphers)
+      required(:first_name, type: :String)
+      required(:last_name, type: :String)
+      required(:address, type: address)
+      required(:cyphers, type: cyphers)
     end
   end
 
@@ -15,18 +15,18 @@ RSpec.describe NxtSchema do
     cyphers = cyphers_schema
 
     NxtSchema.schema(:address) do
-      required(:street, :String)
-      required(:zip_code, :String)
-      required(:town, :String).validate(:equal_to, 'Kaiserslautern')
-      node(:country, :String, optional: ->(node) { node[:town].input == 'Kaiserslautern' })
-      required(:cyphers, cyphers)
+      required(:street, type: :String)
+      required(:zip_code, type: :String)
+      required(:town, type: :String).validate(:equal_to, 'Kaiserslautern')
+      node(:country, type: :String, optional: ->(node) { node[:town].input == 'Kaiserslautern' })
+      required(:cyphers, type: cyphers)
     end
   end
 
 
   let(:cyphers_schema) do
     NxtSchema.collection do
-      required(:cypher, :String)
+      required(:cypher, type: :String)
     end
   end
 

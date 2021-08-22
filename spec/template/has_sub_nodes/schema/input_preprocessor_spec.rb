@@ -16,15 +16,15 @@ RSpec.describe NxtSchema do
     context 'default input preprocessor' do
       let(:schema) do
         NxtSchema.schema(:person) do
-          node(:first_name, :String)
-          node(:last_name, :String)
+          node(:first_name, type: :String)
+          node(:last_name, type: :String)
 
           schema(:address, optional: true) do
-            node(:street, :String)
-            node(:town, :String)
+            node(:street, type: :String)
+            node(:town, type: :String)
           end
 
-          optional(:phone, :String)
+          optional(:phone, type: :String)
         end
       end
 
@@ -36,15 +36,15 @@ RSpec.describe NxtSchema do
     context 'when switched off' do
       let(:schema) do
         NxtSchema.schema(:person, preprocess_input: false) do
-          node(:first_name, :String)
-          node(:last_name, :String)
+          node(:first_name, type: :String)
+          node(:last_name, type: :String)
 
           schema(:address, optional: true) do
-            node(:street, :String)
-            node(:town, :String)
+            node(:street, type: :String)
+            node(:town, type: :String)
           end
 
-          optional(:phone, :String)
+          optional(:phone, type: :String)
         end
       end
 

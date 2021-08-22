@@ -4,15 +4,15 @@ RSpec.describe NxtSchema do
   context 'when some nodes are optional' do
     let(:schema) do
       NxtSchema.schema(:person, transform_output_keys: ->(key) { key.to_s.upcase }) do |person|
-        person.node(:first_name, :String)
-        person.node(:last_name, :String)
+        person.node(:first_name).typed(:String)
+        person.node(:last_name).typed(:String)
 
         person.schema(:address, optional: true) do |address|
-          address.node(:street, :String)
-          address.node(:town, :String)
+          address.node(:street, type: :String)
+          address.node(:town, type: :String)
         end
 
-        person.optional(:phone, :String)
+        person.optional(:phone, type: :String)
       end
     end
 

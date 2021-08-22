@@ -5,15 +5,15 @@ RSpec.describe NxtSchema do
     let(:schema) do
       NxtSchema.any_of(:contacts) do |contact|
         contact.schema do
-          required(:first_name, :String)
-          required(:last_name, :String)
-          required(:female, :Bool)
+          required(:first_name, type: :String)
+          required(:last_name, type: :String)
+          required(:female, type: :Bool)
         end
 
         contact.schema do
-          required(:first_name, :String)
-          required(:last_name, :String)
-          required(:male, :Bool)
+          required(:first_name, type: :String)
+          required(:last_name, type: :String)
+          required(:male, type: :Bool)
         end
       end
     end
