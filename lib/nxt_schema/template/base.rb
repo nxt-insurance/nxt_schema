@@ -1,7 +1,7 @@
 module NxtSchema
   module Template
     class Base
-      def initialize(name:, parent_node:, type: ->(val) { val }, **options, &block)
+      def initialize(name:, parent_node:, type: Undefined.new, **options, &block)
         resolve_name(name)
 
         @parent_node = parent_node
@@ -20,7 +20,7 @@ module NxtSchema
         resolve_optional_option
         resolve_omnipresent_option
         resolve_type_system
-        resolve_type(type)
+        resolve_type(type) if type.present?
         resolve_additional_keys_strategy
         node_class # memoize
         configure(&block) if block_given?
@@ -58,6 +58,9 @@ module NxtSchema
       end
 
       def build_node(input: Undefined.new, context: self.context, parent: nil, error_key: nil)
+        # TODO: Here we would raise in case node is not typed
+        raise ArgumentError, "#{path} is missing a type" unless typed?
+
         node_class.new(
           node: self,
           input: preprocess_input(input),
@@ -137,6 +140,10 @@ module NxtSchema
       private
 
       attr_writer :path, :meta, :context, :on_evaluators, :maybe_evaluators
+
+      def typed?
+        @type.present?
+      end
 
       def validator(key, *args)
         Validators::REGISTRY.resolve!(key).new(*args).build

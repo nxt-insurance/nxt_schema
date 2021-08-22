@@ -10,12 +10,12 @@ module NxtSchema
         ensure_sub_nodes_present
       end
 
-      def optional(name, node_or_type_of_node, **options, &block)
-        node(name, node_or_type_of_node, **options.merge(optional: true), &block)
+      def optional(name, node_or_type_of_node: Undefined.new, **options, &block)
+        node(name, node_or_type_of_node: node_or_type_of_node, **options.merge(optional: true), &block)
       end
 
-      def omnipresent(name, node_or_type_of_node, **options, &block)
-        node(name, node_or_type_of_node, **options.merge(omnipresent: true), &block)
+      def omnipresent(name, node_or_type_of_node: Undefined.new, **options, &block)
+        node(name, node_or_type_of_node: node_or_type_of_node, **options.merge(omnipresent: true), &block)
       end
     end
   end

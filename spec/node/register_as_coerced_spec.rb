@@ -3,21 +3,21 @@ RSpec.describe NxtSchema do
 
   let(:schema) do
     NxtSchema.schema(:person) do
-      node(:first_name, :String)
-      node(:last_name, :String)
+      node(:first_name).typed(:String)
+      node(:last_name).typed(:String)
 
       collection(:nick_names) do
-        node(:nick_name, :String)
+        node(:nick_name).typed(:String)
       end
 
       collection(:addresses) do
         schema(:address) do |address|
-          address.node(:street, :String)
-          address.node(:town, :String)
+          address.node(:street).typed(:String)
+          address.node(:town).typed(:String)
         end
       end
 
-      optional(:phone, :String)
+      optional(:phone).typed(:String)
     end
   end
 

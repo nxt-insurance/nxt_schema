@@ -1,7 +1,7 @@
 module NxtSchema
   module Template
     module HasSubNodes
-      def collection(name, type = NxtSchema::Template::Collection::DEFAULT_TYPE, **options, &block)
+      def collection(name, type: NxtSchema::Template::Collection::DEFAULT_TYPE, **options, &block)
         node = NxtSchema::Template::Collection.new(
           name: name,
           type: type,
@@ -15,7 +15,7 @@ module NxtSchema
 
       alias nodes collection
 
-      def schema(name, type = NxtSchema::Template::Schema::DEFAULT_TYPE, **options, &block)
+      def schema(name, type: NxtSchema::Template::Schema::DEFAULT_TYPE, **options, &block)
         node = NxtSchema::Template::Schema.new(
           name: name,
           type: type,
@@ -38,7 +38,7 @@ module NxtSchema
         add_sub_node(node)
       end
 
-      def node(name, node_or_type_of_node = ->(val) { val }, **options, &block)
+      def node(name, node_or_type_of_node: nil, **options, &block)
         node = if node_or_type_of_node.is_a?(NxtSchema::Template::Base)
           raise ArgumentError, "Can't provide a block along with a node" if block.present?
 
