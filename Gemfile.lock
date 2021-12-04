@@ -46,7 +46,7 @@ GEM
     minitest (5.14.4)
     nxt_init (0.1.5)
       activesupport
-    nxt_registry (0.3.9)
+    nxt_registry (0.3.10)
       activesupport
     pry (0.13.1)
       coderay (~> 1.1)
