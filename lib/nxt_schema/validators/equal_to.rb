@@ -8,7 +8,7 @@ module NxtSchema
       register_as :equal_to, :eql
       attr_reader :expectation
 
-      # Query for equality validator(:equality, 3)
+      # Query for equality validator(:equal_to, 3)
       # Query for equality validator(:eql, -> { 3 * 3 * 60 })
 
       def build

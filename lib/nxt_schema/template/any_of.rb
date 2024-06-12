@@ -34,6 +34,12 @@ module NxtSchema
         nil
       end
 
+      def resolve_required_option
+        return unless options.key?(:required)
+
+        raise InvalidOptions, "The required option is not available for nodes of type #{self.class.name}"
+      end
+
       def resolve_optional_option
         return unless options.key?(:optional)
 
